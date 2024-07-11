@@ -1,0 +1,132 @@
+﻿@model OnlineBikeStore.Models.StoreViewModel
+
+@{
+    ViewBag.Title = "StoreDashBoard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+
+        <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+                        Home
+                        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+                        Store Dashboard
+                        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+                    </a>
+                    <h4>
+                        <input type="hidden" value="@Model.store_id" id="store-id" />
+                        @Model.store_name
+                    </h4>
+                </div>
+
+                <div>
+
+                    <button type="button" onclick="getStockNotInStore()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemsModal">
+                        Add Items
+                    </button>
+                </div>
+
+            </div>
+            <div class="summary">
+                <div class="summary-item">All Inventory <br /><span id="allInventory"></span></div>
+                <div class="summary-item">Low Stock <br /><span id="lowInventory"></span></div>
+                <div class="summary-item">Out of Stock<br> <span id="finishedInventory"></span></div>
+                <div class="summary-item">Recommendations<br> <span id="all-inventory">1</span></div>
+            </div>
+
+            <div class="filters">
+                <select id="categories">
+                    <option value="">Categories</option>
+                </select>
+                <select id="brands">
+                    <option value="">Brands</option>
+                </select>
+                <button>Apply</button>
+            </div>
+
+            <div class="inventory-table">
+                <table id="store-table" class="">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Model Year</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="updateStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 h1-label" id="exampleModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="m-body">
+                <div>
+                    <form id="updateQuantityForm">
+                        <input type="hidden" name="productId" id="productId" />
+                        <input type="hidden" name="storeId" id="storeId" />
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Product Name</label>
+                            <input type="text" name="quantity" id="product-name" class="form-control" min="0" />
+                            <label for="quantity" class="form-label">Current Quantity</label>
+                            <input type="number" readonly name="quantity" id="current-quantity" class="form-control" min="0" />
+                            <label for="quantity" class="form-label">New Quantity</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" min="0" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="updateQuantityButton" class="btn btn-primary">Update Quantity</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="addItemsModal" tabindex="-1" aria-labelledby="addItemsModalTitle" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemsModalTitle">Add item to store</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th> Model Year</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="addItemsTblBody">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+﻿@model OnlineBikeStore.Models.StoreViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div>
+    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+        Home
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+        Store
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+    </a>
+    <h4>
+        Create Store
+    </h4>
+</div>
+
+<div class="card py-3 px-3 px-lg-4">
+
+
+
+    @using (Html.BeginForm("Create", "Store", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form row">
+            <div class="col-12 col-md-6 col-lg-6 mt-3">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group mb-2">
+                    <label class="control-label">Store Name</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.store_name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.store_name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">Mobile Number</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label class="control-label">Email</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label class="control-label">Street</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.street, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.street, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-6 mt-3">
+                <div class="form-group mb-2">
+                    <label class="control-label">City</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">State</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label class="control-label">Zip Code</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.zip_code, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.zip_code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-offset-2 my-4">
+                <input type="submit" value="Create" class="btn btn-success w-100 bg-ad-primary" />
+            </div>
+        </div>
+
+
+    }
+
+    <div class="card-footer">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>

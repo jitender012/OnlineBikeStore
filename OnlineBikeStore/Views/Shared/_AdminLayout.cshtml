@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @Styles.Render("~/Content/admin-css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-ad-primary">
+            <div class="container">
+
+
+                <div class="row w-100 m-0">
+                    <div class="col-2 col-lg-6">
+                        <button class="navbar-toggler btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                            <i class="fa fa-solid fa-bars" style="color: white"></i>
+                        </button>
+                        <div class="offcanvas offcanvas-end" id="offcanvasNavbar" tabindex="-1" labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header ">
+
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body bg-ad-primary" id="navbarNavDarkDropdown">
+                                <a href="@Url.Action( "Dashboard","Dashboard")" id="loginLink" class="btn login-btn">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="login-icon">
+                                            <i class="fa fa-home  text-light"></i>
+                                        </span>&nbsp;&nbsp;
+                                        <span class="login-text text-light"> Home</span>
+                                    </div>
+                                </a>
+                                <div class="dropdown">
+                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="login-icon">
+                                                <i class="fas fa-clipboard-check text-light"></i>
+                                            </span>&nbsp;&nbsp;
+                                            <span class="login-text text-light"> Orders</span>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-content">
+                                        <a href="#">All Orders</a>
+                                        <a href="#">Pending</a>
+                                        <a href="#">Shipped</a>
+                                        <a href="#">Cancelled</a>
+                                        <a href="#">Returned</a>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown">
+                                    <a href="@Url.Action( "Index","Product")" id="loginLink" class="btn dropbtn">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="login-icon">
+                                                <i class="fa fa-list-alt  text-light"></i>
+                                            </span>&nbsp;&nbsp;
+                                            <span class="login-text text-light"> Listing</span>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-content">
+                                        <a href="@Url.Action("Index","Product")">Products</a>
+                                        <a href="@Url.Action("Create","Product")">Add New Listing</a>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown">
+                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="login-icon">
+
+                                                <i class="fa fa-store  text-light"></i>
+                                            </span>&nbsp;&nbsp;
+                                            <span class="login-text text-light"> Stores</span>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-content" id="stores-dropd">
+
+                                        <a href="@Url.Action("Index","Store")">Stores</a>
+                                        <a href="@Url.Action("Create","Store")">Create Store</a>
+
+                                    </div>
+                                </div>
+
+                                <div class="dropdown">
+                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="login-icon">
+                                                <i class="fa fa-cog text-light"></i>
+                                            </span>&nbsp;&nbsp;
+                                            <span class="login-text text-light"> Other</span>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-content">
+                                        <a href="@Url.Action("Index","Category")">Category</a>
+                                        <a href="@Url.Action("Index","Brand")">Brand</a>
+                                        <a href="#">Customers</a>
+                                        <a href="#">Feedback</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-7 col-lg-4">
+                        @using (Html.BeginForm("Home", "Home", FormMethod.Get, new { @class = "d-flex", role = "search" }))
+                        {
+                            @Html.TextBox("search", null, new { placeholder = "Search", @class = "form-control  me-2" })
+                            <button class="btn btn-success" style="background-color: #ff6565; border:none; " type="submit"><i class="fa fa-search"></i></button>
+                        }
+                    </div>
+                    <div class="col-3 col-lg-2">
+                        <div class="justify-content-end d-flex flex-row ">
+                            <div class="dropdown">
+                                <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn dropbtn">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="login-icon">
+                                            <i class="far fa-user-circle  text-light"></i>
+                                        </span>&nbsp;&nbsp;
+                                        <span class="login-text text-light"> Profile</span>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown-content">
+                                    <a href="#">Account</a>
+                                    <a href="#">Notifications</a>
+                                    <a href="#">Setting</a>
+                                    <button type="button" class="logout-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Log Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/chart.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/AdminJs.js"></script>
+</body>
+</html>

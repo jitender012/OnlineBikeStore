@@ -1,0 +1,149 @@
+﻿body {
+    font-family:Arial;
+}
+:root {
+    --ad-primary: #729762;
+    --ad-primary-hover-darker: #5E7C51;
+    --ad-primary-hover-lighter: #87AD7A;
+    --ad-secondary: #658147;
+    --ad-secondary-hover-darker: #526A39;
+    --ad-secondary-hover-lighter: #789A5D;
+    --ad-tertiary: #597445;
+    --ad-tertiary-hover-darker: #475E35;
+    --ad-tertiary-hover-lighter: #6B8B55;
+    --ad-quaternary: #E7F0DC;
+    --ad-quaternary-hover-darker: #D1E1C3;
+    --ad-quaternary-hover-lighter: #F5FAF1;
+}
+
+
+.bg-ad-primary {
+    background-color: var(--ad-primary);
+    color: white;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: start;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 8px 12px;
+        text-decoration: none;
+        display: block;
+        transition:.2s ease-in-out;
+    }
+
+        .dropdown-content a:hover {
+            border-radius: 10px;
+            color: white;
+            background-color: var(--ad-primary-hover-lighter);
+        }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    border:1px solid white;
+    border-radius:10px;
+    /*background-color: #3e8e41;*/
+}
+
+.logout-btn {
+    width: 100%;
+    border: none;
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    background-color: #ffffff;
+    text-align: start;
+    border-radius: 10px;
+}
+
+    .logout-btn:hover {
+        color: white;
+        border-radius: 10px;
+        background-color: var(--ad-primary-hover-lighter);
+    }
+
+
+.dropdown-content {
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
+@keyframes growDown {
+    0% {
+        transform: scaleY(0);
+    }
+
+    80% {
+        transform: scaleY(1.1);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+<!-- Example custom CSS -->
+
+/* Override DataTables default styles */
+#myTable_wrapper {
+    width: 100%; /* Example: Set table width */
+    margin: 0 auto;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd; /* Example: Add borders */
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2; /* Example: Change header background */
+}
+
+#myTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Example: Alternate row background */
+}
+/*Store dashboard styles*/
+.summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    background-color: white;
+    padding: 8px;
+    height:80px;
+    text-align: center;
+    flex: 1;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.qty-field {
+    width: 66px;
+    height: 40px;
+    border: 2px solid #adadad;
+    border-radius: 10px;
+}

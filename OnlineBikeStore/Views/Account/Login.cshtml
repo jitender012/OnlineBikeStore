@@ -1,0 +1,54 @@
+﻿@model OnlineBikeStore.Models.AccountViewModel
+
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="row">
+    <div class=" col-sm-3 col-md-4">
+
+    </div>
+
+    <div class="p-4 col-sm-6 col-md-4">
+        <div class="card" style="padding:10px">
+            <center><h4>SIGN IN</h4></center>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label class="control-label col-md">Email Id</label>                      
+                        <div class="col-md-auto">
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md">Password</label>                        
+                        <div class="col-md">
+                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-auto">
+                            <input type="submit"  value="Login" class="btn btn-success btn-block w-100" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            Don't have account?  @Html.ActionLink("Register", "Register", "Account") here.
+
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-4"></div>
+
+</div>
+
