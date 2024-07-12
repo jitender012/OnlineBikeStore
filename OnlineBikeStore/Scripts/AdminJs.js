@@ -16,7 +16,7 @@ function getStores() {
                 store_dd.append('<a href="/Dashboard/StoreDashboard?store_id=' + item.store_id + '">' + item.store_name + '</a>');
             });
         },
-        error: function (xhr, status, error) {            
+        error: function (xhr, status, error) {
             console.error(error);
         }
     })
@@ -65,10 +65,10 @@ function displayStockLevel(data) {
 //load stock list that are in store
 function loadProducts(data) {
     var tbody = $("#inventory-table-body");
-    tbody.empty();  
+    tbody.empty();
     data.forEach(function (product, index) {
         var row = $("<tr>");
-       
+
         row.append($("<td>").text(product.product_name));
         row.append($("<td>").text(product.model_year));
         row.append($("<td>").text(product.quantity));
@@ -102,26 +102,60 @@ function getStockNotInStore() {
         type: 'GET',
         dataType: "json",
         data: { storeId: storeId },
-        success: function (data) {          
+        success: function (data) {
             var tbody = $("#addItemsTblBody");
             tbody.empty();
-            data.forEach(function (product, index) {
-                var row = $("<tr>");
+            if (data.length === 0 || data.length < 1) {                
+                var noDataRow = $("<tr>").append($("<td>").attr("colspan", 3).text("All products are added!"));
+                tbody.append(noDataRow);
+            } else {
 
-                row.append($("<td>").text(product.product_name));
-                row.append($("<td>").text(product.model_year));
+                data.forEach(function (product, index) {
 
-                var quantityInput = $('<input>', {
-                    type: 'number',
-                    id: product.product_id,
-                    name: 'quantity',                 
-                    class:"qty-field"
+                    var row = $("<tr>");
+
+                    row.append($("<td>").text(product.product_name));
+                    row.append($("<td>").text(product.model_year));
+
+                    var quantityInput = $('<input>', {
+                        type: 'number',
+                        id: product.product_id,
+                        name: 'quantity',
+                        class: "qty-field"
+                    });
+                    row.append(quantityInput);
+
+                    var addProductBtn = $('<button>', {
+                        class: 'btn',
+                        text: 'Add',
+                        type: 'button',
+                    }).on('click', function () {
+                        var btn = $(this);
+                        var qty = $('#' + product.product_id).val();
+                        $.ajax({
+                            url: '/Stock/AddStock/',
+                            type: "POST",
+                            dataType: "json",
+                            data: {
+                                store_id: storeId,
+                                product_id: product.product_id,
+                                quantity: qty
+                            },
+                            success: function (result) {
+                                $(btn).text('Added').prop('disabled', true);
+                                getStockDataByStore();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error occurred:', error);
+                            }
+                        });
+
+                    });
+                    row.append(addProductBtn);
+                    tbody.append(row);
+
                 });
-                row.append(quantityInput);
-             
-                tbody.append(row);
-
-            });
+            }
         },
         error: function () {
             console.error('Error occurred while loading products.');

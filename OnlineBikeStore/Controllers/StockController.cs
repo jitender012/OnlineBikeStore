@@ -75,16 +75,34 @@ namespace OnlineBikeStore.Controllers
         {
             try
             {
-                var newStock = context.stocks.Add(Mapper.Map<stock>(data));
-
+                stock s = new stock();
+                s.product_id = data.product_id;
+                s.store_id = data.store_id;
+                s.quantity = data.quantity;
+                var newStock = context.stocks.Add(s);
+                context.SaveChanges();
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                // Log the exception and return a failure response
                 return Json(new { success = false, message = ex.Message });
             }
         }
+        [HttpPost]
+        public JsonResult RemoveStock(StockViewModel data)
+        {
+            try
+            {
+                var stock = context.stocks.Where(s => s.product_id == data.product_id && s.store_id == data.store_id).FirstOrDefault();
 
+                context.stocks.Remove(stock);
+                context.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

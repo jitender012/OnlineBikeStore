@@ -31,7 +31,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="display" id="myTable">
+<table class="display " id="myTable">
     <thead>
         <tr>
             <th>
@@ -72,9 +72,8 @@
 <script>
     $(document).ready(
         function () {
-            $('#myTable').DataTable();
-
-
+           $("#myTable").DataTable();
+           
         }
 
     )

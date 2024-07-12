@@ -8,7 +8,8 @@
     @Styles.Render("~/Content/admin-css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
-    
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
 </head>
 <body>
     <header>
@@ -153,8 +154,10 @@
 
 
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/chart.min.js"></script>
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/AdminJs.js"></script>
+    <script src="~/Scripts/chart.min.js"></script>
+
+    <script src="~/Scripts/dataTables.min.js"></script>
 </body>
 </html>
