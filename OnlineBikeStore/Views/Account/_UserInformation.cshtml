@@ -1,0 +1,74 @@
+﻿@model OnlineBikeStore.Models.ProfileViewModel
+<div class="card p-4 m-2">
+    <div class="d-flex justify-content-between mb-1">
+        <span>
+            Personal Information
+        </span>
+        <span style="color:dodgerblue">
+        Edit
+        </span>
+    </div>
+    <div class="row mb-1">
+        <div class="col-lg-6">
+            <div class="label">
+                First Name
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.first_name" disabled />
+        </div>
+        <div class="col-lg-6">
+            <div class="label">
+                Last Name
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.last_name" disabled />
+        </div>
+
+    </div>
+    <div class="row mb-1">
+        <div class="col-lg-6">
+            <div class="label">
+                Email Address
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.email" disabled />
+        </div>
+        <div class="col-lg-6">
+            <div class="label">
+                Mobile Number
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.phone" disabled />
+        </div>
+    </div>
+    <div class="">
+        Address
+    </div>
+    <div class="row mb-1">
+        <div class="col-lg-6">
+            <div class="label">
+                Street
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.street" disabled />
+        </div>
+        <div class="col-lg-6">
+            <div class="label">
+                City
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.city" disabled />
+        </div>
+    </div>
+
+    <div class="row mb-1">
+        <div class="col-lg-6">
+            <div class="label">
+                State
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.state" disabled />
+        </div>
+        <div class="col-lg-6">
+            <div class="label">
+                Pin Code
+            </div>
+            <input type="text" class="acdi211 " name="name" value="@Model.zip_code" disabled />
+        </div>
+    </div>
+
+</div>
+

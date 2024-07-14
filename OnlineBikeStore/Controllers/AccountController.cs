@@ -1,10 +1,12 @@
-﻿using OnlineBikeStore.Models;
+﻿using AutoMapper;
+using OnlineBikeStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using WebGrease.Css.Extensions;
 
 namespace OnlineBikeStore.Controllers
 {
@@ -110,6 +112,23 @@ namespace OnlineBikeStore.Controllers
             return RedirectToAction("Home", "Home");
         }
 
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
+        public PartialViewResult UserInformation()
+        {
+            var uname = User.Identity.Name;
+            var user = context.users.Where(u => u.email == uname).SingleOrDefault();
+
+            ProfileViewModel profileView = Mapper.Map<ProfileViewModel>(context.users.Where(u => u.user_id == user.user_id).SingleOrDefault());
+            return PartialView("_UserInformation", profileView);
+        }
+        public PartialViewResult Feedback()
+        {
+          
+            return PartialView("_UserReviews");
+        }
 
     }
 }
