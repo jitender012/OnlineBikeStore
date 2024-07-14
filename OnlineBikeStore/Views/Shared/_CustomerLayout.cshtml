@@ -7,7 +7,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/customer-css")
     @Scripts.Render("~/bundles/modernizr")
-
+<link href="~/Content/Customer/layout.css" rel="stylesheet" />
 </head>
 <body>
     <nav class=" bg-success-subtle bg-gradient align-content-center">
@@ -197,7 +197,7 @@
         </div>
     }
 
-    <div class="container body-content">
+    <div class="container-fluid p-0">
         @RenderBody()
         <hr />
         <footer>

@@ -1,0 +1,61 @@
+﻿
+.parent {
+   
+}
+
+.card {
+    box-shadow: 0px 0px 3px #d6d6d6;
+    border-radius: 17px;
+    border: 1px solid #e7e7e7;
+}
+
+.NS64GK {
+    font-size: 14px;
+    padding: 12px 5px 12px 66px;
+    cursor: pointer;
+}
+
+._15sjxS {
+    padding: 10px 7px 9px 20px;
+    display: flex;
+    align-items: center; /* Center vertically */
+}
+
+.fa {
+    margin-right: 5px; /* Add some space between the icon and text */
+}
+
+._3GARO3 {
+    width: 20px;
+    height: 20px;
+}
+
+a, img {
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    outline: none;
+}
+
+._3vaeIJ {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #878787;
+}
+
+i {
+    color: dimgrey;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.acdi211 {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0px
+}

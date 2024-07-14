@@ -240,6 +240,8 @@
     <Content Include="Content\brands.css" />
     <Content Include="Content\brands.min.css" />
     <Content Include="Content\customer.css" />
+    <Content Include="Content\Customer\layout.css" />
+    <Content Include="Content\Customer\userProfile.css" />
     <Content Include="Content\dataTables.bootstrap5.css" />
     <Content Include="Content\dataTables.bootstrap5.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -609,9 +611,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Admin\" />
     <Folder Include="Images\BrandImages\" />
     <Folder Include="Images\CategoryImages\" />
     <Folder Include="Images\ProductImages\" />
+    <Folder Include="NewFolder1\" />
+    <Folder Include="Scripts\Admin\" />
+    <Folder Include="Scripts\Customer\" />
     <Folder Include="Views\Feedback\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\Stock\" />
