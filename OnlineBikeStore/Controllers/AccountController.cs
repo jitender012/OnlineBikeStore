@@ -88,16 +88,24 @@ namespace OnlineBikeStore.Controllers
 
             if (ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(data.email, false);
-                TempData["SuccessMessage"] = "Login successfully";
-
-                if (User.IsInRole("admin"))
+                var user = context.users.FirstOrDefault(u => u.email == data.email && u.password == data.password);
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    FormsAuthentication.SetAuthCookie(data.email, false);
+                    TempData["SuccessMessage"] = "Login successfully";
+
+                    if (User.IsInRole("admin"))
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
-
-                return RedirectToAction("Index", "Home");
-
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password");
+                    return View(data);
+                }
             }
             else
             {
@@ -111,11 +119,19 @@ namespace OnlineBikeStore.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Home", "Home");
         }
-
+        [Authorize]
         public ActionResult UserProfile()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var email = User.Identity.Name;
+                var name = context.users.Where(e => e.email == email).Select(s => s.first_name).FirstOrDefault();
+                return View("UserProfile", "~/Views/Shared/_CustomerLayout.cshtml", name);
+            }
+            else
+                return RedirectToAction("Login");
         }
+        [Authorize]
         public PartialViewResult UserInformation()
         {
             var uname = User.Identity.Name;
@@ -124,10 +140,22 @@ namespace OnlineBikeStore.Controllers
             ProfileViewModel profileView = Mapper.Map<ProfileViewModel>(context.users.Where(u => u.user_id == user.user_id).SingleOrDefault());
             return PartialView("_UserInformation", profileView);
         }
+        [Authorize]
         public PartialViewResult Feedback()
         {
-          
+            var userName = User.Identity.Name;
+            var userId = context.users.Where(u => u.email == userName).Select(i => i.user_id).SingleOrDefault();
+            var feedbacks = context.feedbacks.Where(f => f.customer_id == userId).ToList();
             return PartialView("_UserReviews");
+        }
+        [Authorize]
+        public PartialViewResult UserOrders()
+        {
+            var uname = User.Identity.Name;
+            var user = context.users.Where(u => u.email == uname).SingleOrDefault();
+
+            ProfileViewModel profileView = Mapper.Map<ProfileViewModel>(context.users.Where(u => u.user_id == user.user_id).SingleOrDefault());
+            return PartialView("_UserInformation", profileView);
         }
 
     }

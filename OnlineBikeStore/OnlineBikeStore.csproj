@@ -147,6 +147,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\WishListController.cs" />
     <Compile Include="feedback.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -608,6 +609,7 @@
     <Content Include="Views\Account\_UserReviews.cshtml" />
     <Content Include="Views\Account\_UserWishlist.cshtml" />
     <Content Include="Views\Account\_UserOrders.cshtml" />
+    <Content Include="Views\Test\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

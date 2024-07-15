@@ -1,26 +1,59 @@
 ﻿
 .parent {
-   
+   justify-content:center;
 }
 
-.card {
-    box-shadow: 0px 0px 3px #d6d6d6;
-    border-radius: 17px;
-    border: 1px solid #e7e7e7;
+.mynav {
+    padding: 10px;
+    border-radius: 20px;
+/*    background-color: #ffffff;*/
+  
+
 }
 
-.NS64GK {
+
+.hello-user {
+    text-align: start;   
+    border-radius: 22px;
+    padding: 8px;
+}
+
+    .NS64GK {
+    /*background-color: #f2f2f2;*/
+    display: block;
     font-size: 14px;
-    padding: 12px 5px 12px 66px;
+    padding: 12px 0px 12px 66px;
     cursor: pointer;
+    border-radius: 20px ;   
+    margin-bottom:5px;
+    transition: 0.3s;
 }
+    .NS64GK:hover {
+        border-radius: 20px;
+        background-color: #e6e6e6;
+        color: blue;
+    }
 
-._15sjxS {
+
+.active {
+    background-color: white;
+    border-radius: 20px;
+    color: black;
+    box-shadow: inset rgb(0 0 0) 1px 2px 11px -6px;
+}
+    .active:hover {
+        background-color: white;
+    }
+    ._15sjxS {
     padding: 10px 7px 9px 20px;
     display: flex;
     align-items: center; /* Center vertically */
 }
-
+#targetResult {   
+    /*border: 1px solid #2458bd;*/
+    border-radius: 20px;
+    background-color:white;
+}
 .fa {
     margin-right: 5px; /* Add some space between the icon and text */
 }
@@ -57,5 +90,9 @@ i {
 .acdi211 {
     width: 100%;
     padding: 8px;
-    margin: 5px 0px
+    margin: 5px 0px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid #2c5ebfa1;
 }
+

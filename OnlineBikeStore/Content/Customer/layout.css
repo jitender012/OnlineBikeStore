@@ -1,7 +1,24 @@
-﻿
+﻿body {
+    background-color: #f2f2f2;
+    font-family: sans-serif,
+}
 nav {
-    box-shadow: 0px -2px 5px 1px #262626;
-    background-color: var(--cr-clean)
+    background-color:#f9f9f9;
+    border-radius:40px;
+    margin: 10px;
+}
+
+
+.quicksand-medium {
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 550; /* Medium weight */
+    font-style: normal;
+}
+.nav-body {
+   
+   
+    margin: 10px auto;
 }
 
 .search-form {
@@ -11,7 +28,7 @@ nav {
 }
 
 .search-input {
-    border: none;
+    border: 1px solid #d14bff;
     border-radius: 20px;
     width: 100%;
     height: 40px;
