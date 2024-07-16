@@ -242,6 +242,7 @@
     <Content Include="Content\brands.min.css" />
     <Content Include="Content\customer.css" />
     <Content Include="Content\Customer\layout.css" />
+    <Content Include="Content\Customer\login.css" />
     <Content Include="Content\Customer\userProfile.css" />
     <Content Include="Content\dataTables.bootstrap5.css" />
     <Content Include="Content\dataTables.bootstrap5.min.css" />
@@ -416,6 +417,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Utilities\login.jpg" />
     <Content Include="Images\Utilities\logo.png" />
     <Content Include="Images\Utilities\logo1.png" />
     <Content Include="Images\Utilities\No-Image-Placeholder.svg.png" />

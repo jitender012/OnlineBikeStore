@@ -13,15 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
-<body class="quicksand-medium">
-    <nav class="box-shadow-2 bg-success-subtle bg-gradient align-content-center">
+<body class="quicksand-medium login-banner">
+    <nav class="box-shadow-outset bg-success-subtle bg-gradient align-content-center">
         <div class="container border-1 nav-body">
 
             <div class="row p-2 order-md-1  justify-content-sm-between">
                 @*logo*@
                 <div class="col-6 col-md-2 col-lg-2 d-flex align-items-start justify-content-start order-md-1  ">
                     <a href="@Url.Action("Home", "Home", new {area=""})" class="font-weight-bold font-italic">
-                        <img style="height:50px; width:130px" src="~/Images/Utilities/logo.png" />
+                        <img class="" style="height:50px; width:130px" src="~/Images/Utilities/logo.png" />
 
                     </a>
                 </div>
@@ -34,7 +34,7 @@
                         {
 
                             <div class="dropdown">
-                                <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn">
+                                <a href="#" id="loginLink" class="btn login-btn box-shadow-outset">
                                     <div class="d-flex justify-content-between">
                                         <span class="login-icon">
                                             <i class="fa fa-user  text-light"></i>
@@ -48,27 +48,25 @@
                                     <a href="#">Orders</a>
                                     <a href="#">Wishlist</a>
                                     <a href="#">Your Reviews</a>
-                                    <button type="button" class="logout-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Log Out
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
 
                             <div class="">
-                                <button onclick="@Url.Action( "Login", "Account")" class="btn cart-btn">
+                                <button onclick="@Url.Action( "Login", "Account")" class="btn cart-btn box-shadow-outset">
                                     <span>
                                         <i class="fa fa-shopping-cart text-light"></i>
                                     </span>
                                 </button>
                             </div>
-
-
                         }
 
                         else
                         {
-                            <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn">
+                            <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn box-shadow-outset">
                                 <div class="d-flex justify-content-between">
                                     <span class="login-text">Login</span>
                                     <span class="login-icon">
@@ -77,49 +75,25 @@
                                 </div>
                             </a>
                             <div class="">
-                                <button onclick="@Url.Action( "Index", "Cart")" class="btn cart-btn">
+                                <button onclick="@Url.Action( "Index", "Cart")" class="btn cart-btn box-shadow-outset">
                                     <span>
                                         <i class="fa fa-shopping-cart text-light"></i>
                                     </span>
                                 </button>
                             </div>
                         }
-
-
-
                     </div>
 
                 </div>
-                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Logout Confirmation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to log off?</p>
-                                @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <ul class="navbar-nav navbar-right">
-                                        <li><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                                    </ul>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <!-- search -->
                 <div class="col-12 col-sm-12 col-md-7 col-lg-8 order-md-2 pt-0  mb-md-0  align-content-center mt-2 mt-md-0">
 
                     <div class="d-flex align-content-center justify-content-center">
                         @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "search-form w-100", role = "search" }))
                         {
-                            <input class="search-input" name="searchWord" type="search" placeholder=" Search for Products" style="font-family:Arial, FontAwesome" aria-label="Search" required>
-                            <button class="btn search-button" type="submit">
+                            <input class="search-input box-shadow-inset" name="searchWord" type="search" placeholder=" Search for Products" style="font-family:Arial, FontAwesome" aria-label="Search" required>
+                            <button class="btn search-button box-shadow-outset" type="submit">
                                 <i class="fa fa-search text-light"></i>
                             </button>
 
@@ -127,47 +101,23 @@
                     </div>
                 </div>
             </div>
+
+
+
         </div>
     </nav>
-
     @*Categories*@
 
     @if (ViewBag.Categories != null)
     {
         <div class="categories">
-            @*<div class="ecatdiv">
-                    <a href="@Url.Action()">
-                        <div class="c1img1">
-                            <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" height="60" width="60" alt="" />
-                        </div>
-                        <div class="t12">
-                            Categories
-                        </div>
-                    </a>
-
-                </div>*@
             @foreach (var item in ViewBag.Categories as List<OnlineBikeStore.Models.CategoryViewModel>)
             {
-
-
-                <div class="ecatdiv">
-                    <a href="@Url.Action()">
-                        <div class="img-div">
-                            @if (item.category_image != null)
-                            {
-
-                                <img src="@Url.Content(item.category_image)" alt="Img" class="cat-img" />
-                            }
-                            else
-                            {
-                                <img src="" />
-                                <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" height="60" width="60" alt="Img" />
-
-                            }
-                        </div>
-                        <div class="t12">
+                <div class="ecatdiv" >
+                    <a href="@Url.Action()" class="t12" >
+                        
                             @item.category_name
-                        </div>
+                        
                     </a>
 
                 </div>
@@ -176,10 +126,16 @@
         </div>
     }
 
+    <div class="container-fluid p-0">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
     @if (User.Identity.IsAuthenticated)
     {
-
-
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -200,14 +156,7 @@
             </div>
         </div>
     }
-
-    <div class="container-fluid p-0">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     @Scripts.Render("~/bundles/bootstrap")

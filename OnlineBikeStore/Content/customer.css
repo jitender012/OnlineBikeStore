@@ -85,11 +85,14 @@ body {
 }
 
 .box-shadow-1 {
-    box-shadow: rgb(0 0 0) 0px 0px 6px -3px;
+    box-shadow: rgb(0 0 0) 0px 2px 6px -4px;
 }
 
-.box-shadow-2 {
-    box-shadow: rgb(0 0 0) 1px 2px 8px -4px;
+.box-shadow-outset {
+    box-shadow: rgb(0 0 0) 0px 2px 6px -4px;
+}
+.box-shadow-inset {
+    box-shadow: inset 0px 2px 6px -4px;
 }
 /*dropdown style start*/
 .dropbtn {
@@ -123,12 +126,15 @@ body {
         padding: 8px 12px;
         text-decoration: none;
         display: block;
+        transition: transform .2s ease, box-shadow 0.2s ease, background-color .2s ease, color 0.2s ease, border-radius .2s ease;
     }
 
         .dropdown-content a:hover {
             border-radius: 10px;
             color: white;
             background-color: var(--cr-vermillion);
+            transform: scale(1.05);
+            box-shadow: black 0px 2px 7px -4px;
         }
    
     .dropdown:hover .dropdown-content {
@@ -139,22 +145,6 @@ body {
     background-color: #3e8e41;
 }
 
-.logout-btn {
-    width: 100%;
-    border: none;
-    color: black;
-    padding: 8px 12px;
-    text-decoration: none;
-    display: block;
-    background-color: #ffffff;
-    text-align: start;
-    border-radius: 10px;
-}
-    .logout-btn:hover {
-        color:white;
-        border-radius: 10px;
-        background-color: var(--cr-vermillion);
-    }
 
 
 .dropdown-content {
