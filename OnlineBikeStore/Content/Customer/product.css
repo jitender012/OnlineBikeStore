@@ -1,0 +1,54 @@
+﻿
+.img-box {
+    border: 1px solid #f0f0f0;
+    width: 400px;
+    height: 400px
+}
+
+.view-body {
+    background-color: #f1f3f6;
+}
+
+.content {
+    background-color: white;
+}
+
+.imgDiv {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    min-height: 350px;
+    height: auto;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid #dedede;
+}
+
+.btnsDiv {
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+}
+
+.p-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 1px 1px 0px #919191;
+    border-radius: 2px;
+}
+
+.p-btn1 {
+    background-color: dodgerblue;
+}
+
+.p-btn2 {
+    background-color: #004aff;
+}

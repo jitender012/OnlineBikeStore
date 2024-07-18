@@ -20,7 +20,9 @@ nav {
 .nav-body {
     margin: 10px auto;
 }
-
+.logo-img {
+    height: 50px;    
+}
 .search-form {
     display: flex;
     align-content: center;
@@ -81,6 +83,76 @@ nav {
         box-shadow: 0px 1px 3px -2px;
     }
 
+/*dropdown style start*/
+.dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: start;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 8px 12px;
+        text-decoration: none;
+        display: block;
+        transition: transform .2s ease, box-shadow 0.2s ease, background-color .2s ease, color 0.2s ease, border-radius .2s ease;
+    }
+
+        .dropdown-content a:hover {
+            border-radius: 10px;
+            color: white;
+            background-color: var(--cr-vermillion);
+            transform: scale(1.05);
+            box-shadow: black 0px 2px 7px -4px;
+        }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+
+
+.dropdown-content {
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
+@keyframes growDown {
+    0% {
+        transform: scaleY(0);
+    }
+
+    80% {
+        transform: scaleY(1.1);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
 .categories {
     background-color: #f9f9f9;    
     box-shadow: 0px 2px 6px -4px;
@@ -115,7 +187,8 @@ nav {
     text-align: center;
     text-decoration: none;
     color: black;
-    white-space: nowrap;   
+    white-space: nowrap; 
+    overflow:hidden;
     text-overflow: ellipsis;
 }
     .t12:hover {
@@ -146,5 +219,11 @@ nav {
     .t12 {
         font-size: 12px;
         text-align: center;
+    }
+}
+
+@media(max-width:568px){
+    .logo-img {
+        height: 40px;
     }
 }

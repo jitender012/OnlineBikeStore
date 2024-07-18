@@ -1,66 +1,12 @@
 ﻿@model OnlineBikeStore.Models.ProductDetailsViewModel
 @{
     ViewBag.Title = "Product";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<style>
-    .img-box {
-        border: 1px solid #f0f0f0;
-        width: 400px;
-        height: 400px
-    }
+<link href="~/Content/Customer/product.css" rel="stylesheet" />
 
-    .view-body {
-        background-color: #f1f3f6;
-    }
 
-    .content {
-        background-color: white;
-    }
-
-    .imgDiv {
-        display: flex;
-        flex-wrap: wrap;
-        align-content: center;
-        min-height: 350px;
-        height: auto;
-        padding: 20px;
-        overflow: hidden;
-        border: 1px solid #dedede;
-    }
-
-    .btnsDiv {
-    }
-
-    .image {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .p-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 50px;
-        width: 100%;
-        border: none;
-        cursor: pointer;
-        color: white;
-        box-shadow: 0 1px 1px 0px #919191;
-        border-radius: 2px;
-    }
-
-    .p-btn1 {
-        background-color: dodgerblue;
-    }
-
-    .p-btn2 {
-        background-color: #004aff;
-    }
-</style>
-
-@Html.Partial("~/Views/Partial_Views/_NavWithCategories2.cshtml")
 <div class="view-body d-flex justify-content-center">
 
     <div class="row content" style="width:92%">
@@ -68,29 +14,25 @@
             <div class="grid images_3_of_2">
                 <div class="flexslider ml-1">
                     <div class="row ">
-                        <div class="col-2 p-0 ">
-                            <div class="controlSlides d-inline-block">
-
-                            </div>
-                        </div>
-                        <div class="col-10 p-1">
-                            <ul class="slides">
+                     
+                        <div class="col-12 p-1">
+                            
                                 @if (Model.url != null)
                                 {
-                                    <li data-thumb="@Url.Content(Model.url)">
+                                   
                                         <div class="imgDiv ">
                                             <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
                                         </div>
-                                    </li>
+                                   
                                 }
 
-                            </ul>
+                            
                             <div class=" p-2 btnsDiv  row">
 
 
                                 @*<div class="col  m-1 p-0">
-                                    <button class="p-btn1 p-btn"> GO TO CART</button>
-                                </div>*@
+                                        <button class="p-btn1 p-btn"> GO TO CART</button>
+                                    </div>*@
 
                                 <div class="col  m-1 p-0">
                                     @Html.ActionLink("ADD TO CART", "AddToCart", "Cart", new { pid = Model.product_id, area = "Customer" }, new { @class = "p-btn1 p-btn" })

@@ -14,6 +14,9 @@ namespace OnlineBikeStore.AutoMapperConfig
             CreateMap<product, ProductViewModel>();
             CreateMap<ProductViewModel, product > ();
 
+            CreateMap<product, ProductDetailsViewModel>();
+            CreateMap<ProductDetailsViewModel, product>();
+
             CreateMap<store, StoreViewModel>();
             CreateMap<StoreViewModel, store>();
 
