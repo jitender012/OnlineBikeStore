@@ -11,8 +11,10 @@ namespace OnlineBikeStore.AutoMapperConfig
     {
         public AutomapperProfile()
         {
-            CreateMap<product, ProductViewModel>();
-            CreateMap<ProductViewModel, product > ();
+            CreateMap<product, ProductViewModel>()
+                .ForMember(dest=>dest.ImageFile,opt=>opt.Ignore());
+
+            CreateMap<ProductViewModel, product> ();
 
             CreateMap<product, ProductDetailsViewModel>();
             CreateMap<ProductDetailsViewModel, product>();

@@ -8,6 +8,11 @@
 
 
 <div class="row">
+    @if (ViewBag.msg != null)
+    {
+        <h1 class="alert-warning">@ViewBag.msg</h1>
+    }
+  
     <div class="col-12 col-lg-5">
         <div class="card login-card bg-gradient">
             <center><h4>SIGN IN</h4></center>
@@ -53,8 +58,8 @@
             <p>Join us and explore the best motorbikes and gear to fuel your passion for the open road.</p>
         </div>
     </div>
-    
-   
 
-       
+
+
+
 </div>

@@ -15,8 +15,7 @@ namespace OnlineBikeStore.Models
         public decimal list_price { get; set; }
         public string description { get; set; }
         public string url { get; set; }
-        public string product_type { get; set; }
-        
+        public string product_type { get; set; }       
         public HttpPostedFileBase ImageFile { get; set; }
     }
 
@@ -33,6 +32,7 @@ namespace OnlineBikeStore.Models
         public string description { get; set; }
         public string url { get; set; }
         public string product_type { get; set; }
+        public bool isInCart { get; set; }
 
         public HttpPostedFileBase ImageFile { get; set; }
     }

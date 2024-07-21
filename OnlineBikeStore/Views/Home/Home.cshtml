@@ -14,7 +14,7 @@
     <div class="product-row">
         @foreach (var item in Model)
         {
-            <a href="@Url.Action("Product","Home", new {id = item.product_id})" class="product-card">
+            <a href="@Url.Action("Product","Home", new {pId = item.product_id})" class="product-card">
                 <div>
                     <div class="card1-imgdiv">
                         @if (item.url != null)

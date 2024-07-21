@@ -6,10 +6,8 @@ using System.Web;
 namespace OnlineBikeStore.Models
 {
     public class CartViewModel
-    {
-        public int cart_id { get; set; }
-        public int user_id { get; set; }
-        public int product_id { get; set; }
-
+    {        
+        public UserViewModel user { get; set; }
+        public List<ProductViewModel> products { get; set; }
     }
 }

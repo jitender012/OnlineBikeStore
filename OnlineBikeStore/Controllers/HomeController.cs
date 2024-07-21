@@ -64,18 +64,25 @@ namespace OnlineBikeStore.Controllers
 
             return View();
         }
-        public ActionResult Product(int id)
+        public ActionResult Product(int pId)
         {
-            var product = context.products.SingleOrDefault(c => c.product_id == id);
+            var product = context.products.SingleOrDefault(c => c.product_id == pId);
             var category = context.categories.SingleOrDefault(x => x.category_id == product.category_id);
             var brand = context.brands.SingleOrDefault(x => x.brand_id == product.brand_id);
-            var wishList = context.wishlists.FirstOrDefault(w => w.p_id == id);
+            var wishList = context.wishlists.FirstOrDefault(w => w.p_id == pId);
             // Check if the product found
             if (product == null)
             {
                 return HttpNotFound("Product not found.");
             }
 
+            bool isInCart = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                int uId = context.users.Where(u => u.email == User.Identity.Name).Select(q => q.user_id).SingleOrDefault();
+                isInCart = context.userCarts.Any(c => c.product_id == pId && c.user_id ==uId);
+
+            }
             //Map database product to view model
             ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel()
             {
@@ -89,7 +96,8 @@ namespace OnlineBikeStore.Controllers
                 category_id = product.category_id,
                 brand_id = product.brand_id,
                 category_name = category.category_name,
-                brand_name = brand.brand_name
+                brand_name = brand.brand_name,
+                isInCart = isInCart
             };
 
             return View(productDetailsViewModel);
@@ -103,7 +111,7 @@ namespace OnlineBikeStore.Controllers
             {
                 searchWord.ToLower();
 
-                var products = context.products.Where(p=>p.product_name.Contains(searchWord)  || p.description.Contains(searchWord) || p.brand.brand_name.Contains(searchWord)|| p.category.category_name.Contains(searchWord)).ToList();
+                var products = context.products.Where(p => p.product_name.Contains(searchWord) || p.description.Contains(searchWord) || p.brand.brand_name.Contains(searchWord) || p.category.category_name.Contains(searchWord)).ToList();
                 if (products != null)
                 {
                     var productsVM = Mapper.Map<List<ProductViewModel>>(products);
@@ -122,7 +130,7 @@ namespace OnlineBikeStore.Controllers
 
             if (categoryId.HasValue && categoryId > 0)
             {
-                var products = context.products.Where(p=>p.category_id==categoryId).ToList();
+                var products = context.products.Where(p => p.category_id == categoryId).ToList();
                 var productsVM = Mapper.Map<List<ProductViewModel>>(products);
                 return View("Search", productsVM);
             }

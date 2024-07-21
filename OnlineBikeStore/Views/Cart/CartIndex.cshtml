@@ -1,4 +1,4 @@
-﻿@model List<OnlineBikeStore.Models.CartViewModel>
+﻿@model OnlineBikeStore.Models.CartViewModel
 
 @{
     ViewBag.Title = "CartIndex";
@@ -20,14 +20,17 @@
                     </div>
 
                 </div>
-
+                @if (Model.products.Count < 1)
+                {
+                    <span>Your cart is Empty!</span>
+                }
                 <div class="r-box d-flex flex-wrap justify-content-between  mb-3" style="padding: 10px 15px 10px 15px;">
                     <div class="d-flex">
                         <div>
 
                             <div style="max-width:500px">
                                 <p>Deliver To</p>
-                                @Model[0].user_address.Address1 @Model[0].user_address.City
+                                @Model.user.first_name @Model.user.city
                             </div>
 
                         </div>
@@ -39,27 +42,24 @@
                 <div class="r-box">
 
                     @*Container for each item*@
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.products)
                     {
 
                         <div style="border-bottom: 1px solid #e6e6e6">
                             <div style="padding: 20px 15px 0px 15px;">
                                 <div class="d-flex">
                                     <div>
-                                        <img src="@Url.Content(item.product.ProductImage)" width="120" height="120" />
+                                        <img src="@Url.Content(item.url)" width="120" height="120" />
                                     </div>
                                     <div class="px-2">
                                         <div>
-                                            <a>@item.product.ProductName</a>
+                                            <a>@item.product_name</a>
                                         </div>
                                         <div style="font-size:12px">
-                                            @item.product.Description
-                                        </div>
-                                        <div style="font-size:12px">
-                                            @item.product.user_id
-                                        </div>
+                                            @item.description
+                                        </div>                                       
                                         <div>
-                                            @item.product.ListPrice
+                                            @item.list_price
                                         </div>
                                     </div>
                                     <div>

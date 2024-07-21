@@ -79,6 +79,10 @@ namespace OnlineBikeStore.Controllers
         //}
         public ActionResult Login()
         {
+            if (TempData["RedirectToLoginMsg"] != null)
+            {
+                ViewBag.msg = TempData["RedirectToLoginMsg"];
+            }
             return View();
         }
 

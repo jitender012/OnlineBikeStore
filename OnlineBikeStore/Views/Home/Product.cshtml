@@ -14,35 +14,40 @@
             <div class="grid images_3_of_2">
                 <div class="flexslider ml-1">
                     <div class="row ">
-                     
+
                         <div class="col-12 p-1">
-                            
-                                @if (Model.url != null)
-                                {
-                                   
-                                        <div class="imgDiv ">
-                                            <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
-                                        </div>
-                                   
-                                }
 
-                            
-                            <div class=" p-2 btnsDiv  row">
+                            @if (Model.url != null)
+                            {
 
-
-                                @*<div class="col  m-1 p-0">
-                                        <button class="p-btn1 p-btn"> GO TO CART</button>
-                                    </div>*@
-
-                                <div class="col  m-1 p-0">
-                                    @Html.ActionLink("ADD TO CART", "AddToCart", "Cart", new { pid = Model.product_id, area = "Customer" }, new { @class = "p-btn1 p-btn" })
-
+                                <div class="imgDiv ">
+                                    <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
                                 </div>
 
+                            }
 
+
+                            <div class=" p-2 btnsDiv  row">
+                                @if (Model.isInCart)
+                                {
+                                    <div class="col  m-1 p-0">
+                                        <a href="@Url.Action("CartIndex","Cart") class=" p-btn1 p-btn""> GO TO CART</a>                                       
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col  m-1 p-0">
+                                        @using(Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                                        {
+                                        <input type="hidden" value="@Model.product_id" name="pId" />
+                                        <button type="submit" class="p-btn1 p-btn">
+                                            ADD TO CART
+                                        </button>
+                                        }
+                                    </div>
+                                }
                                 <div class="col m-1 p-0">
                                     @Html.ActionLink("BUY NOW", "Checkout", "Checkout", new { pid = Model.product_id, area = "Customer" }, new { @class = "p-btn2 p-btn" })
-                                    @*<button class="p-btn2 p-btn">BUY NOW</button>*@
                                 </div>
                             </div>
 
@@ -111,35 +116,6 @@
 </div>
 
 
-<link href="~/Areas/Customer/web/css/flexslider.css" rel="stylesheet" />
-
-<script src="~/Scripts/jQuery plugins/extm.min.js"></script>
-<script src="~/Areas/Customer/web/js/jquery.flexslider.js"></script>
-<!-- flexslider -->
 
 
-<script>
-    $(document).ready(function () {
-        // Flexslider initialization
-        $('.flexslider').flexslider({
-            controlNav: "thumbnails",
-            pauseOnAction: true,
-            controlsContainer: $(".controlSlides"),
-        });
-
-        // Image zoom initialization
-        $('.example').each(function () {
-            $(this).extm({
-                squareOverlay: true,
-                position: 'right',
-                rightPad: 40,
-                zoomLevel: 20,
-                zoomSize: 1000,
-
-
-            });
-        });
-    });
-
-</script>
 
