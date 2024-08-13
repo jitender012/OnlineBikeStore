@@ -28,6 +28,11 @@ namespace OnlineBikeStore.Controllers
 
         public ActionResult Home()
         {
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            }
+
             var categories = context.categories.ToList();
             ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
             var brands = context.brands.ToList();
@@ -50,6 +55,7 @@ namespace OnlineBikeStore.Controllers
             return View(products);
         }
 
+
         [Authorize(Roles = "admin, customer")]
         public ActionResult About()
         {
@@ -66,6 +72,9 @@ namespace OnlineBikeStore.Controllers
         }
         public ActionResult Product(int pId)
         {
+            var categories = context.categories.ToList();
+            ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
+
             var product = context.products.SingleOrDefault(c => c.product_id == pId);
             var category = context.categories.SingleOrDefault(x => x.category_id == product.category_id);
             var brand = context.brands.SingleOrDefault(x => x.brand_id == product.brand_id);

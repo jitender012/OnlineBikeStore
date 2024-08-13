@@ -22,7 +22,8 @@ namespace OnlineBikeStore
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/fontawesome/all.min.js"
+                      "~/Scripts/fontawesome/all.min.js",
+                      "~/Scripts/site.js"
                     ));
            
             // Bundle for admin CSS files

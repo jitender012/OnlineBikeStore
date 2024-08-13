@@ -18,11 +18,16 @@ namespace OnlineBikeStore.Controllers
         // GET: Dashboard
         public ActionResult Dashboard()
         {
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            }
+
             return View();
         }
         public ActionResult StoreDashboard(int store_id)
         {
-            var store = context.stores.Where(s=>s.store_id == store_id).SingleOrDefault();
+            var store = context.stores.Where(s => s.store_id == store_id).SingleOrDefault();
             return View(Mapper.Map<StoreViewModel>(store));
         }
     }

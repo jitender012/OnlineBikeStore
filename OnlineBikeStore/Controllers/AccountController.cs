@@ -96,14 +96,14 @@ namespace OnlineBikeStore.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(data.email, false);
-                    TempData["SuccessMessage"] = "Login successfully";
+                    TempData["SuccessMessage"] = "Login successfully!";
 
                     if (User.IsInRole("admin"))
                     {
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Dashboard", "Dashboard");
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Home", "Home");
                 }
                 else
                 {

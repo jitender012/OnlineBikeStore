@@ -243,7 +243,6 @@
     <Content Include="Content\brands.min.css" />
     <Content Include="Content\customer.css" />
     <Content Include="Content\Customer\cart.css" />
-    <Content Include="Content\Customer\layout.css" />
     <Content Include="Content\Customer\login.css" />
     <Content Include="Content\Customer\product.css" />
     <Content Include="Content\Customer\userProfile.css" />
@@ -420,6 +419,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\users.txt" />
+    <Content Include="Images\Utilities\login_image.jpg" />
     <Content Include="Images\Utilities\login.jpg" />
     <Content Include="Images\Utilities\logo.png" />
     <Content Include="Images\Utilities\logo1.png" />
@@ -559,6 +560,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -617,6 +619,8 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Cart\CartIndex.cshtml" />
+    <Content Include="Views\Order\OrderSummary.cshtml" />
+    <Content Include="Views\Order\Payment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -627,7 +631,6 @@
     <Folder Include="Scripts\Admin\" />
     <Folder Include="Scripts\Customer\" />
     <Folder Include="Views\Feedback\" />
-    <Folder Include="Views\Order\" />
     <Folder Include="Views\Stock\" />
     <Folder Include="Views\WishList\" />
   </ItemGroup>

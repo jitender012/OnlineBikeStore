@@ -6,8 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/customer-css")
-    @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/Customer/layout.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")    
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +55,11 @@
 
 
                             <div class="">
-                                <button onclick="@Url.Action( "Login", "Account")" class="btn cart-btn box-shadow-outset">
+                                <a href="@Url.Action( "CartIndex", "Cart")" class="btn cart-btn box-shadow-outset">
                                     <span>
                                         <i class="fa fa-shopping-cart text-light"></i>
                                     </span>
-                                </button>
+                                </a>
                             </div>
                         }
 

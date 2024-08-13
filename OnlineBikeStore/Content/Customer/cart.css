@@ -53,3 +53,13 @@
     border: none;
     color: white;
 }
+.name-price{
+    
+    margin:15px 0 0 20px;
+}
+
+@media(max-width: 568px){
+    .content-div {
+        width: 95%;
+    }
+}

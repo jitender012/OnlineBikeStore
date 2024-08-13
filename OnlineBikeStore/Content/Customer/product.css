@@ -6,11 +6,15 @@
 }
 
 .view-body {
-    background-color: #f1f3f6;
+    
 }
-
+.grid {
+    padding: 12px;
+}
 .content {
     background-color: white;
+    position: relative;
+    z-index: 1;    
 }
 
 .imgDiv {
@@ -22,6 +26,7 @@
     padding: 20px;
     overflow: hidden;
     border: 1px solid #dedede;
+    justify-content: center;
 }
 
 .btnsDiv {
@@ -43,6 +48,7 @@
     color: white;
     box-shadow: 0 1px 1px 0px #919191;
     border-radius: 2px;
+    text-decoration:none;
 }
 
 .p-btn1 {

@@ -12,6 +12,30 @@ namespace OnlineBikeStore.Models
         public byte order_status { get; set; }
         public DateTime order_date { get; set; }
         public DateTime required_date { get; set; }
-        public DateTime? shipped_date { get; set; }                
+        public DateTime? shipped_date { get; set; }     
+        
+    }
+    public class OrderItem
+    {
+        public int order_id { get; set; }
+        public int item_id { get; set; }
+        public int product_id { get; set; }
+        public int quantity { get; set; }
+        public decimal list_price { get; set; }
+        public decimal discount { get; set; }
+    }
+
+    public class OrderSummaryViewModel
+    {
+        public UserViewModel user { get; set; }
+        public List<ProductViewModel> products { get; set; }
+    }
+    public enum OrderStatus
+    {
+        Placed = 0,
+        Shipped = 1,
+        Delivered = 2,
+        Cancelled = 3,
+        Returned = 4
     }
 }

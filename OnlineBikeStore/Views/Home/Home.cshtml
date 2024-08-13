@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
+    <div id="notification" class="notification">@ViewBag.SuccessMessage</div>
 
 <div class="row cl1">
     <div class="heading">
@@ -125,3 +126,21 @@
 </div>
 
 
+@*<script>
+    $(document).ready(function () {
+        showNotification();
+        //var notification = $("#notification");
+        //notification.style.display = 'block';
+    })
+</script>*@
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            var message = '@ViewBag.SuccessMessage';
+            if (message) {
+                showNotification(message);
+            }
+        });
+    </script>
+}

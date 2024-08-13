@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
 {
-   
+
     public class CartController : Controller
     {
         BikeStoreEntities context;
@@ -86,9 +86,32 @@ namespace OnlineBikeStore.Controllers
             else
             {
                 TempData["RedirectToLoginMsg"] = "Login to add item into cart.";
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
             }
-          
+
         }
+
+        [HttpPost]
+        public JsonResult RemoveFromCart(int productId)
+        {
+            var userId = context.users.Where(x => x.email == User.Identity.Name).Select(u => u.user_id).SingleOrDefault();
+            if (userId == 0)
+            {
+                return Json(new { success = false, message = "User not found." });
+            }
+
+            var cartItem = context.userCarts.FirstOrDefault(c => c.user_id == userId && c.product_id == productId);
+            if (cartItem != null)
+            {
+                context.userCarts.Remove(cartItem);
+                context.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Item not found in cart." });
+            }
+        }
+    
     }
 }
