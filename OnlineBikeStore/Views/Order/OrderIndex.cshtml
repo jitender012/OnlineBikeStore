@@ -1,0 +1,71 @@
+﻿@model List<OnlineBikeStore.Models.OrderViewModel>
+@{
+    ViewBag.Title = "OrderIndex";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<link href="~/Content/Customer/order_index.css" rel="stylesheet" />
+<div class="container ">
+    <div>
+        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+            Home
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+            My Account
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+        </a>
+        <h4>
+            My Orders
+        </h4>
+    </div>
+    <div class="content-row" style="justify-content: center">
+        <div>
+            <input type="text" placeholder="Search orders" />
+        </div>
+        <button>
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+    <div>
+        @foreach (var item in Model.OrderByDescending(x=>x.order_id))
+        {
+            <div class="content-row orders-row" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'"  style="justify-content: space-between">
+                <div>
+                    Order Id: @item.order_id
+                </div>
+                <div>
+                    @item.total_price
+                </div>
+                <div>
+                    @item.order_date.ToString("D")
+                </div>
+
+                <div>
+                    @switch (item.order_status)
+                    {
+                        case 0:
+                            <h6>Order Placed</h6>
+                            <p>Expected Date: @item.required_date.ToString("D")</p>
+                            break;
+                        case 1:
+                            <h6>Order Shipped</h6>
+                            <p>Expected Date: @item.required_date.ToString("D")</p>
+                            break;
+                        case 3:
+                            <h6>Order Delivered</h6>
+                            break;
+                        case 2:
+                            <h6>Order Cancelled</h6>
+                            break;
+                        case 4:
+                            <h6>Order Returned</h6>
+                            break;
+                        default:
+                            @:Unknown Status
+                            break;
+                    }
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

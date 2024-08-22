@@ -1,8 +1,4 @@
 ﻿
-body {
-    font-family: Arial, sans-serif;
-}
-
 .bg-dark-2 {
     background-color: #003c75;
 }
@@ -68,7 +64,18 @@ body {
     color: white;
     background-color: var(--cr-fresh-hover-light);
 }
+/*box shadows*/
+.box-shadow-1 {
+    box-shadow: rgb(0 0 0) 0px 2px 6px -4px;
+}
 
+.box-shadow-outset {
+    box-shadow: rgb(0 0 0) 0px 2px 5px -5px;    
+}
+
+.box-shadow-inset {
+    box-shadow: inset 0px 2px 5px -5px;
+}
 .btn-cr-cyan-dark:hover {
     color: white;
     background-color: var(--cr-sky-blue-dark-hover-light);
@@ -84,19 +91,15 @@ body {
     background-color: var(--cr-sunshine-hover-light);
 }
 
-.box-shadow-1 {
-    box-shadow: rgb(0 0 0) 0px 2px 6px -4px;
-}
 
-.box-shadow-outset {
-    box-shadow: rgb(0 0 0) 0px 2px 6px -4px;
+.content-row {
+    display: flex;
+    background-color: white;
+    padding: 15px;
+    margin: 10px 0px 10px 0px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px -4px;
 }
-.box-shadow-inset {
-    box-shadow: inset 0px 2px 6px -4px;
-}
-/*dropdown style end*/
-
-/*user profile*/
 
 
 /*personal information partial view styling*/
@@ -106,23 +109,20 @@ body {
     
 }
 body {
-    background-color: #f2f2f2;
-    font-family: sans-serif,
+    background-color: #fafafa;
 }
-
-nav {
-    background-color: #f9f9f9;
-    border-radius: 40px;
-    margin: 10px;
-}
-
 
 .quicksand-medium {
     font-family: "Quicksand", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 550; /* Medium weight */
+    font-weight: 550; 
     font-style: normal;
 }
+nav {
+    background-color: white;        
+}
+
+
 
 .nav-body {
     margin: 10px auto;
@@ -140,7 +140,7 @@ nav {
 
 .search-input {
     border: 1px solid #ebebeb;
-    border-radius: 20px;
+    border-radius: 5px;
     width: 100%;
     height: 40px;
     padding: 0 10px 0 10px;
@@ -154,7 +154,7 @@ nav {
 .search-button {
     margin-left: 10px;
     background-color: var(--cr-vermillion);
-    border-radius: 20px;
+    border-radius: 5px;
     transition: transform 0.1s, box-shadow 0.1s;
 }
 
@@ -163,10 +163,14 @@ nav {
         background-color: var(--cr-vermillion);
         box-shadow: 0px 1px 3px -2px;
     }
+    .search-button:focus .search-button:active {
+        background-color: var(--cr-vermillion);
+    }
+
 
 .login-btn {
     background-color: var(--cr-fresh);
-    border-radius: 20px;
+    border-radius: 5px;
     transition: transform 0.1s, box-shadow 0.1s;
     font-weight: 500;
 }
@@ -184,7 +188,7 @@ nav {
 .cart-btn {
     margin-left: 10px;
     background-color: var(--cr-fresh);
-    border-radius: 20px;
+    border-radius: 5px;
     transition: transform 0.1s, box-shadow 0.1s;
 }
 
@@ -201,7 +205,7 @@ nav {
     padding: 16px;
     font-size: 16px;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 .dropdown {
@@ -210,7 +214,7 @@ nav {
 }
 
 .dropdown-content {
-    border-radius: 10px;
+    border-radius: 5px;
     display: none;
     position: absolute;
     background-color: #ffffff;
@@ -229,7 +233,7 @@ nav {
     }
 
         .dropdown-content a:hover {
-            border-radius: 10px;
+            border-radius: 5px;
             color: white;
             background-color: var(--cr-vermillion);
             transform: scale(1.05);
@@ -266,14 +270,14 @@ nav {
 }
 
 .categories {
-    background-color: #f9f9f9;
-    box-shadow: 0px 2px 6px -4px;
+    background-color: white;    
+    margin-top:10px;
     display: flex;
     padding: 5px 10px 5px 10px;
     justify-content: center;
     overflow-x: auto;
     position: relative;
-    z-index: 2;
+ 
 }
 
     .categories::-webkit-scrollbar {
@@ -284,16 +288,16 @@ nav {
     display: inline-block;
     padding: 7px;
     margin: 0px 4px;
-    border-radius: 20px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 5px;
+    transition: transform 0.07s, box-shadow 0.1s;
     cursor: pointer;
     font-size: 12px;
 }
 
     .ecatdiv:hover {
         background-color: #f2f2f2;
-        transform: scale(0.92);
-        box-shadow: inset 1px 2px 7px -5px;
+        transform: scale(0.95);
+        box-shadow: inset 0px 2px 5px -5px;
         color: black;
     }
 

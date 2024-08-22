@@ -3,17 +3,11 @@
    justify-content:center;
 }
 
-.mynav {
-    padding: 10px;
-    border-radius: 20px;
-    background-color: #f2f2f2;
-}
-
 
 .hello-user {
-    text-align: start;   
-    border-radius: 22px;
-    padding: 8px;
+    border-radius: 5px;
+    padding: 8px 0px;
+    align-items: center;
 }
 
     .NS64GK {    
@@ -23,35 +17,28 @@
     cursor: pointer;
     border-radius: 20px ;   
     margin-bottom:5px;
-    transition: 0.3s;
+    transition: 0.1s;
 }
         .NS64GK:hover {
-            border-radius: 20px;
-            background-color: #e6e6e6;
-            box-shadow:  rgb(0 0 0) 1px 2px 11px -6px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: inset rgb(0 0 0) 1px 2px 5px -5px;
         }
 
 
 .active {
     background-color: white;
-    border-radius: 20px;
+    border-radius: 5px;
     color: black;
-    box-shadow: inset rgb(0 0 0) 1px 2px 11px -6px;
+    box-shadow: inset rgb(0 0 0) 1px 2px 5px -5px;
 }
-    .active:hover {
-        background-color: white;
-        box-shadow: inset rgb(0 0 0) 1px 2px 11px -6px;
-    }
+    
     ._15sjxS {
     padding: 10px 7px 9px 20px;
     display: flex;
     align-items: center; /* Center vertically */
 }
-#targetResult {
-    /*border: 1px solid #2458bd;*/
-    border-radius: 20px;
-    background-color: #f2f2f2;
-}
+
 .fa {
     margin-right: 5px; /* Add some space between the icon and text */
 }
@@ -89,9 +76,9 @@ i {
     width: 100%;
     padding: 8px 12px;
     margin: 5px 0px;
-    border-radius: 20px;    
-    border: none;
+    border-radius: 5px;    
+    border: 1px solid #eeeeee;
     background-color: white;
-    box-shadow: inset 0px 0px 5px -2px;
+    box-shadow: inset 0px 0px 5px -5px;
 }
 

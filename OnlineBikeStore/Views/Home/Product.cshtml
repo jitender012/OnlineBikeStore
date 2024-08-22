@@ -16,17 +16,33 @@
                     <div class="row ">
 
                         <div class="col-12 p-1">
-
-                            @if (Model.url != null)
+                            @if (User.Identity.IsAuthenticated)
                             {
-
-                                <div class="imgDiv ">
-                                    <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
-                                </div>
-
+                                <i id="wishlist_@Model.product_id"
+                                   class=" fa-lg heart-style @(@Model.isInWishList ? "fa fa-heart red-heart" : "far fa-heart")"
+                                   onclick="AddRemoveWishlist(@Model.product_id)">
+                                </i>
+                            }
+                            else
+                            {
+                                <i 
+                                   class="far fa-heart fa-lg heart-style"
+                                   onclick="alert('Login to add item in Wishlist')">
+                                </i>
                             }
 
 
+                            @if (Model.url != null)
+                            {
+                                <div class="imgDiv">
+                                    <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" class="img-fluid image example" alt="">
+
+                            }
                             <div class=" p-2 btnsDiv  row">
                                 @if (Model.isInCart)
                                 {
@@ -127,7 +143,32 @@
     </div>
 </div>
 
+<script>
 
+   function AddRemoveWishlist(productId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddRemoveWishlist", "Wishlist")',
+            data: { pId: productId },
+            success: function (response) {
+                if (response.success) {
+                    var heartIcon = $("#wishlist_" + productId);
+                    if (response.inWishlist) {
+                        heartIcon.removeClass("far fa-heart").addClass("fa fa-heart red-heart");
+                    } else {
+                        heartIcon.removeClass("fa fa-heart red-heart").addClass("far fa-heart");
+                    }
+                } else {
+                    alert("Failed to update wishlist.");
+                }
+            },
+            error: function () {
+                alert("An error occurred while updating the wishlist.");
+            }
+        });
+    }
+
+</script>
 
 
 

@@ -14,7 +14,7 @@
 .content {
     background-color: white;
     position: relative;
-    z-index: 1;    
+  margin-top:17px;
 }
 
 .imgDiv {
@@ -36,6 +36,14 @@
     max-width: 100%;
     height: auto;
 }
+.heart-style {
+    position: absolute;
+    margin: 14px;
+    cursor:pointer;
+}
+.red-heart{
+    color:red;
+}
 
 .p-btn {
     display: flex;
@@ -48,7 +56,7 @@
     color: white;
     box-shadow: 0 1px 1px 0px #919191;
     border-radius: 2px;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .p-btn1 {

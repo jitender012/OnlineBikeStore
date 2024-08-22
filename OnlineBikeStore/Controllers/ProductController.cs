@@ -51,8 +51,9 @@ namespace OnlineBikeStore.Controllers
                 category_id = product.category_id,
                 brand_id = product.brand_id,
                 category_name = category.category_name,
-                brand_name = brand.brand_name
+                brand_name = brand.brand_name,                
             };
+
 
             return View(productDetailsViewModel);
         }

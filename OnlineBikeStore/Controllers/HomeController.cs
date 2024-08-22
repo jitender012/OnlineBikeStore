@@ -75,10 +75,13 @@ namespace OnlineBikeStore.Controllers
             var categories = context.categories.ToList();
             ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
 
-            var product = context.products.SingleOrDefault(c => c.product_id == pId);
-            var category = context.categories.SingleOrDefault(x => x.category_id == product.category_id);
-            var brand = context.brands.SingleOrDefault(x => x.brand_id == product.brand_id);
-            var wishList = context.wishlists.FirstOrDefault(w => w.p_id == pId);
+            var product = context.products
+                .SingleOrDefault(c => c.product_id == pId);
+            var category = context.categories
+                .SingleOrDefault(x => x.category_id == product.category_id);
+            var brand = context.brands
+                .SingleOrDefault(x => x.brand_id == product.brand_id);
+
             // Check if the product found
             if (product == null)
             {
@@ -86,11 +89,18 @@ namespace OnlineBikeStore.Controllers
             }
 
             bool isInCart = false;
+            bool isInWishlist = false;
             if (User.Identity.IsAuthenticated)
             {
-                int uId = context.users.Where(u => u.email == User.Identity.Name).Select(q => q.user_id).SingleOrDefault();
-                isInCart = context.userCarts.Any(c => c.product_id == pId && c.user_id ==uId);
+                int uId = context.users
+                    .Where(u => u.email == User.Identity.Name)
+                    .Select(q => q.user_id)
+                    .SingleOrDefault();
+                isInCart = context.userCarts
+                    .Any(c => c.product_id == pId && c.user_id == uId);
 
+                isInWishlist = context.wishlists
+                    .Any(c => c.product_id == pId && c.user_id == uId);
             }
             //Map database product to view model
             ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel()
@@ -106,7 +116,8 @@ namespace OnlineBikeStore.Controllers
                 brand_id = product.brand_id,
                 category_name = category.category_name,
                 brand_name = brand.brand_name,
-                isInCart = isInCart
+                isInCart = isInCart,
+                isInWishList = isInWishlist
             };
 
             return View(productDetailsViewModel);

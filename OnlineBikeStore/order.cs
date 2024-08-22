@@ -26,16 +26,9 @@ namespace OnlineBikeStore
         public System.DateTime order_date { get; set; }
         public System.DateTime required_date { get; set; }
         public Nullable<System.DateTime> shipped_date { get; set; }
-        public int store_id { get; set; }
-        public int staff_id { get; set; }
     
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_items> order_items { get; set; }
-        public virtual staff staff { get; set; }
-        public virtual staff staff1 { get; set; }
-        public virtual staff staff2 { get; set; }
-        public virtual staff staff3 { get; set; }
-        public virtual store store { get; set; }
     }
 }

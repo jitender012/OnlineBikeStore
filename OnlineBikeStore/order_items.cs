@@ -14,8 +14,8 @@ namespace OnlineBikeStore
     
     public partial class order_items
     {
-        public int order_id { get; set; }
         public int item_id { get; set; }
+        public int order_id { get; set; }
         public int product_id { get; set; }
         public int quantity { get; set; }
         public decimal list_price { get; set; }

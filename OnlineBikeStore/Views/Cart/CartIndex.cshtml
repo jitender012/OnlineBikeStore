@@ -54,7 +54,11 @@
                                 <div class=" row">
                                     <div class="col d-flex">
                                         <div class="p-2">
-                                            <img src="@Url.Content(item.url)" width="100" />
+                                            @if (item.url != null)
+                                            {
+                                                <img src="@Url.Content(item.url)" width="100" />
+
+                                            }
                                         </div>
                                         <div class="name-price">
                                             <div>
@@ -80,7 +84,7 @@
                                                 <button onclick="RemoveItem(@item.product_id)" class="btn">Remove</button>
                                             </div>
                                         </div>
-                                        
+
 
 
                                     </div>
@@ -96,7 +100,9 @@
 
 
                     <div class="px-4 py-3 place-order-div" style="position:sticky">
-                        <button class="place-order-btn">PLACE ORDER</button>
+                        <a href="@Url.Action( "OrderSummary", "Order")" class="place-order-btn" style="text-decoration:none">
+                            Continue
+                        </a>
                     </div>
 
 

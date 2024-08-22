@@ -14,12 +14,9 @@ namespace OnlineBikeStore
     
     public partial class wishlist
     {
-        public int id { get; set; }
-        public int p_id { get; set; }
-        public int u_id { get; set; }
-        public string p_name { get; set; }
-        public Nullable<decimal> p_price { get; set; }
-        public string url { get; set; }
+        public int wl_item_id { get; set; }
+        public int product_id { get; set; }
+        public int user_id { get; set; }
     
         public virtual user user { get; set; }
         public virtual product product { get; set; }

@@ -17,10 +17,6 @@ namespace OnlineBikeStore
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public staff()
         {
-            this.orders = new HashSet<order>();
-            this.orders1 = new HashSet<order>();
-            this.orders2 = new HashSet<order>();
-            this.orders3 = new HashSet<order>();
             this.staffs1 = new HashSet<staff>();
             this.staffs11 = new HashSet<staff>();
             this.staffs12 = new HashSet<staff>();
@@ -36,14 +32,6 @@ namespace OnlineBikeStore
         public int store_id { get; set; }
         public Nullable<int> manager_id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order> orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order> orders1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order> orders2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order> orders3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<staff> staffs1 { get; set; }
         public virtual staff staff1 { get; set; }
