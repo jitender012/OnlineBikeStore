@@ -30,6 +30,13 @@
                                InsertionMode = InsertionMode.Replace
                            }, new { @class = "NS64GK", id = "profileLink" })
 
+                        @Ajax.ActionLink("Orders", "OrderIndex", "Order",null, new AjaxOptions
+                               {
+                                   HttpMethod = "GET",
+                                   UpdateTargetId = "targetResult",
+                                   InsertionMode = InsertionMode.Replace
+                               }, new { @class = "NS64GK", id = "profileLink" })
+
                         @Ajax.ActionLink("Wishlist", "WishlistIndex", "Wishlist", null, new AjaxOptions
                            {
                                HttpMethod = "GET",
@@ -38,7 +45,7 @@
                                LoadingElementId = "loadingImage"
                            }, new { @class = "NS64GK" })
 
-                        @Ajax.ActionLink("Reviews & Ratings", "Feedback", "Account", new AjaxOptions
+                        @Ajax.ActionLink("Reviews & Ratings", "Index", "Feedback",null, new AjaxOptions
                            {
                                HttpMethod = "GET",
                                UpdateTargetId = "targetResult",

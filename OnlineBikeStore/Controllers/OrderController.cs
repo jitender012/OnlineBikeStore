@@ -37,7 +37,7 @@ namespace OnlineBikeStore.Controllers
 
                 return View(ordersListVM);
             }
-            return View();
+            return View("Error");
         }
 
         public ActionResult OrderDetails(int orderId)

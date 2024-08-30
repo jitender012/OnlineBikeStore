@@ -91,17 +91,46 @@
     background-color: var(--cr-sunshine-hover-light);
 }
 
-
+.btn-cr {
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px 0 10px;
+}
 .content-row {
     display: flex;
     background-color: white;
     padding: 15px;
-    margin: 10px 0px 10px 0px;
+    margin: 0px 0px 10px 0px;
     border-radius: 4px;
-    box-shadow: 0px 0px 6px -4px;
+    box-shadow: rgb(0 0 0) 0px 2px 5px -5px;
 }
 
 
+/* scrollbar customization*/
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+::-webkit-scrollbar-track {
+    background-color: #4abdac; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #fc4a1a; 
+    border-radius: 50px; 
+}
+
+    /* Scrollbar thumb when hovered */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Color of the thumb when hovered */
+    }
+
+/* Scrollbar corner (for the bottom-right corner of both horizontal and vertical scrollbars) */
+::-webkit-scrollbar-corner {
+    background-color: #f5f5f5; /* Background of the scrollbar corner */
+}
 /*personal information partial view styling*/
 .label{
     font-size:14px;

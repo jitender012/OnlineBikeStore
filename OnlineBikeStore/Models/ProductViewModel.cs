@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Web;
 
 namespace OnlineBikeStore.Models
 {
@@ -31,7 +32,9 @@ namespace OnlineBikeStore.Models
         public string product_type { get; set; }
         public bool isInCart { get; set; }
         public bool isInWishList { get; set; }
-
+        public bool isPurchased { get; set; }
+        public bool isReviewed { get; set; }
+        public List<FeedbackViewModel> Feedback { get; set; }
         public HttpPostedFileBase ImageFile { get; set; }
     }
 }

@@ -1,0 +1,62 @@
+﻿@model List<OnlineBikeStore.Models.FeedbackViewModel>
+@{
+    Layout = null;
+}
+<style>
+    .img {
+        max-height: 100px;
+        max-width: 100px;
+    }
+</style>
+<div>
+    <div class="">
+        @foreach (var item in Model)
+        {
+            <div class="content-row d-flex" onclick="product()">
+                <div class="d-grid justify-content-center" style="width:120px">
+                    @if (item.product_img != null)
+                    {
+
+                        <img src="@Url.Content(item.product_img)" class="img" />
+
+                    }
+                    else
+                    {
+
+                        <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" class="img" />
+
+                    } @item.product_name
+                </div>
+                <div class="d-flex mx-4">
+                    <div>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= item.ratingValue)
+                            {
+                                <i class="fa fa-star" style="color:yellow"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-star" style="color:grey"></i>
+                            }
+                        }
+                        <br />
+
+                        @item.feedback_text
+                        <br />
+                        @if (item.image_url != null)
+                        {
+                            <img src="@Url.Content(item.image_url)" width="70" />
+                            <br />
+                        }
+
+                        @item.date.ToString("D")
+                    </div>
+                    
+                </div>
+                <p class="ms-auto align-self-center">Remove</p>
+            </div>
+        }
+    </div>
+</div>
+

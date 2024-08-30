@@ -408,20 +408,30 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\delete.gif" />
     <Content Include="Content\flexslider.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\rateit.css" />
     <Content Include="Content\regular.css" />
     <Content Include="Content\regular.min.css" />
     <Content Include="Content\solid.css" />
     <Content Include="Content\solid.min.css" />
+    <Content Include="Content\star.gif" />
     <Content Include="Content\svg-with-js.css" />
     <Content Include="Content\svg-with-js.min.css" />
     <Content Include="Content\v4-shims.css" />
     <Content Include="Content\v4-shims.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\index.css" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\index.html" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\jsRapStar.css" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\jsRapStar.js" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\jsRapStar.sln" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\FeedbackImages\1ST PAGE240215166.jpeg" />
+    <Content Include="Images\FeedbackImages\Designer240929091.png" />
     <Content Include="Images\users.txt" />
     <Content Include="Images\Utilities\login_image.jpg" />
     <Content Include="Images\Utilities\login.jpg" />
@@ -456,6 +466,8 @@
     <Content Include="Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Fractional-Star-Rating-jsRapStar\LICENSE" />
+    <Content Include="Fractional-Star-Rating-jsRapStar\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
@@ -557,6 +569,9 @@
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery.rateit.js" />
+    <Content Include="Scripts\jquery.rateit.min.js" />
+    <Content Include="Scripts\jquery.rateit.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.flexslider.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -616,10 +631,10 @@
     <Content Include="Views\Home\Product.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
-    <Content Include="Views\Account\_UserInformation.cshtml" />
-    <Content Include="Views\Account\_UserReviews.cshtml" />
-    <Content Include="Views\Account\_UserWishlist.cshtml" />
-    <Content Include="Views\Account\_UserOrders.cshtml" />
+    <Content Include="Views\Shared\_UserInformation.cshtml" />
+    <Content Include="Views\Shared\_UserReviews.cshtml" />
+    <Content Include="Views\Shared\_UserWishlist.cshtml" />
+    <Content Include="Views\Shared\_UserOrders.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Cart\CartIndex.cshtml" />
@@ -629,17 +644,19 @@
     <Content Include="Views\Order\OrderIndex.cshtml" />
     <Content Include="Views\Order\OrderDetails.cshtml" />
     <Content Include="Views\WishList\WishlistIndex.cshtml" />
+    <Content Include="Views\Feedback\Index.cshtml" />
+    <Content Include="Views\Test\jQuery.cshtml" />
+    <Content Include="Views\Test\Method.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Admin\" />
     <Folder Include="Images\BrandImages\" />
     <Folder Include="Images\CategoryImages\" />
-    <Folder Include="Images\FeedbackImages\" />
     <Folder Include="Images\ProductImages\" />
     <Folder Include="Scripts\Admin\" />
     <Folder Include="Scripts\Customer\" />
-    <Folder Include="Views\Feedback\" />
+    <Folder Include="Views\PartialViews\" />
     <Folder Include="Views\Stock\" />
   </ItemGroup>
   <ItemGroup>
@@ -670,6 +687,7 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>

@@ -111,11 +111,11 @@ namespace OnlineBikeStore.Controllers
                     FormsAuthentication.SetAuthCookie(data.email, false);
                     TempData["SuccessMessage"] = "Login successfully!";
 
-                    if (User.IsInRole("admin"))
+                    if (user.user_role.Select(x=>x.role).SingleOrDefault()=="admin")
                     {
                         return RedirectToAction("Dashboard", "Dashboard");
                     }
-
+                    else
                     return RedirectToAction("Home", "Home");
                 }
                 else

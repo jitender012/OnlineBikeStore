@@ -1,12 +1,12 @@
 ﻿@model List<OnlineBikeStore.Models.OrderViewModel>
 @{
-    ViewBag.Title = "OrderIndex";
-    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.Title = "Orders";
+    Layout = null;
 }
 
 <link href="~/Content/Customer/order_index.css" rel="stylesheet" />
-<div class="container ">
-    <div>
+<div class="container p-0">
+    @*<div>
         <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
             Home
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
@@ -16,7 +16,7 @@
         <h4>
             My Orders
         </h4>
-    </div>
+    </div>*@
     <div class="content-row" style="justify-content: center">
         <div>
             <input type="text" placeholder="Search orders" />

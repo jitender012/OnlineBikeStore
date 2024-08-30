@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>jQuery</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="parent">
+        <p style="color:red;">Hello</p>
+        <div>
+            <p style="color:green"> World</p>
+        </div>
+        <input type="text" />
+    </div>
+
+
+    <script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var text = $(".parent p").text();
+
+            var textColor = $("p")
+                .eq(1)
+                .css('color')
+
+            var parentWidth = $(".parent").css('border', '1px solid red').width(500);
+
+            var inputText = $("input").css('padding', '10px').attr('placeholder', 'Enter Name');
+
+            var newElement = $("<input>", {
+                type: "button",
+                value: "Submit",
+            }).css({
+                "color": 'blue',
+                'padding': '6px 10px'
+               })
+            newElement.appendTo(parentWidth)
+           
+            //alert(text);
+        })
+    </script>
+</body>
+</html>

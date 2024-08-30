@@ -9,6 +9,7 @@ namespace OnlineBikeStore.Models
     {
         public int feedback_id { get; set; }        
         public int customer_id { get; set; }
+        public string customer_name { get; set; }
         public int product_id { get; set; }
         public DateTime date { get; set; }
         public string image_url { get; set; }
@@ -16,6 +17,7 @@ namespace OnlineBikeStore.Models
         public int ratingValue { get; set; }
         public string product_img {  get; set; }
         public string product_name { get; set; }
-        public HttpPostedFile ImageFile { get; set; }
+        public HttpPostedFileBase ImageFile { get; set; }
     }
+
 }

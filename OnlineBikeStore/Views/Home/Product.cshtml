@@ -1,23 +1,25 @@
-﻿@model OnlineBikeStore.Models.ProductDetailsViewModel
+﻿
+@model OnlineBikeStore.Models.ProductDetailsViewModel
 @{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <link href="~/Content/Customer/product.css" rel="stylesheet" />
-
+<link href="~/Fractional-Star-Rating-jsRapStar/jsRapStar.css" rel="stylesheet" />
 
 <div class="view-body container d-flex justify-content-center">
 
     <div class="row content">
         <div class="col-lg-4 col-md-8  ">
-            <div class="grid">
+            <div class="grid" style="position: sticky; top: 5px;">
                 <div class="ml-1">
                     <div class="row ">
 
                         <div class="col-12 p-1">
                             @if (User.Identity.IsAuthenticated)
                             {
+
                                 <i id="wishlist_@Model.product_id"
                                    class=" fa-lg heart-style @(@Model.isInWishList ? "fa fa-heart red-heart" : "far fa-heart")"
                                    onclick="AddRemoveWishlist(@Model.product_id)">
@@ -25,8 +27,7 @@
                             }
                             else
                             {
-                                <i 
-                                   class="far fa-heart fa-lg heart-style"
+                                <i class="far fa-heart fa-lg heart-style"
                                    onclick="alert('Login to add item in Wishlist')">
                                 </i>
                             }
@@ -47,7 +48,7 @@
                                 @if (Model.isInCart)
                                 {
                                     <div class="col  m-1 p-0">
-                                        <a href="@Url.Action("CartIndex","Cart")" class=" p-btn1 p-btn"> GO TO CART</a>
+                                        <a href="@Url.Action("CartIndex", "Cart")" class=" p-btn1 p-btn"> GO TO CART</a>
                                     </div>
                                 }
                                 else
@@ -75,100 +76,273 @@
         </div>
 
         <div class="col-lg-8  p-3">
-            <h3 class="mb-3">@Model.product_name</h3>
-            <p class="mb-3">
-                <span class="item_price">@Model.list_price</span>
-                <del class="mx-2 font-weight-light">$280.00</del>
-                <label>Free delivery</label>
-            </p>
-            <p>
-                @Model.description
-            </p>
+            @*Product Details Section*@
+            <div class="section">
+                <h3 class="mb-3">@Model.product_name</h3>
+                <p class="mb-3">
+                    <span class="item_price">@Model.list_price</span>
+                    @{
+                        var pwd = Model.list_price + ((Model.list_price * 10) / 100);
 
-            <div class="">
-                <p class="my-3">
-                    <i class="far fa-hand-point-right mr-2"></i>
-                    <label>1 Year</label>Manufacturer Warranty
-                </p>
-                <ul>
-                    <li class="mb-1">
-                        Brand: @Model.brand_name
-                    </li>
-                    <li class="mb-1">
-                        Category:  @Model.category_name
-                    </li>
-                    <li class="mb-1">
-                        Model year:  @Model.model_year
-                    </li>
-                    <li class="mb-1">
-                        Type: @Model.product_type
-                    </li>
-
-                </ul>
-                <p class="my-sm-4 my-3">
-                    <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
-                </p>
-            </div>
-            <div class="">
-                <ul>
-                    <li class="mb-3">
-                        Cash on Delivery Eligible.
-                    </li>
-                    <li class="mb-3">
-                        Shipping Speed to Delivery.
-                    </li>
-                    <li class="mb-3">
-                        EMIs from $655/month.
-                    </li>
-                    <li class="mb-3">
-                        Bank OfferExtra 5% off* with Axis Bank Buzz Credit CardT&C
-                    </li>
-                </ul>
-            </div>
-
-            @*Reviews*@
-            <div>
-                <span>Rating and Reviews</span>
-                <hr />
-                <div>
-                    <div>
-                        <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" height="100" width="100" />
+                    }
+                    <del class="mx-2 font-weight-light">@pwd</del>
+                    <label>Free delivery</label>
+                    <div id="overallRating">
+                        <i class="fa fa-star" style="color:green"></i>
                     </div>
-                    <div>
-                        This is comment!
+                </p>
+                <p>
+                    @Model.description
+                </p>
+
+                <div class="">
+                    <p class="my-3">
+                        <i class="far fa-hand-point-right mr-2"></i>
+                        <label>1 Year</label>Manufacturer Warranty
+                    </p>
+                    <ul>
+                        <li class="mb-1">
+                            Brand: @Model.brand_name
+                        </li>
+                        <li class="mb-1">
+                            Category:  @Model.category_name
+                        </li>
+                        <li class="mb-1">
+                            Model year:  @Model.model_year
+                        </li>
+                        <li class="mb-1">
+                            Type: @Model.product_type
+                        </li>
+
+                    </ul>
+                    <p class="my-sm-4 my-3">
+                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
+                    </p>
+                </div>
+                <div class="">
+                    <ul>
+                        <li class="mb-3">
+                            Cash on Delivery Eligible.
+                        </li>
+                        <li class="mb-3">
+                            Shipping Speed to Delivery.
+                        </li>
+                        <li class="mb-3">
+                            EMIs from $655/month.
+                        </li>
+                        <li class="mb-3">
+                            Bank OfferExtra 5% off* with Axis Bank Buzz Credit CardT&C
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            @*Reviews Section*@
+            <div class="section">
+                <div class="d-flex justify-content-between" style=" border-bottom: 1px solid #dedede;">
+                    <div><h2>Reviews</h2></div>
+                    @if (Model.isPurchased)
+                    {
+                        if (Model.isReviewed)
+                        {
+                            <button class="btn-cr w-auto" id="editReviewBtn">
+                                Edit Review
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn-cr w-auto" id="addReviewBtn">
+                                Post Review
+                            </button>
+                        }
+                    }
+                </div>
+
+                <div id="reviewFormDiv" class="d-none section mt-3">
+                    <form id="reviewForm" enctype="multipart/form-data">
+                        <div id="stars" value=""></div>
+                        <p id="ratingError" style="color: red; display: none;">Please select a rating.</p>
+                        <input type="hidden" id="feedbackId" name="feedback_id" value="">
+                        <input type="hidden" id="ratingValue" name="ratingValue" required value="">
+                        <input type="hidden" name="product_id" required value="@Model.product_id">
+                        <textarea name="feedback_text" class="form-control" placeholder="Your Review"></textarea><br />
+                        <label class="form-label">Upload Image</label>
+                        <input type="file" accept="image/*" name="ImageFile" class="form-control" value="" /><br />
+                        <input type="hidden" id="image_url" name="image_url" value="">
+                        <button type="submit" class="btn-cr">Submit Review</button>
+                    </form>
+                </div>
+
+                <div id="message"></div>
+
+                <div class="mt-3">
+                    <div id="feedbacks">
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<script src="~/Fractional-Star-Rating-jsRapStar/jsRapStar.js"></script>
 <script>
 
-   function AddRemoveWishlist(productId) {
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("AddRemoveWishlist", "Wishlist")',
-            data: { pId: productId },
-            success: function (response) {
-                if (response.success) {
-                    var heartIcon = $("#wishlist_" + productId);
-                    if (response.inWishlist) {
-                        heartIcon.removeClass("far fa-heart").addClass("fa fa-heart red-heart");
-                    } else {
-                        heartIcon.removeClass("fa fa-heart red-heart").addClass("far fa-heart");
-                    }
+    $(document).ready(function () {
+         loadFeedbacks();
+
+        //Toggle visibility of feedback form
+        $('#addReviewBtn, #editReviewBtn').click(function () {
+            $('#reviewFormDiv').toggleClass("d-none");
+
+                if ($('#reviewFormDiv').hasClass("d-none")) {
+                    $('#editReviewBtn').text("Edit Review");
+                    $('#addReviewBtn').text("Post Review");
                 } else {
-                    alert("Failed to update wishlist.");
+                    $(this).text("Cancel");
                 }
+        })
+
+        //set the rating value of the input
+        $('#stars').jsRapStar({
+            onClick: function (score) {
+                $("#ratingValue").val(score)
             },
-            error: function () {
-                alert("An error occurred while updating the wishlist.");
+            length: 5
+        });
+
+        $('#reviewForm').on('submit', function (event) {
+            event.preventDefault();
+
+            var ratingValue = $('#ratingValue').val();
+            var ratingError = $('#ratingError');
+
+            if (!ratingValue) {
+                ratingError.show();
+            } else {
+                ratingError.hide();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '@Url.Action("AddUpdateFeedback", "Feedback")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.success) {
+                            loadFeedbacks();
+                            $('#message').html('<p style="color: green;">Feedback submitted successfully!</p>');
+                            $('#reviewFormDiv').toggleClass("d-none");
+                            $('#addReviewBtn, #editReviewBtn').text("Edit Review");
+                        } else {
+                            $('#message').html('<p style="color: red;">Error: ' + response.message + '</p>');
+                        }
+                    },
+                    error: function () {
+                        $('#message').html('<p style="color: red;">An unexpected error occurred.</p>');
+                    }
+                });
+
             }
         });
+    })
+    function loadFeedbacks() {
+        $('#feedbacks').empty();
+        var avgRating =  $("#overallRating");
+
+        var customerCounter = 0;
+        var starCounter = 0;
+
+          $.ajax({
+              url: '@Url.Action("ProductReviews", "Feedback")',
+              type: 'GET',
+              data: { pId: @Model.product_id },
+              success: function (feedbacks) {
+
+                  $.each(feedbacks, function (index, feedback) {
+                      customerCounter += 1;
+                      starCounter += feedback.ratingValue;
+                      var feedbackHtml = '<div>';
+
+                      feedbackHtml += '<input type="hidden" name="feedback_id" value="' + feedback.feedback_id + '" />';
+
+                      // Add stars based on rating
+                      for (var i = 1; i <= 5; i++) {
+                          if (i <= feedback.ratingValue) {
+                              feedbackHtml += '<i class="fa fa-star" style="color:yellow"></i>';
+                          } else {
+                              feedbackHtml += '<i class="fa fa-star" style="color:grey"></i>';
+                          }
+                      }
+
+                      feedbackHtml += '<br />';
+                      if (feedback.feedback_text != null) {
+                          feedbackHtml += '<span>' + feedback.feedback_text + '</span>';
+                          feedbackHtml += '<br/>';
+                      }
+
+                      if (feedback.image_url !== null) {
+                          feedbackHtml += '<img src="' + feedback.image_url + '" style="max-width:120px;max-height:100px;" /><br />';
+                      }
+                      var dateString = feedback.date;
+                      var timestamp = parseInt(dateString.replace(/[^0-9]/g, ''));
+                      var date = new Date(timestamp);
+                      var formattedDate = date.toLocaleDateString();
+
+                      feedbackHtml += '<span style="font-size:13px; color: grey">' + feedback.customer_name + ', ' + formattedDate + '</span>';
+                      feedbackHtml += '<hr/>';
+                      feedbackHtml += '</div>';
+
+                      // Append the feedback to the div
+                      $('#feedbacks').append(feedbackHtml);
+
+                      //for edit review
+                      if ('@ViewBag.UserId' > 0) {
+                          if (feedback.customer_id === @ViewBag.UserId) {
+                              $("#feedbackId").val(feedback.feedback_id);
+                              $('#ratingValue').val(feedback.ratingValue);
+                              $('#stars').attr('value', feedback.ratingValue);
+                              $('textarea[name="feedback_text"]').val(feedback.feedback_text);
+                              if (feedback.image_url) {
+                                  $('#image_url').val(feedback.image_url);
+                              }
+                          }
+                      }
+                  });
+                  var avg = starCounter / customerCounter;
+                  var span = $('<span>').text(avg + ' ' + '(' + customerCounter + ' ratings)');
+
+                  avgRating.append(span );
+            },
+            error: function () {
+                $('#message').html('<p style="color: red;">An unexpected error occurred.</p>');
+              }
+          });
+    }
+    function AddRemoveWishlist(productId) {
+      $.ajax({
+          type: "POST",
+          url: '@Url.Action("AddRemoveWishlist", "Wishlist")',
+          data: { pId: productId },
+          success: function (response) {
+              if (response.success) {
+                  var heartIcon = $("#wishlist_" + productId);
+                  if (response.inWishlist) {
+                      heartIcon.removeClass("far fa-heart").addClass("fa fa-heart red-heart");
+                  } else {
+                      heartIcon.removeClass("fa fa-heart red-heart").addClass("far fa-heart");
+                  }
+              } else {
+                  alert("Failed to update wishlist.");
+              }
+          },
+          error: function () {
+              alert("An error occurred while updating the wishlist.");
+          }
+      });
     }
 
+
 </script>
-
-
-
