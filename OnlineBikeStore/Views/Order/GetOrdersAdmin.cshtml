@@ -1,0 +1,110 @@
+﻿@model List<OnlineBikeStore.Models.OrderViewModel>
+@{
+    ViewBag.Title = "Orders";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <link href="~/Content/Admin/orders.css" rel="stylesheet" />
+
+
+<div class="container p-0">
+
+    <div>
+        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+            Home
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+
+        </a>
+        <h4>
+            Orders
+        </h4>
+    </div>   
+
+
+    <div>
+        <div class="searchDiv">
+
+            <input type="text" id="searchQuery" placeholder="Enter order id..." />
+
+        </div>
+        <div class="filterDivsParent row">
+
+            <div class="filterDiv col-lg-2 col-4">
+                <span>All Orders</span>
+                <span id="allOrders"></span>
+            </div>
+            <div class="filterDiv col-lg-2 col-4">
+                <span>Placed</span>
+                <span id="Placed"></span>
+            </div>
+            <div class="filterDiv col-lg-2 col-4">
+                <span>Shipped</span>
+                <span id="Shipped"></span>
+            </div>
+
+            <div class="filterDiv col-lg-2 col-4">
+                <span>Delivered</span>
+                <span id="Delivered"></span>
+            </div>
+            <div class="filterDiv col-lg-2 col-4">
+                <span>Cancelled</span>
+                <span id="Cancelled"></span>
+            </div>
+            <div class="filterDiv col-lg-2 col-4">
+                <span>Returned</span>
+                <span id="Returned"></span>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div id="partialViewContainer">
+        @Html.Partial("_Orders")
+    </div>
+
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#allOrders").text(@Model.Count())
+        $("#Placed").text(@Model.Count(x=>x.order_status==0))
+        $("#Shipped").text(@Model.Count(x=>x.order_status==1))
+        $("#Delivered").text(@Model.Count(x=>x.order_status==2))
+        $("#Cancelled").text(@Model.Count(x=>x.order_status==3))
+        $("#Returned").text(@Model.Count(x=>x.order_status==4))
+
+        var number = 0;
+        var status;
+
+        $("#searchQuery").on('input',function () {
+            number = $("#searchQuery").val();
+            loadPartialView();
+        })
+
+        $('.filterDiv').on('click', function () {
+            status = $(this).find('span').last().attr('id');
+            loadPartialView();
+        })
+
+        function loadPartialView() {
+            $.ajax({
+                url: '@Url.Action("Orders", "Order")',
+                type: 'GET',
+                data: { orderId: number, orderStatus: status },
+                success: function (response) {
+                    $('#partialViewContainer').html(response);
+                },
+                error: function () {
+                    console.log('Error loading partial view.');
+                }
+            });
+        }
+
+
+});
+</script>

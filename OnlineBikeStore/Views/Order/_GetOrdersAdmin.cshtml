@@ -1,0 +1,65 @@
+﻿@model List<OnlineBikeStore.Models.OrderViewModel>
+
+<table class="table  w-100">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Expected Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(x => x.order_id))
+        {
+            <tr  onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'" style="justify-content: space-between">
+                <td>
+                    @item.order_id
+                </td>
+                <td>
+                    @item.total_price
+                </td>
+                <td>
+                    @item.order_date.ToString("D")
+                </td>
+
+                <td>
+                    @switch (item.order_status)
+                    {
+                        case 0:
+                            <h6>Order Placed</h6>
+                            break;
+                        case 1:
+                            <h6>Order Shipped</h6>
+                            break;
+                        case 2:
+                            <h6>Order Delivered</h6>
+                            break;
+                        case 3:
+                            <h6>Order Cancelled</h6>
+                            break;
+                        case 4:
+                            <h6>Order Returned</h6>
+                            break;
+                        default:
+                            @:Unknown Status
+                            break;
+                    }
+
+                </td>
+                <td>
+                    <p>@item.required_date.ToString("D")</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script>
+
+        
+
+</script>

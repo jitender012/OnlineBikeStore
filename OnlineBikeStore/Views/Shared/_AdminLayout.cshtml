@@ -46,7 +46,7 @@
                                         </div>
                                     </a>
                                     <div class="dropdown-content">
-                                        <a href="#">All Orders</a>
+                                        <a href="@Url.Action("OrderIndex","Order")">All Orders</a>
                                         <a href="#">Pending</a>
                                         <a href="#">Shipped</a>
                                         <a href="#">Cancelled</a>
@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div class="dropdown">
-                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                    <a href="@Url.Action( "Index","Store")" id="loginLink" class="btn dropbtn">
                                         <div class="d-flex justify-content-between">
                                             <span class="login-icon">
 
@@ -88,7 +88,7 @@
                                 </div>
 
                                 <div class="dropdown">
-                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                    <a href="@Url.Action( "Index","Category")" id="loginLink" class="btn dropbtn">
                                         <div class="d-flex justify-content-between">
                                             <span class="login-icon">
                                                 <i class="fa fa-cog text-light"></i>
@@ -100,7 +100,7 @@
                                         <a href="@Url.Action("Index","Category")">Category</a>
                                         <a href="@Url.Action("Index","Brand")">Brand</a>
                                         <a href="#">Customers</a>
-                                        <a href="#">Feedback</a>
+                                        <a href="@Url.Action("Index","Brand")">Feedback</a>
                                     </div>
                                 </div>
 

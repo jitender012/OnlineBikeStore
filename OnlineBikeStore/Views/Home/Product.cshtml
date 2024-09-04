@@ -88,7 +88,7 @@
                     <del class="mx-2 font-weight-light">@pwd</del>
                     <label>Free delivery</label>
                     <div id="overallRating">
-                        <i class="fa fa-star" style="color:green"></i>
+                        
                     </div>
                 </p>
                 <p>
@@ -165,7 +165,7 @@
                         <p id="ratingError" style="color: red; display: none;">Please select a rating.</p>
                         <input type="hidden" id="feedbackId" name="feedback_id" value="">
                         <input type="hidden" id="ratingValue" name="ratingValue" required value="">
-                        <input type="hidden" name="product_id" required value="@Model.product_id">
+                        <input type="hidden" name="product_id" id="product_id" required value="@Model.product_id">
                         <textarea name="feedback_text" class="form-control" placeholder="Your Review"></textarea><br />
                         <label class="form-label">Upload Image</label>
                         <input type="file" accept="image/*" name="ImageFile" class="form-control" value="" /><br />
@@ -185,7 +185,9 @@
         </div>
     </div>
 </div>
+<
 <script src="~/Fractional-Star-Rating-jsRapStar/jsRapStar.js"></script>
+
 <script>
 
     $(document).ready(function () {
@@ -244,105 +246,9 @@
                         $('#message').html('<p style="color: red;">An unexpected error occurred.</p>');
                     }
                 });
-
             }
         });
     })
-    function loadFeedbacks() {
-        $('#feedbacks').empty();
-        var avgRating =  $("#overallRating");
-
-        var customerCounter = 0;
-        var starCounter = 0;
-
-          $.ajax({
-              url: '@Url.Action("ProductReviews", "Feedback")',
-              type: 'GET',
-              data: { pId: @Model.product_id },
-              success: function (feedbacks) {
-
-                  $.each(feedbacks, function (index, feedback) {
-                      customerCounter += 1;
-                      starCounter += feedback.ratingValue;
-                      var feedbackHtml = '<div>';
-
-                      feedbackHtml += '<input type="hidden" name="feedback_id" value="' + feedback.feedback_id + '" />';
-
-                      // Add stars based on rating
-                      for (var i = 1; i <= 5; i++) {
-                          if (i <= feedback.ratingValue) {
-                              feedbackHtml += '<i class="fa fa-star" style="color:yellow"></i>';
-                          } else {
-                              feedbackHtml += '<i class="fa fa-star" style="color:grey"></i>';
-                          }
-                      }
-
-                      feedbackHtml += '<br />';
-                      if (feedback.feedback_text != null) {
-                          feedbackHtml += '<span>' + feedback.feedback_text + '</span>';
-                          feedbackHtml += '<br/>';
-                      }
-
-                      if (feedback.image_url !== null) {
-                          feedbackHtml += '<img src="' + feedback.image_url + '" style="max-width:120px;max-height:100px;" /><br />';
-                      }
-                      var dateString = feedback.date;
-                      var timestamp = parseInt(dateString.replace(/[^0-9]/g, ''));
-                      var date = new Date(timestamp);
-                      var formattedDate = date.toLocaleDateString();
-
-                      feedbackHtml += '<span style="font-size:13px; color: grey">' + feedback.customer_name + ', ' + formattedDate + '</span>';
-                      feedbackHtml += '<hr/>';
-                      feedbackHtml += '</div>';
-
-                      // Append the feedback to the div
-                      $('#feedbacks').append(feedbackHtml);
-
-                      //for edit review
-                      if ('@ViewBag.UserId' > 0) {
-                          if (feedback.customer_id === @ViewBag.UserId) {
-                              $("#feedbackId").val(feedback.feedback_id);
-                              $('#ratingValue').val(feedback.ratingValue);
-                              $('#stars').attr('value', feedback.ratingValue);
-                              $('textarea[name="feedback_text"]').val(feedback.feedback_text);
-                              if (feedback.image_url) {
-                                  $('#image_url').val(feedback.image_url);
-                              }
-                          }
-                      }
-                  });
-                  var avg = starCounter / customerCounter;
-                  var span = $('<span>').text(avg + ' ' + '(' + customerCounter + ' ratings)');
-
-                  avgRating.append(span );
-            },
-            error: function () {
-                $('#message').html('<p style="color: red;">An unexpected error occurred.</p>');
-              }
-          });
-    }
-    function AddRemoveWishlist(productId) {
-      $.ajax({
-          type: "POST",
-          url: '@Url.Action("AddRemoveWishlist", "Wishlist")',
-          data: { pId: productId },
-          success: function (response) {
-              if (response.success) {
-                  var heartIcon = $("#wishlist_" + productId);
-                  if (response.inWishlist) {
-                      heartIcon.removeClass("far fa-heart").addClass("fa fa-heart red-heart");
-                  } else {
-                      heartIcon.removeClass("fa fa-heart red-heart").addClass("far fa-heart");
-                  }
-              } else {
-                  alert("Failed to update wishlist.");
-              }
-          },
-          error: function () {
-              alert("An error occurred while updating the wishlist.");
-          }
-      });
-    }
 
 
 </script>

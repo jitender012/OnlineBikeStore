@@ -3,32 +3,41 @@
     ViewBag.Title = "WishlistIndex";
     Layout = null;
 }
+<style>
+    .img {
+        max-height: 100px;
+        max-width: 100px;
+    }
+</style>
 <div>
-    <div class="d-flex justify-content-between mb-1">
-        <span>
-
-        </span>
-
-    </div>
     @if (Model.Count > 0)
     {
-        <div class="">
-            @foreach (var item in Model)
-            {
-                <div class="content-row d-flex" onclick="product()">
-                    @if (item.image_url != null)
-                    {
-                        <img src="@Url.Content(item.image_url)" width="70" />
-                    }
-                    <div class="p-3">
+        foreach (var item in Model)
+        {
+            <div class="content-row d-flex" id="wishlistItemDiv_@item.product_id">
+                <div class="d-grid justify-content-center" style="width:120px">
+                    <a href="@Url.Action("Product","Home",new {pId = item.product_id})">
+                        @if (item.image_url != null)
+                        {
+                            <img src="@Url.Content(item.image_url)" class="img" />
+                        }
+                        else
+                        {
+                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" class="img" />
+                        }
+                    </a>
+
+                </div>
+                <div class="d-flex mx-4">
+                    <div>
                         @item.product_name
                         <br />
                         @item.price
                     </div>
-                    <p style="text-align:end">Remove</p>
                 </div>
-            }
-        </div>
+                <p class="ms-auto align-self-center" style="cursor:pointer" onclick="AddRemoveWishlist(@item.product_id)">Remove</p>
+            </div>
+        }
     }
     else
     {
@@ -36,8 +45,12 @@
             No items
         </div>
     }
-
+   
 </div>
-<script>
 
+<script>
+    $(document).ready(function () {
+
+
+    })
 </script>

@@ -1,0 +1,95 @@
+﻿@model OnlineBikeStore.Models.OrderDetailsViewModel
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+<link href="~/Content/Customer/order_details.css" rel="stylesheet" />
+<div class="container">
+    <div>
+        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+            Home
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+            My Account
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+            My Orders
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+        </a>
+        <h4>
+            Order Id: @Model.order_id
+        </h4>
+    </div>
+    <div class="content-row">
+        <div class="row">
+            <div class="col-12 col-xl-6">
+                <h4>Delivery Address</h4>
+                <span>@Model.userDetails.first_name @Model.userDetails.last_name</span><br />
+                <p>
+                    @Model.userDetails.street, @Model.userDetails.city, @Model.userDetails.state, @Model.userDetails.zip_code
+                </p>
+                <br />
+                <span>Mobile number: @Model.userDetails.phone</span>
+            </div>
+            <div class="col-12 col-xl-6">
+                @switch (Model.order_status)
+                {
+                    case 1:
+                        <h6>Order Placed</h6>
+                        <p>Expected Date: @Model.required_date.ToString("D")</p>
+                        break;
+                    case 2:
+                        <h6>Order Shipped</h6>
+                        <p>Expected Date: @Model.required_date.ToString("D")</p>
+                        break;
+                    case 3:
+                        <h6>Order Cancelled</h6>
+                        break;
+                    case 4:
+                        <h6>Order Delivered</h6>
+                        break;
+                    case 5:
+                        <h6>Order Returned</h6>
+                        break;
+                    default:
+                        @:Unknown Status
+                        break;
+                }
+
+            </div>
+        </div>
+    </div>
+
+    @foreach (var item in Model.orderItems.OrderByDescending(x=>x.item_id))
+    {
+        <div class="content-row orders-row " style="justify-content: space-between">
+            <div class="d-flex">
+                <div class="card1-imgdiv p-3 ">
+                    @if (item.productDetails.url != null)
+                    {
+                        <img class="card1-img" src="@Url.Content(@item.productDetails.url)" />
+
+                    }
+                    else
+                    {
+                        <img class="card1-img" src="~/Images/Utilities/No-Image-Placeholder.svg.png" />
+
+                    }
+                </div>
+                <div class="p-3 ms-xl-5 product-text">
+                    @item.productDetails.product_name
+                    <br />
+                    @item.productDetails.description
+                    <br />
+                    @item.productDetails.list_price
+                </div>
+            </div>
+
+            <div>
+                <h4 style="color:cornflowerblue">
+                    Rate and Review Product
+                </h4>
+            </div>
+
+
+        </div>
+    }
+</div>

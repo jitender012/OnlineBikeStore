@@ -1,0 +1,46 @@
+﻿@model OnlineBikeStore.Models.OrderViewModel
+@{
+    ViewBag.Title = "UpdateOrderStatus";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+@using (Html.BeginForm("UpdateOrderStatus", "Order", FormMethod.Post))
+{
+    <label class="form-label">Order Id:</label>
+    <input type="text" name="order_id" value="@Model.order_id" class="form-control" />
+    <label class="form-label">Required Date:</label>
+    @Html.TextBoxFor(x => x.required_date, null, new { @class = "form-control", @disabled = "true" })
+    <input type="text" id="statusOutput" value="" disabled />
+
+    <select name="order_status">
+        <option value="0">Placed</option>
+        <option value="1">Shipped</option>
+        <option value="2">Delivered</option>
+        <option value="3">Cancel</option>        
+    </select>
+}
+<script>
+    $(document).ready(function () {
+        var status = @Model.order_status;
+        var statusValue = "";
+        switch (status) {
+            case 0:
+                statusValue = "Order Placed";
+                break;
+            case 1:
+                statusValue = "Order Shipped";
+                break;
+            case 2:
+                statusValue = "Order Delivered";
+                break;
+            case 3:
+                statusValue = "Order Cancelled";
+                break;
+            case 4:
+                statusValue = "Order Returned";
+                break;           
+            default:
+        }
+        $("input[disabled]").value
+    })
+</script>

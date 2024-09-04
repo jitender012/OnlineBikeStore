@@ -168,7 +168,9 @@ namespace OnlineBikeStore.Controllers
             {
                 searchWord.ToLower();
 
-                var products = context.products.Where(p => p.product_name.Contains(searchWord) || p.description.Contains(searchWord) || p.brand.brand_name.Contains(searchWord) || p.category.category_name.Contains(searchWord)).ToList();
+                var products = context.products
+                    .Where(p => p.product_name.Contains(searchWord) || p.description.Contains(searchWord) || p.brand.brand_name.Contains(searchWord) || p.category.category_name.Contains(searchWord))
+                    .ToList();
                 if (products != null)
                 {
                     var productsVM = Mapper.Map<List<ProductViewModel>>(products);
@@ -178,7 +180,11 @@ namespace OnlineBikeStore.Controllers
             var result = Mapper.Map<List<ProductViewModel>>(context.products.ToList());
             return View(result);
         }
+        //public PartialViewResult SearchPartial()
+        //{
 
+        //    return PartialView("",);
+        //}
         //Search Products By Category
         public ActionResult FilterByCategory(int? categoryId)
         {

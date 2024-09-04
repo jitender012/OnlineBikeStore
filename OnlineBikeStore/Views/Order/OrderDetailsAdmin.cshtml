@@ -32,21 +32,21 @@
             <div class="col-12 col-xl-6">
                 @switch (Model.order_status)
                 {
-                    case 0:
+                    case 1:
                         <h6>Order Placed</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
-                    case 1:
+                    case 2:
                         <h6>Order Shipped</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
                     case 3:
-                        <h6>Order Delivered</h6>
-                        break;
-                    case 2:
                         <h6>Order Cancelled</h6>
                         break;
                     case 4:
+                        <h6>Order Delivered</h6>
+                        break;
+                    case 5:
                         <h6>Order Returned</h6>
                         break;
                     default:

@@ -157,7 +157,13 @@ namespace OnlineBikeStore.Controllers
 
             ProfileViewModel profileView = Mapper.Map<ProfileViewModel>(context.users.Where(u => u.user_id == user.user_id).SingleOrDefault());
             return PartialView("_UserInformation", profileView);
-        }                    
+        }
 
+        [Authorize]
+        public JsonResult GetUserId()
+        {
+            var userId = context.GetUserId(User.Identity.Name);
+            return Json(userId,  JsonRequestBehavior.AllowGet);
+        }
     }
 }

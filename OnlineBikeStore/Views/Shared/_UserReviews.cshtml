@@ -9,25 +9,24 @@
     }
 </style>
 <div>
-    <div class="">
-        @foreach (var item in Model)
-        {
-            <div class="content-row d-flex" onclick="product()">
-                <div class="d-grid justify-content-center" style="width:120px">
+    @foreach (var item in Model)
+    {
+        <div class="content-row d-flex" onclick="product()">
+            <div class="d-grid justify-content-center" style="width:120px">
+                <a href="@Url.Action("Product","Home",new {pId = item.product_id})">
                     @if (item.product_img != null)
                     {
-
                         <img src="@Url.Content(item.product_img)" class="img" />
-
                     }
                     else
                     {
-
                         <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" class="img" />
-
-                    } @item.product_name
-                </div>
-                <div class="d-flex mx-4">
+                    }
+                </a>
+                @item.product_name
+            </div>
+            <div class="d-flex mx-4">
+                <div class="d-grid">
                     <div>
                         @for (int i = 1; i <= 5; i++)
                         {
@@ -40,23 +39,24 @@
                                 <i class="fa fa-star" style="color:grey"></i>
                             }
                         }
-                        <br />
+                    </div>                        
+                  
 
-                        @item.feedback_text
+                    @item.feedback_text
+                    <br />
+                    @if (item.image_url != null)
+                    {
+                        <img src="@Url.Content(item.image_url)" width="70" />
                         <br />
-                        @if (item.image_url != null)
-                        {
-                            <img src="@Url.Content(item.image_url)" width="70" />
-                            <br />
-                        }
-
+                    }
+                    <span style="font-size: 13px; color: grey; align-self:baseline">
                         @item.date.ToString("D")
-                    </div>
-                    
+                    </span>
                 </div>
-                <p class="ms-auto align-self-center">Remove</p>
+               
             </div>
-        }
-    </div>
+            <p class="ms-auto align-self-center">Remove</p>
+        </div>
+    }
 </div>
 

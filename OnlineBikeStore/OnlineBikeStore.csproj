@@ -407,6 +407,7 @@
     <Content Include="Content\DataTables\images\sort_both.png" />
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
+    <Content Include="Content\Admin\orders.css" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\delete.gif" />
     <Content Include="Content\flexslider.css" />
@@ -471,6 +472,7 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
+    <Content Include="Scripts\customer.js" />
     <Content Include="Scripts\dataTables.bootstrap5.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
     <Content Include="Scripts\dataTables.js" />
@@ -641,16 +643,21 @@
     <Content Include="Views\Order\OrderSummary.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Order\OrderSuccess.cshtml" />
-    <Content Include="Views\Order\OrderIndex.cshtml" />
-    <Content Include="Views\Order\OrderDetails.cshtml" />
+    <Content Include="Views\Order\GetOrdersAdmin.cshtml" />
+    <Content Include="Views\Order\OrderDetailsCustomer.cshtml" />
     <Content Include="Views\WishList\WishlistIndex.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Test\jQuery.cshtml" />
     <Content Include="Views\Test\Method.cshtml" />
+    <Content Include="Views\Order\_GetOrdersAdmin.cshtml" />
+    <Content Include="Views\Home\_SearchPartial.cshtml" />
+    <Content Include="Views\Order\UpdateOrderStatus.cshtml" />
+    <Content Include="Views\Order\GetOrdersCustomer.cshtml" />
+    <Content Include="Views\Order\_GetOrdersCustomer.cshtml" />
+    <Content Include="Views\Order\OrderDetailsAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Admin\" />
     <Folder Include="Images\BrandImages\" />
     <Folder Include="Images\CategoryImages\" />
     <Folder Include="Images\ProductImages\" />
