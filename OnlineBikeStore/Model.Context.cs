@@ -12,6 +12,8 @@ namespace OnlineBikeStore
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class BikeStoreEntities : DbContext
     {
@@ -39,5 +41,14 @@ namespace OnlineBikeStore
         public virtual DbSet<order> orders { get; set; }
         public virtual DbSet<staff> staffs { get; set; }
         public virtual DbSet<store> stores { get; set; }
+    
+        public virtual ObjectResult<spGetUnratedProducts_Result> spGetUnratedProducts(Nullable<int> customer_id)
+        {
+            var customer_idParameter = customer_id.HasValue ?
+                new ObjectParameter("customer_id", customer_id) :
+                new ObjectParameter("customer_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetUnratedProducts_Result>("spGetUnratedProducts", customer_idParameter);
+        }
     }
 }

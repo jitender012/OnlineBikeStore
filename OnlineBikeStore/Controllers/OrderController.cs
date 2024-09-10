@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.Ajax.Utilities;
 using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -34,7 +36,12 @@ namespace OnlineBikeStore.Controllers
                     order_status = z.order_status,
                     required_date = z.required_date,
                     shipped_date = z.shipped_date,
-                }).ToList();
+                    total_price = z.order_items.Sum(a => a.list_price),
+                    item_names = z.order_items.Select(x => x.product.product_name).ToList(),
+                    first_product_image = z.order_items.Select(x => x.product.url).FirstOrDefault(),
+                    total_items = z.order_items.Count()
+                })
+                .ToList();
 
             //Check if logged in user is customer
             if (User.IsInRole("customer"))
@@ -48,89 +55,92 @@ namespace OnlineBikeStore.Controllers
             return View("GetOrdersAdmin", ordersListVM);
         }
 
+        [Authorize]
         [HttpGet]
-        public PartialViewResult Orders(string orderId, string orderStatus)
+        public PartialViewResult GetOrdersPartial(string query, string orderStatus)
         {
-            var o_id = 0;
+            var userId = context.GetUserId(User.Identity.Name);
+
+            //Get all orders
+            var ordersListVM = context.orders
+               .Select(z => new OrderViewModel
+               {
+                   customer_id = z.customer_id.Value,
+                   order_date = z.order_date,
+                   order_id = z.order_id,
+                   order_status = z.order_status,
+                   required_date = z.required_date,
+                   shipped_date = z.shipped_date,
+                   total_price = z.order_items.Sum(a => a.list_price),
+                   item_names = z.order_items.Select(x => x.product.product_name).ToList(),
+                   first_product_image = z.order_items.Select(x => x.product.url).FirstOrDefault(),
+                   total_items = z.order_items.Count()
+
+               }).ToList();
+
+            //Search orders using order id
+            if (query != null)
+            {
+                ordersListVM = ordersListVM
+                    .Where(o => 
+                    o.item_names != null && o.item_names.Any(name => name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) || 
+                    o.order_date.ToString("D").Contains(query) || 
+                    o.total_price.ToString().Contains(query)
+                    )
+                    .ToList();                
+            }
             var o_status = -1;
 
-            switch (orderStatus)
+            if (orderStatus != "")
             {
-                case "Placed":
-                    o_status = 0;
-                    break;
-                case "Shipped":
-                    o_status = 1;
-                    break;
-                case "Delivered":
-                    o_status = 2;
-                    break;
-                case "Cancelled":
-                    o_status = 3;
-                    break;
-                case "Returned":
-                    o_status = 4;
-                    break;
+                switch (orderStatus)
+                {
+                    case "Placed":
+                        o_status = 0;
+                        break;
+                    case "Shipped":
+                        o_status = 1;
+                        break;
+                    case "Delivered":
+                        o_status = 2;
+                        break;
+                    case "Cancelled":
+                        o_status = 3;
+                        break;
+                    case "Returned":
+                        o_status = 4;
+                        break;
 
-                case "allOrders":
-                    o_status = -5;
-                    break;
-                default:
-                    o_status = 6;
-                    break;
+                    case "allOrders":
+                        o_status = -5;
+                        break;
+                    default:
+                        o_status = 6;
+                        break;
+                }
             }
 
-            if (!string.IsNullOrEmpty(orderId))
+            //Filter orders by status
+            if (o_status >= 0)
             {
-                o_id = int.Parse(orderId);
+                ordersListVM = ordersListVM
+                    .Where(o => o.order_status == o_status)
+                    .ToList();
             }
 
-
-            if (User.Identity.IsAuthenticated)
+            if (User.IsInRole("customer"))
             {
-                var userId = context.GetUserId(User.Identity.Name);
-
-                var ordersListVM = context.orders
-                    .Select(z => new OrderViewModel
-                    {
-                        customer_id = z.customer_id.Value,
-                        order_date = z.order_date,
-                        order_id = z.order_id,
-                        order_status = z.order_status,
-                        required_date = z.required_date,
-                        shipped_date = z.shipped_date,
-
-                    }).ToList();
-
-                //Search orders using order id
-                if (o_id > 0)
-                {
-                    ordersListVM = ordersListVM
-                        .Where(o => (o.order_id.ToString()).Contains(orderId))
-                        .ToList();
-                }
-                //Filter orders by status
-                if (o_status >= 0)
-                {
-                    ordersListVM = ordersListVM
-                        .Where(o => o.order_status == o_status)
-                        .ToList();
-                }
-
-                if (User.IsInRole("customer"))
-                {
-                    ordersListVM = ordersListVM
-                        .Where(x => x.customer_id == userId)
-                        .ToList();
-                    return PartialView("_Orders", ordersListVM);
-                }
-                return PartialView("_Orders", ordersListVM);
+                ordersListVM = ordersListVM
+                    .Where(x => x.customer_id == userId)
+                    .ToList();
+                return PartialView("_GetOrdersCustomer", ordersListVM);
             }
-            return PartialView("Error");
+            return PartialView("_GetOrdersAdmin", ordersListVM);
+
         }
 
         [Authorize(Roles = "customer")]
-        public ActionResult OrderDetailsCustomer(int orderId)
+        public ActionResult OrderDetails(int orderId)
         {
 
             // Get user details
@@ -160,7 +170,7 @@ namespace OnlineBikeStore.Controllers
             var orderItemsVM = orderItems.Select(oi => new OrderItem
             {
                 item_id = oi.item_id,
-                quantity = oi.quantity,
+                quantity = oi.quantity,               
                 productDetails = products
                             .Where(p => p.product_id == oi.product_id)
                             .Select(p => new ProductDetailsViewModel
@@ -184,7 +194,7 @@ namespace OnlineBikeStore.Controllers
                 userDetails = user,
                 orderItems = orderItemsVM
             };
-            return View(orderDetailsViewModel);
+            return View("OrderDetailsCustomer",orderDetailsViewModel);
 
         }
 
@@ -395,7 +405,7 @@ namespace OnlineBikeStore.Controllers
                         context.order_items.Add(item);
                         context.SaveChanges();
 
-                        return View("OrderSuccess");
+                        return RedirectToAction("OrderSuccess");
                     }
 
                 }
@@ -439,11 +449,12 @@ namespace OnlineBikeStore.Controllers
                                 discount = 0
                             };
                             context.order_items.Add(item);
-                            userCart cart = context.userCarts.FirstOrDefault(c => c.user_id == userId && c.product_id == product.product_id);
+                            userCart cart = context.userCarts
+                                    .FirstOrDefault(c => c.user_id == userId && c.product_id == product.product_id);
                             context.userCarts.Remove(cart);
                             context.SaveChanges();
                         }
-                        return View("OrderSuccess");
+                        return RedirectToAction("OrderSuccess");
                     }
                 }
             }

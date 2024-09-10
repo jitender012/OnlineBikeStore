@@ -91,14 +91,15 @@ namespace OnlineBikeStore.Controllers
                 {
                     return HttpNotFound("Product not found.");
                 }
-                
+
 
                 bool isInCart = false;
                 bool isInWishlist = false;
                 bool isPurchased = false;
                 bool isReviewed = false;
                 ViewBag.UserId = 0;
-                if (User.Identity.IsAuthenticated)               {
+                if (User.Identity.IsAuthenticated)
+                {
                     int uId = context.GetUserId(User.Identity.Name);
 
                     isInCart = context.userCarts
@@ -111,7 +112,7 @@ namespace OnlineBikeStore.Controllers
                                             .Where(x => x.user.user_id == uId && x.order_items.Any(z => z.product_id == pId))
                                             .Any();
                     isReviewed = context.feedbacks
-                        .Any(x=>x.product_id == pId && x.customer_id == uId);
+                        .Any(x => x.product_id == pId && x.customer_id == uId);
 
                     ViewBag.UserId = uId;
                 }
@@ -128,8 +129,8 @@ namespace OnlineBikeStore.Controllers
                                             image_url = f.image_url,
                                             customer_name = context.users
                                                     .Where(x => x.user_id == f.customer_id)
-                                                    .Select(z => z.first_name +" "+ z.last_name)
-                                                    .FirstOrDefault()                                            
+                                                    .Select(z => z.first_name + " " + z.last_name)
+                                                    .FirstOrDefault()
                                         })
                                         .ToList();
 
@@ -163,9 +164,12 @@ namespace OnlineBikeStore.Controllers
         {
             var categories = context.categories.ToList();
             ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
+            ViewBag.Brands = context.brands.Select(b => b.brand_name).ToList();
+
 
             if (searchWord != null)
             {
+                ViewBag.searchString = searchWord;
                 searchWord.ToLower();
 
                 var products = context.products
@@ -178,13 +182,78 @@ namespace OnlineBikeStore.Controllers
                 }
             }
             var result = Mapper.Map<List<ProductViewModel>>(context.products.ToList());
+
+
             return View(result);
         }
-        //public PartialViewResult SearchPartial()
-        //{
 
-        //    return PartialView("",);
-        //}
+        public ActionResult Filter(int catId)
+        {
+            var categories = context.categories.ToList();
+            ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
+            ViewBag.Brands = context.brands.Select(b => b.brand_name).ToList();
+            var products = context.products.Where(p => p.category_id == catId).ToList();
+
+            ViewBag.catId = catId;
+            if (products != null)
+            {
+                var productsVM = Mapper.Map<List<ProductViewModel>>(products);
+                return View("Search", productsVM);
+            }
+            return View("Error");
+        }
+
+        [HttpPost]
+        public PartialViewResult SearchPartial(FilterDataModel filters, string searchString, string catId)
+        {
+            List<int> productIds;
+            List<product> filteredItems = new List<product>();
+
+            if (searchString != "")
+            {
+                searchString.ToLower();
+
+                productIds = context.products
+                    .Where(p => p.product_name.Contains(searchString) ||
+                                p.description.Contains(searchString) ||
+                                p.brand.brand_name.Contains(searchString) ||
+                                p.category.category_name.Contains(searchString))
+                    .Select(o => o.product_id)
+                    .ToList();
+            }
+            else
+            {
+                productIds = context.products
+                    .Where(p => p.category_id.ToString() == catId)
+                    .Select(x => x.product_id)
+                    .ToList();               
+            }
+
+            if (filters.brands != null)
+            {
+                foreach (var brand in filters.brands)
+                {
+                    var Items = context.products
+                        .Where(p => productIds.Contains(p.product_id) && p.brand.brand_name == brand)
+                        .ToList();
+                    filteredItems.AddRange(Items);
+                }
+            }
+
+            else
+            {
+                filteredItems = context.products
+                    .Where(p => productIds.Contains(p.product_id))
+                    .ToList();
+            }
+
+            if (filteredItems != null)
+            {
+                var productsVM = Mapper.Map<List<ProductViewModel>>(filteredItems);
+                return PartialView("_SearchPartial", productsVM);
+            }
+            return PartialView();
+        }
         //Search Products By Category
         public ActionResult FilterByCategory(int? categoryId)
         {

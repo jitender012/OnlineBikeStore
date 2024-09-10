@@ -1,13 +1,14 @@
 ﻿@model OnlineBikeStore.Models.ProfileViewModel
-    <style>
-        #edit-btn:hover, #cancel-btn:hover{
-            cursor:pointer;
-        }
-        .content {
-            border-radius: 5px;
-            background-color: white;
-        }
-    </style>
+<style>
+    #edit-btn:hover, #cancel-btn:hover {
+        cursor: pointer;
+    }
+
+    .content {
+        border-radius: 5px;
+        background-color: white;
+    }
+</style>
 <div class="content box-shadow-outset p-4">
     <div class="d-flex justify-content-between mb-1">
         <span>
@@ -17,16 +18,16 @@
             Edit
         </span>
         <span style="color:dodgerblue; display:none" id="cancel-btn">
-            Cancel  
+            Cancel
         </span>
     </div>
-    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post,new {@id= "profile-form" }))
+    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { @id = "profile-form" }))
     {
         <div class="row mb-1">
             <div class="col-lg-6">
                 <div class="label">
                     First Name
-                </div>                
+                </div>
                 <input type="text" class="acdi211 " name="first_name" value="@Model.first_name" disabled />
             </div>
             <div class="col-lg-6">
@@ -107,5 +108,5 @@
             $('#save-btn').hide();
         })
     });
-    
+
 </script>

@@ -11,11 +11,11 @@
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
             My Account
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
-            My Orders
-            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+           
+           
         </a>
         <h4>
-            Order Id: @Model.order_id
+            My Order
         </h4>
     </div>
     <div class="content-row">
@@ -32,21 +32,21 @@
             <div class="col-12 col-xl-6">
                 @switch (Model.order_status)
                 {
-                    case 1:
+                    case 0:
                         <h6>Order Placed</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
-                    case 2:
+                    case 1:
                         <h6>Order Shipped</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
-                    case 3:
+                    case 2:
                         <h6>Order Cancelled</h6>
                         break;
-                    case 4:
+                    case 3:
                         <h6>Order Delivered</h6>
                         break;
-                    case 5:
+                    case 4:
                         <h6>Order Returned</h6>
                         break;
                     default:
@@ -84,9 +84,13 @@
             </div>
 
             <div>
-                <h4 style="color:cornflowerblue">
-                    Rate and Review Product
-                </h4>
+                @if (Model.order_status == 3)
+                {
+                    <h4 style="color:cornflowerblue">
+                        Rate and Review Product
+                    </h4>
+                }
+
             </div>
 
 

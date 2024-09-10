@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-    <link href="~/Content/Admin/orders.css" rel="stylesheet" />
+<link href="~/Content/Admin/orders.css" rel="stylesheet" />
 
 
 <div class="container p-0">
@@ -19,7 +19,7 @@
         <h4>
             Orders
         </h4>
-    </div>   
+    </div>
 
 
     <div>
@@ -95,7 +95,8 @@
             $.ajax({
                 url: '@Url.Action("Orders", "Order")',
                 type: 'GET',
-                data: { orderId: number, orderStatus: status },
+                data: {                   
+                },
                 success: function (response) {
                     $('#partialViewContainer').html(response);
                 },

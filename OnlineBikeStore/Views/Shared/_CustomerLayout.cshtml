@@ -6,131 +6,154 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/customer-css")
-    @Scripts.Render("~/bundles/modernizr")    
+    @Scripts.Render("~/bundles/modernizr")
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }      
+
+        footer {
+            margin-top:auto;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;            
+        }
+
+
+    </style>
 </head>
 <body class="quicksand-medium login-banner">
-    <nav class="box-shadow-outset bg-success-subtle bg-gradient align-content-center">
-        <div class="container border-1 nav-body">
+    <div class="wrapper">
+        <nav class="box-shadow-outset bg-success-subtle bg-gradient align-content-center">
+            <div class="container border-1 nav-body">
 
-            <div class="row p-2 order-md-1  justify-content-sm-between">
-                @*logo*@
-                <div class="col-6 col-md-2 col-lg-2 d-flex align-items-start justify-content-start order-md-1  ">
-                    <a href="@Url.Action("Home", "Home",null)">
-                        <img class="logo-img" src="~/Images/Utilities/logo.png" />
+                <div class="row p-2 order-md-1  justify-content-sm-between">
+                    @*logo*@
+                    <div class="col-6 col-md-2 col-lg-2 d-flex align-items-start justify-content-start order-md-1  ">
+                        <a href="@Url.Action("Home", "Home",null)">
+                            <img class="logo-img" src="~/Images/Utilities/logo.png" />
 
-                    </a>
-                </div>
+                        </a>
+                    </div>
 
-                @*login, cart buttonns*@
-                <div class="col-6 col-md-3 order-md-3 col-lg-2 text-end align-content-center justify-content-end text-md-center ">
+                    @*login, cart buttonns*@
+                    <div class="col-6 col-md-3 order-md-3 col-lg-2 text-end align-content-center justify-content-end text-md-center ">
 
-                    <div class="justify-content-end d-flex flex-row ">
-                        @if (User.Identity.IsAuthenticated)
-                        {
+                        <div class="justify-content-end d-flex flex-row ">
+                            @if (User.Identity.IsAuthenticated)
+                            {
 
-                            <div class="dropdown">
-                                <a href="#" id="loginLink" class="btn login-btn box-shadow-outset">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="login-icon">
-                                            <i class="fa fa-user  text-light"></i>
-                                        </span>&nbsp;&nbsp;
-                                        <span class="login-text"> Profile</span>
+                                <div class="dropdown">
+                                    <a href="@Url.Action("UserProfile","Account", new {linkId = 0})" id="loginLink" class="btn login-btn box-shadow-outset">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="login-icon">
+                                                <i class="fa fa-user  text-light"></i>
+                                            </span>&nbsp;&nbsp;
+                                            <span class="login-text"> Profile</span>
+                                        </div>
+                                    </a>
+
+                                    <div class="dropdown-content">
+                                        <a href="@Url.Action("UserProfile","Account", new {linkId = 0})">Profile</a>
+                                        <a href="@Url.Action("UserProfile","Account", new {linkId = 1})">Orders</a>
+                                        <a href="@Url.Action("UserProfile","Account", new {linkId = 2})">Wishlist</a>
+                                        <a href="@Url.Action("UserProfile","Account", new {linkId = 3})">Your Reviews</a>
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Log Out
+                                        </a>
                                     </div>
-                                </a>
+                                </div>
 
-                                <div class="dropdown-content">
-                                    <a href="@Url.Action("UserProfile","Account")">Profile</a>
-                                    <a href="@Url.Action("OrderIndex","Order")">Orders</a>
-                                    <a href="#">Wishlist</a>
-                                    <a href="#">Your Reviews</a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        Log Out
+
+                                <div class="">
+                                    <a href="@Url.Action( "CartIndex", "Cart")" class="btn cart-btn box-shadow-outset">
+                                        <span>
+                                            <i class="fa fa-shopping-cart text-light"></i>
+                                        </span>
                                     </a>
                                 </div>
-                            </div>
+                            }
 
-
-                            <div class="">
-                                <a href="@Url.Action( "CartIndex", "Cart")" class="btn cart-btn box-shadow-outset">
-                                    <span>
-                                        <i class="fa fa-shopping-cart text-light"></i>
-                                    </span>
+                            else
+                            {
+                                <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn box-shadow-outset">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="login-text">Login</span>
+                                        <span class="login-icon">
+                                            <i class="fas fa-sign-in-alt  text-light"></i>
+                                        </span>
+                                    </div>
                                 </a>
-                            </div>
-                        }
-
-                        else
-                        {
-                            <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn box-shadow-outset">
-                                <div class="d-flex justify-content-between">
-                                    <span class="login-text">Login</span>
-                                    <span class="login-icon">
-                                        <i class="fas fa-sign-in-alt  text-light"></i>
-                                    </span>
+                                <div class="">
+                                    <button onclick="@Url.Action( "Index", "Cart")" class="btn cart-btn box-shadow-outset">
+                                        <span>
+                                            <i class="fa fa-shopping-cart text-light"></i>
+                                        </span>
+                                    </button>
                                 </div>
-                            </a>
-                            <div class="">
-                                <button onclick="@Url.Action( "Index", "Cart")" class="btn cart-btn box-shadow-outset">
-                                    <span>
-                                        <i class="fa fa-shopping-cart text-light"></i>
-                                    </span>
+                            }
+                        </div>
+
+                    </div>
+
+                    <!-- search -->
+                    <div class="col-12 col-sm-12 col-md-7 col-lg-8 order-md-2 pt-0  mb-md-0  align-content-center mt-2 mt-md-0">
+                        <div class="d-flex align-content-center justify-content-center">
+                            @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "search-form w-100", role = "search" }))
+                            {
+                                <input class="search-input box-shadow-inset" name="searchWord" type="search" placeholder=" Search for Products" style="font-family:Arial, FontAwesome" aria-label="Search" required>
+                                <button class="btn search-button box-shadow-outset" type="submit">
+                                    <i class="fa fa-search text-light"></i>
                                 </button>
-                            </div>
-                        }
-                    </div>
 
-                </div>
-
-                <!-- search -->
-                <div class="col-12 col-sm-12 col-md-7 col-lg-8 order-md-2 pt-0  mb-md-0  align-content-center mt-2 mt-md-0">
-                    <div class="d-flex align-content-center justify-content-center">
-                        @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "search-form w-100", role = "search" }))
-                        {
-                            <input class="search-input box-shadow-inset" name="searchWord" type="search" placeholder=" Search for Products" style="font-family:Arial, FontAwesome" aria-label="Search" required>
-                            <button class="btn search-button box-shadow-outset" type="submit">
-                                <i class="fa fa-search text-light"></i>
-                            </button>
-
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
+
+
+
             </div>
+        </nav>
+        @*Categories*@
 
+        @if (ViewBag.Categories != null)
+        {
+            <div class="categories box-shadow-outset">
+                @foreach (var item in ViewBag.Categories as List<OnlineBikeStore.Models.CategoryViewModel>)
+                {
+                    <div class="ecatdiv">
+                        <a href="@Url.Action("Filter","Home", new {catId = item.category_id})" class="t12">
 
+                            @item.category_name
 
-        </div>
-    </nav>
-    @*Categories*@
+                        </a>
+                    </div>
+                }
+            </div>
+        }
 
-    @if (ViewBag.Categories != null)
-    {
-        <div class="categories box-shadow-outset">
-            @foreach (var item in ViewBag.Categories as List<OnlineBikeStore.Models.CategoryViewModel>)
-            {
-                <div class="ecatdiv">
-                    <a href="@Url.Action()" class="t12">
+        <div class="container-fluid  p-0 ">
+            @RenderBody()
 
-                        @item.category_name
-
-                    </a>
-                </div>
-            }
-        </div>
-    }
-
-    <div class="container-fluid p-0">
-        @RenderBody()
-        <hr />
+        </div>        
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -1,50 +1,62 @@
-﻿@model IEnumerable<OnlineBikeStore.Models.ProductViewModel>
+﻿@model List<OnlineBikeStore.Models.ProductViewModel>
 @{
 
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
-@*<a href="~/Views/Partial_Views/_NavWithCategories.cshtml">~/Views/Partial_Views/_NavWithCategories.cshtml</a>*@
 
 <style>
-    .starStyle {
-        text-decoration: none;
-        color: #ffd100;
-    }
-    a {
-        text-decoration: none;
-        color:black
-    }
 </style>
-<div class="ads-grid  ">
+<link href="~/Content/Customer/search_products.css" rel="stylesheet" />
+<div class="ads-grid">
     <div class="container-fluid">
-
-        @*@Html.Partial("~/Views/Partial_Views/_NavWithCategories.cshtml")*@
         <div class="row">
-            <div class="col-lg-2 col-sm-4 col-md-3 mt-lg-0 mt-4 me-1 p-lg-0 border-right shadow-sm">
-                <div class="side-bar p-sm-4 p-3">
-                    <div class="py-2">
-                        <h4 class=" mb-3">Filters</h4>
-                        <hr />
+            <div class="d-none d-sm-block col-sm-5 col-md-4 col-lg-3 my-2">
+                <div class="flex-column" style="background-color:white">
+                    <div class="p-3">
+                        <h4>Filters</h4>
                     </div>
+                    <hr />
+
+
+                    <!-- brands -->
+                    <div class="px-3 py-2" id="brand-filters-btn">
+                        <span>Brands &nbsp;  <i id="angle2" class="fas fa-angle-up"></i></span>
+                    </div>
+                    <div class="d-block" id="brand-filters">
+                        <ul style="text-decoration:none; list-style:none">
+                            <li id="brandCB">
+                                @if (ViewBag.Brands != null)
+                                {
+                                    foreach (var brandName in ViewBag.Brands)
+                                    {
+                                        <input type="checkbox" id="@brandName" value="@brandName" />
+                                        <label for="@brandName">@brandName</label><br />
+                                    }
+                                }
+
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
                     <!-- price -->
-                    <div class="range border-bottom py-2">
-                        <h5 class="mb-3">Price</h5>
-                        <div class="w3l-range">
-                            <ul style="text-decoration:none; list-style:none">
-                                <li><a href="#">Under $1,000</a></li>
-                                <li class="my-1"><a href="#">$1,000 - $5,000</a></li>
-                                <li><a href="#">$5,000 - $10,000</a></li>
-                                <li class="my-1"><a href="#">$10,000 - $20,000</a></li>
-                                <li><a href="#">$20,000 - $30,000</a></li>
-                                <li class="mt-1"><a href="#">Over $30,000</a></li>
-                            </ul>
-                        </div>
+                    <div class="px-3 py-2" id="price-filters-btn">
+                        <span>Price &nbsp;<i id="angle1" class="fas fa-angle-down"></i> </span>
                     </div>
-
-
+                    <div class="d-none" id="price-filters">
+                        <ul style="text-decoration:none; list-style:none">
+                            <li class="my-1"><a href="#">$1,000 - $5,000</a></li>
+                            <li><a href="#">$5,000 - $10,000</a></li>
+                            <li class="my-1"><a href="#">$10,000 - $20,000</a></li>
+                            <li><a href="#">$20,000 - $30,000</a></li>
+                            <li class="mt-1"><a href="#">Over $30,000</a></li>
+                        </ul>
+                    </div>
+                    <hr />
                     <!-- reviews -->
-                    <div class="customer-rev border-bottom left-side py-2">
-                        <h5 >Customer Review</h5>
+                    <div class="px-3 py-2" id="review-filters-btn">
+                        <span>Customer Review &nbsp;  <i id="angle3" class="fas fa-angle-down"></i></span>
+                    </div>
+                    <div class="d-none" id="review-filters">
                         <ul style="list-style:none">
                             <li>
                                 <a href="#" class="starStyle">
@@ -75,24 +87,26 @@
                             </li>
                         </ul>
                     </div>
-
+                    <hr />
                     <!-- product type-->
-                    <div class="left-side border-bottom py-2">
-                        <h5 >Type</h5>
+                    <div class="px-3 py-2" id="type-filters-btn">
+                        <span>Type &nbsp;  <i id="angle4" class="fas fa-angle-down"></i></span>
+                    </div>
+                    <div class="d-none px-4" id="type-filters">
                         <div>
-                            <input type="checkbox" value="1" class="">
-                            <span class="span">Bikes</span>
+                            <input type="checkbox" value="1" id="ch12" class="">
+                            <label for="ch12">Bikes</label>
                         </div>
                         <div>
                             <input type="checkbox" value="2" class="">
                             <span class="span">Accessories</span>
                         </div>
                     </div>
+                    <hr />
 
-                  
 
                     <!-- arrivals -->
-                    <div class="left-side border-bottom py-2">
+                    <div class="left-side border-bottom m-3">
                         <h3 ">New Arrivals</h3>
                         <div>
 
@@ -106,11 +120,11 @@
                             <span class="span">Last 90 days</span>
                         </div>
 
-                    </div>                 
-                </div>               
+                    </div>
+                </div>
             </div>
 
-            <div class="col-12 col-lg-8">
+            <div class="col-12 col-sm-7 col-md-8 col-lg-9 my-2" id="_SearchPartial">
                 @Html.Partial("_SearchPartial", Model)
             </div>
         </div>
@@ -119,6 +133,59 @@
 
 <script>
     $(document).ready(function () {
+        loadPartialView();
+
+
+        $("#price-filters-btn").on("click", function () {
+            $("#price-filters").toggleClass("d-none");
+            $("#angle1").toggleClass("fa-angle-down fa-angle-up");
+        })
+
+        $("#brand-filters-btn").on("click", function () {
+            $("#brand-filters").toggleClass("d-none");
+            $("#angle2").toggleClass("fa-angle-down fa-angle-up");
+        })
+        $("#review-filters-btn").on("click", function () {
+            $("#review-filters").toggleClass("d-none");
+            $("#angle3").toggleClass("fa-angle-down fa-angle-up");
+        })
+        $("#type-filters-btn").on("click", function () {
+            $("#type-filters").toggleClass("d-none");
+            $("#angle4").toggleClass("fa-angle-down fa-angle-up");
+        })
 
     })
+
+    function loadPartialView() {
+        $("#brandCB input[type=checkbox]").change(function () {
+            var arr = [];
+
+            $("input[type=checkbox]").each(function (index) {
+
+                if ($(this).is(":checked")) {
+                    arr.push($(this).val());
+                }
+            })            
+
+            var data = {
+                searchString: '@ViewBag.searchString',
+                catId:'@ViewBag.catId',
+                filters: {
+                    brands: arr
+                }
+            };
+
+        $.ajax({
+                url: '@Url.Action("SearchPartial", "Home")',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    $('#_SearchPartial').html(response);
+                },
+                error: function () {
+                    console.log('Error loading partial view.');
+                }
+            });
+        })
+    }
 </script>

@@ -1,4 +1,4 @@
-﻿
+﻿@model List<OnlineBikeStore.Models.Student>
 @{
     Layout = null;
 }
@@ -13,6 +13,7 @@
     <link href="~/Content/all.min.css" rel="stylesheet" />
 </head>
 <body>
+    <i class="fas fa-angle-down"></i>
     <div class="parent">
         <p style="color:red;">Hello</p>
         <div>
@@ -21,6 +22,16 @@
         <input type="text" />
     </div>
 
+
+    <div>
+        <input type="checkbox" value="off" id="cb1" />
+        <input type="checkbox" value="off" id="cb2" />
+        <input type="checkbox" value="off" id="cb3" />
+        <input type="checkbox" value="off" id="cb4" />
+    </div>
+    <div id="partialViewContainer">
+        @Html.Partial("_jQuery")
+    </div>
 
     <script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
@@ -43,11 +54,43 @@
             }).css({
                 "color": 'blue',
                 'padding': '6px 10px'
-               })
+            })
             newElement.appendTo(parentWidth)
-           
+
             //alert(text);
         })
+
+        $(document).ready(function () {
+            $("i").on("click", function () {                
+                $(this).toggleClass("fa-angle-down fa-angle-up");
+                $(this).css("color", "red")
+            })
+
+            onLoad();
+
+            $("input[type=checkbox]").change(function () {
+                var arr = [];
+                $("input[type=checkbox]").each(function (index) {
+                    arr[index] = $(this).is(':checked');
+                })
+
+                console.log(arr)
+            })
+            function onLoad() {
+                $.ajax({
+                    url: '@Url.Action("getStudents", "Test")',
+                    type: 'GET',
+                    success: function (response) {
+                    $('#partialViewContainer').html(response);
+                    },
+                    error: function () {
+                    console.log('Error loading partial view.');
+                    }
+                });
+            }
+        })
+
+
     </script>
 </body>
 </html>

@@ -4,6 +4,8 @@ using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
@@ -75,24 +77,107 @@ namespace OnlineBikeStore.Controllers
                                  feedback_text = f.feedback_text,
                                  image_url = f.image_url,
                                  ratingValue = f.ratingValue,
-                             }).ToList();
+                             })
+                             .ToList();
             return Json(feedbacks, JsonRequestBehavior.AllowGet);
         }
         [Authorize]
+        public ActionResult AddUpdateFeedback(int pId)
+        {
+            int uId = context.GetUserId(User.Identity.Name);
+
+            //check if review existed
+            bool isReviewed = context.feedbacks
+                .Any(f => f.product_id == pId && f.customer_id == uId);
+
+            product product = context.products
+                .Where(p => p.product_id == pId)
+                .SingleOrDefault();
+
+            var feedbackData = new FeedbackViewModel()
+            {
+                product_name = product.product_name,
+                product_img = product.url,
+                product_id = pId
+            };
+
+            //set values for fields if review existed
+            if (isReviewed)
+            {
+                feedbackData = context.feedbacks
+                   .Where(f => f.product_id == pId && f.customer_id == uId).Select(x => new FeedbackViewModel
+                   {
+                       feedback_id = x.feedback_id,
+                       customer_id = x.customer_id,
+                       product_id = x.product_id,
+                       image_url = x.image_url,
+                       ratingValue = x.ratingValue,
+                       feedback_text = x.feedback_text,
+                       date = x.date,
+                       product_name = product.product_name,
+                       product_img = product.url,
+                   })
+                   .SingleOrDefault();
+
+                return View(feedbackData);
+            }
+            return View(feedbackData);
+        }
+
+        [Authorize]
         [HttpPost]
-        public JsonResult AddUpdateFeedback(FeedbackViewModel data)
+        public ActionResult AddUpdateFeedback(FeedbackViewModel data)
         {
             var userId = context.GetUserId(User.Identity.Name);
-
-            var isReviewed = context.feedbacks
-                .Where(x=>x.product_id==data.product_id && x.customer_id == userId)
-                .Any();
-
-
-            if (data.feedback_id < 1 && !isReviewed)
+            if (ModelState.IsValid)
             {
-                try
+                var isReviewed = context.feedbacks
+                                    .Where(x => x.product_id == data.product_id && x.customer_id == userId)
+                                    .Any();
+
+                //addd review if not reviewed
+                if (!isReviewed)
                 {
+                    try
+                    {
+                        if (data.ImageFile != null && data.ImageFile.ContentLength > 0)
+                        {
+                            // Save the image to the server
+                            string fileName = Path.GetFileNameWithoutExtension(data.ImageFile.FileName);
+                            string extension = Path.GetExtension(data.ImageFile.FileName);
+                            fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                            data.image_url = "/Images/FeedbackImages/" + fileName;
+                            fileName = Path.Combine(Server.MapPath("~/Images/FeedbackImages"), fileName);
+                            data.ImageFile.SaveAs(fileName);
+                        }
+
+                        feedback newFeedback = new feedback()
+                        {
+                            customer_id = userId,
+                            date = DateTime.Now,
+                            feedback_text = data.feedback_text,
+                            image_url = data.image_url,
+                            product_id = data.product_id,
+                            ratingValue = data.ratingValue,
+                        };
+
+                        context.feedbacks.Add(newFeedback);
+                        context.SaveChanges();
+
+                        return RedirectToAction("FeedbackSuccess");
+                    }
+                    catch (Exception)
+                    {
+                        return View(data);
+                    }
+                }
+                //edit review if already reviewed
+                else
+                {
+                    var existingFeedback = context.feedbacks
+                                                .Where(x => x.product_id == data.product_id && x.customer_id == userId)
+                                                .FirstOrDefault();
+
                     if (data.ImageFile != null && data.ImageFile.ContentLength > 0)
                     {
                         // Save the image to the server
@@ -104,52 +189,25 @@ namespace OnlineBikeStore.Controllers
                         data.ImageFile.SaveAs(fileName);
                     }
 
-                    feedback newFeedback = new feedback()
-                    {
-                        customer_id = userId,
-                        date = DateTime.Now,
-                        feedback_text = data.feedback_text,
-                        image_url = data.image_url,
-                        product_id = data.product_id,
-                        ratingValue = data.ratingValue,
-                    };
+                    existingFeedback.date = DateTime.Now;
+                    existingFeedback.feedback_text = data.feedback_text;
+                    existingFeedback.ratingValue = data.ratingValue;
+                    existingFeedback.image_url = data.image_url;
 
-                    context.feedbacks.Add(newFeedback);
                     context.SaveChanges();
 
-                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("FeedbackSuccess");
                 }
             }
-            else
-            {
-                var existingFeedback = context.feedbacks
-                                            .Where(x => x.feedback_id == data.feedback_id)
-                                            .FirstOrDefault();
+            return View(data);
 
-                if (data.ImageFile != null && data.ImageFile.ContentLength > 0)
-                {
-                    // Save the image to the server
-                    string fileName = Path.GetFileNameWithoutExtension(data.ImageFile.FileName);
-                    string extension = Path.GetExtension(data.ImageFile.FileName);
-                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                    data.image_url = "/Images/FeedbackImages/" + fileName;
-                    fileName = Path.Combine(Server.MapPath("~/Images/FeedbackImages"), fileName);
-                    data.ImageFile.SaveAs(fileName);
-                }
-                existingFeedback.date = DateTime.Now;
-                existingFeedback.feedback_text = data.feedback_text;
-                existingFeedback.ratingValue = data.ratingValue;
-                existingFeedback.image_url = data.image_url;
+        }
 
-                context.SaveChanges();
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-            }
-
-        }        
+        public ActionResult FeedbackSuccess()
+        {
+            var unratedProducts = GetUnratedProducts();
+            return View(unratedProducts);
+        }
 
         [HttpPost]
         public JsonResult RemoveFeedback(int feedbackId)
@@ -169,5 +227,20 @@ namespace OnlineBikeStore.Controllers
             return Json(new { success = true, msg = "Invalid Feedback." }, JsonRequestBehavior.AllowGet);
         }
 
+        public List<ProductViewModel> GetUnratedProducts()
+        {
+            var userId = context.GetUserId(User.Identity.Name);            
+
+            //get products that are not reviewed by logged in customer using stored procedure
+            var unratedProducts = context.spGetUnratedProducts(userId)
+                .Select(x => new ProductViewModel
+                {
+                    product_id = x.product_id,
+                    product_name = x.product_name,
+                    url = x.url
+                }).ToList();
+
+            return unratedProducts;
+        }
     }
 }

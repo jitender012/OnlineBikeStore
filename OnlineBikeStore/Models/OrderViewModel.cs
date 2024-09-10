@@ -13,7 +13,10 @@ namespace OnlineBikeStore.Models
         public DateTime order_date { get; set; }
         public DateTime required_date { get; set; }
         public DateTime? shipped_date { get; set; }
-        public decimal total_price { get; set; }
+        public decimal? total_price { get; set; }
+        public List<string> item_names {  get; set; }
+        public string first_product_image { get; set; }
+        public int total_items { get; set; }
               
     }
 
@@ -38,7 +41,7 @@ namespace OnlineBikeStore.Models
     public class OrderItem
     {
         public int item_id { get; set; }        
-        public int quantity { get; set; }
+        public int quantity { get; set; }        
         public ProductDetailsViewModel productDetails { get; set; }
     }
     public class OrderSummaryViewModel

@@ -90,7 +90,7 @@
                     <div class="form-group mb-2">
                         <label class="control-label">Description</label>
                         <div class="">
-                            @Html.TextAreaFor(model => model.description, new { @class = "form-control" })
+                            @Html.TextAreaFor(model => model.description, new { rows = "4", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
                         </div>
                     </div>

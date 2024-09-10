@@ -4,5 +4,39 @@
     Layout = null;
 }
 
-<h2>GetOrdersCustomer</h2>
+<div >
+    <div class="p-2">
+        <input type="text" class="form-control" placeholder="Search Order" id="searchOrderInput" />
+    </div>
+    <br />
+   
+    <div id="partialViewContainer">
+        @Html.Partial("_GetOrdersCustomer")
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
 
+        $("#searchOrderInput").on("input", function () {
+            loadPartialView();
+        });
+
+        function loadPartialView() {
+            var searchInput = $("#searchOrderInput").val();
+           
+            $.ajax({
+                 url: '@Url.Action("GetOrdersPartial", "Order")',
+                 type: 'GET',
+                 data: { query: searchInput, orderStatus: null },
+                 success: function (response) {
+                     $('#partialViewContainer').html(response);
+                 },
+                 error: function () {
+                     console.log('Error loading partial view.');
+                 }
+            });
+        }
+
+    })
+
+</script>

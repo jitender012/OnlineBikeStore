@@ -12,8 +12,7 @@ function getData() {
         url: '/Account/GetUserId',
         method: 'GET',
         success: function (data) {
-            userId = data;
-            console.log("Fetched Value:", userId);
+            userId = data;            
         },
         error: function (error) {
             console.error("Error fetching data:", error);

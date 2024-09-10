@@ -88,11 +88,11 @@
                     <del class="mx-2 font-weight-light">@pwd</del>
                     <label>Free delivery</label>
                     <div id="overallRating">
-                        
+
                     </div>
                 </p>
                 <p>
-                    @Model.description
+                    @Html.Raw(Model.description.Replace("--", "<br />-"))
                 </p>
 
                 <div class="">
@@ -146,15 +146,15 @@
                     {
                         if (Model.isReviewed)
                         {
-                            <button class="btn-cr w-auto" id="editReviewBtn">
+                            <a class="btn-cr w-auto"  href="@Url.Action("AddUpdateFeedback","Feedback", new {pId = Model.product_id})">
                                 Edit Review
-                            </button>
+                            </a>
                         }
                         else
                         {
-                            <button class="btn-cr w-auto" id="addReviewBtn">
+                            <a class="btn-cr w-auto" href="@Url.Action("AddUpdateFeedback","Feedback", new {pId = Model.product_id})">
                                 Post Review
-                            </button>
+                            </a>
                         }
                     }
                 </div>

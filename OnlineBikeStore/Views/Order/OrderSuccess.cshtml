@@ -4,5 +4,42 @@
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<h2>Order Successful</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+
+<style>
+
+    .parent {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .abc {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem;
+        padding: 1rem;
+        justify-items: center;
+        align-items: center;        
+        border: 2px solid forestgreen;
+        border-radius: 5px;
+    }
+ 
+</style>
+
+<div class="parent">
+
+    <div class="abc">
+        <i class="far fa-check-circle" style=" color: forestgreen; height: 40px; width: 40px;"></i>
+        <h3 style="color:forestgreen" class="my-2"> Order Confirmed</h3>        
+    </div>
+        <h5>Thank you for Your Order.</h5>
+        <h5>Check the status of your order on the <a href="@Url.Action("UserProfile", "Account", new { linkId = 1 })">Order Tracking</a>  Page.</h5>
+
+   <div>
+       <a href="@Url.Action("Home","Home")" class="btn btn-outline-info">Continue Shopping</a>
+   </div>
+
+</div>

@@ -84,7 +84,7 @@ namespace OnlineBikeStore.Controllers
                     context.Entry(user).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    return RedirectToAction("UserProfile");
+                    return RedirectToAction("UserProfile", new { linkId = 0});
                 }                
             }
 
@@ -138,12 +138,16 @@ namespace OnlineBikeStore.Controllers
         }
 
         [Authorize]
-        public ActionResult UserProfile()
+        public ActionResult UserProfile(int linkId)
         {
+            ViewBag.LinkId = linkId;
             if (User.Identity.IsAuthenticated)
             {
                 var email = User.Identity.Name;
-                var name = context.users.Where(e => e.email == email).Select(s => s.first_name).FirstOrDefault();
+                var name = context.users
+                    .Where(e => e.email == email)
+                    .Select(s => s.first_name)
+                    .FirstOrDefault();
                 return View("UserProfile", "~/Views/Shared/_CustomerLayout.cshtml", name);
             }
             else
@@ -165,5 +169,10 @@ namespace OnlineBikeStore.Controllers
             var userId = context.GetUserId(User.Identity.Name);
             return Json(userId,  JsonRequestBehavior.AllowGet);
         }
+    }
+    public class NavLink
+    {
+        public string uname { get; set; }
+        public int link { get; set; }
     }
 }

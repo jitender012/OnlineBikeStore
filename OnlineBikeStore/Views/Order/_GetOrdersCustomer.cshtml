@@ -1,65 +1,80 @@
 ﻿@model List<OnlineBikeStore.Models.OrderViewModel>
 
-<table class="table  w-100">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Expected Date</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="">
+
+
+    <div>
         @foreach (var item in Model.OrderByDescending(x => x.order_id))
         {
-            <tr  onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'" style="justify-content: space-between">
-                <td>
-                    @item.order_id
-                </td>
-                <td>
-                    @item.total_price
-                </td>
-                <td>
-                    @item.order_date.ToString("D")
-                </td>
+            <div class="content-row d-flex c-pointer" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
+                <div class="d-grid justify-content-center text-center" style="width:120px">
 
-                <td>
+                    @if (item.first_product_image != null)
+                    {
+                        <img src="@Url.Content(item.first_product_image)" style="max-width:150px" />
+                    }
+                    else
+                    {
+                        <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" style="max-width:100px" />
+                    }
+                    (@item.total_items Items)
+                </div>
+                <div class="d-flex mx-4">
+                    <div class="d-grid">
+                        <div>
+
+                            <h6>
+                                @item.item_names.FirstOrDefault() @if (item.item_names.Count() > 1)
+                                {
+                                    <span>, ...</span>
+                                }
+                            </h6>
+
+                        </div>
+                        <span>
+                            ₹@item.total_price.Value.ToString("N2")
+                        </span>
+                        <span style="font-size: 13px; color: grey; align-self:baseline">
+                            Ordered: @item.order_date.ToString("D")
+                        </span>
+                    </div>
+
+
+
+
+                </div>
+                <p class="ms-auto align-self-center">
                     @switch (item.order_status)
                     {
                         case 0:
-                            <h6>Order Placed</h6>
-                            break;
-                        case 1:
-                            <h6>Order Shipped</h6>
-                            break;
-                        case 2:
-                            <h6>Order Delivered</h6>
-                            break;
-                        case 3:
-                            <h6>Order Cancelled</h6>
-                            break;
-                        case 4:
-                            <h6>Order Returned</h6>
-                            break;
-                        default:
-                            @:Unknown Status
-                            break;
-                    }
+                        <p>Order Placed</p>
+                        break;
+                    case 1:
+                        <p>Order Shipped</p>
+                        break;
+                    case 2:
+                        <p>Order Delivered</p>
+                        break;
+                    case 3:
+                        <p> Order Cancelled</p>
+                        break;
+                    case 4:
+                        <p> Order Returned</p>
+                        break;
+                    default:
+                        @:Unknown Status
+                        break;
+                }</p>
+                </div>
 
-                </td>
-                <td>
-                    <p>@item.required_date.ToString("D")</p>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            }
+    </div>
+</div>
 
 
 
 <script>
 
-        
+
 
 </script>
