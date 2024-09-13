@@ -1,75 +1,110 @@
 ﻿@{
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
-
+<style>
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+</style>
 @model string
 <link href="~/Content/Customer/userProfile.css" rel="stylesheet" />
 <div class="parent">
     <div class="container">
         <div class="row parent">
             <div class="col-12 col-lg-3 mt-2 p-2 ">
-                <div class="d-flex hello-user mb-3 bg-white box-shadow-outset" ">
-                    <div class="">
-                        <i class="far fa-user-circle" style=" height: 50px; width: 50px; color: #fc4a1a; margin: 0px 18px;"></i>
+                <nav class="navbar navbar-expand-sm bg-light">
+                    <div class="container-fluid px-0">
+                        <button class="navbar-toggler content-box w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <img src="~/Images/Utilities/filter-icon.png" height="20" width="20" />
+                        </button>
 
+
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                            <div class="d-flex hello-user mb-3 bg-white box-shadow-outset">
+                                <div class="">
+                                    <i class="far fa-user-circle" style=" height: 50px; width: 50px; color: #fc4a1a; margin: 0px 18px;"></i>
+
+                                </div>
+                                <div class=" flex-column " style=" text-align: center">
+                                    @if (Model != null)
+                                    {
+                                        <span style="font-size:20px;">@Model.ToString()</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <div class="mynav">
+                                    <div data-bs-dismiss="offcanvas">
+
+                                        @Ajax.ActionLink("Profile Information", "UserInformation", "Account", new AjaxOptions
+                                           {
+                                               HttpMethod = "GET",
+                                               UpdateTargetId = "targetResult",
+                                               InsertionMode = InsertionMode.Replace
+                                           }, new { @class = "NS64GK", id = "profileLink" })
+
+                                    </div>
+                                    <div data-bs-dismiss="offcanvas">
+                                        @Ajax.ActionLink("Orders", "GetOrders", "Order", null, new AjaxOptions
+                                           {
+                                               HttpMethod = "GET",
+                                               UpdateTargetId = "targetResult",
+                                               InsertionMode = InsertionMode.Replace
+                                           }, new { @class = "NS64GK", id = "ordersLink" })
+                                    </div>
+                                    <div data-bs-dismiss="offcanvas">
+                                        @Ajax.ActionLink("Wishlist", "WishlistIndex", "Wishlist", null, new AjaxOptions
+                                           {
+                                               HttpMethod = "GET",
+                                               UpdateTargetId = "targetResult",
+                                               InsertionMode = InsertionMode.Replace,
+                                               LoadingElementId = "loadingImage"
+                                           }, new { @class = "NS64GK", id = "wishlistLink" })
+                                    </div>
+                                    <div data-bs-dismiss="offcanvas">
+
+                                        @Ajax.ActionLink("Reviews & Ratings", "Index", "Feedback", null, new AjaxOptions
+                                           {
+                                               HttpMethod = "GET",
+                                               UpdateTargetId = "targetResult",
+                                               InsertionMode = InsertionMode.Replace,
+                                               LoadingElementId = "loadingImage"
+                                           }, new { @class = "NS64GK", id = "reviewsLink" })
+                                    </div>
+                                    <div data-bs-dismiss="offcanvas">
+                                        @Ajax.ActionLink("Notifications", "ManageAddress", "Account", new AjaxOptions
+                                           {
+                                               HttpMethod = "GET",
+                                               UpdateTargetId = "targetResult",
+                                               InsertionMode = InsertionMode.Replace
+
+                                           }, new { @class = "NS64GK" })
+                                    </div> <div data-bs-dismiss="offcanvas">
+                                        @Ajax.ActionLink("Logout", "ManageAddress", "Account", new AjaxOptions
+                                            {
+                                                HttpMethod = "GET",
+                                                UpdateTargetId = "targetResult",
+                                                InsertionMode = InsertionMode.Replace
+                                            }, new { @class = "NS64GK" })
+                                    </div>
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class=" flex-column " style=" text-align: center">
-                        @if (Model != null)
-                        {
-                            <span style="font-size:20px;">@Model.ToString()</span>
-                        }
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="mynav">
+                </nav>
 
-                        @Ajax.ActionLink("Profile Information", "UserInformation", "Account", new AjaxOptions
-                           {
-                               HttpMethod = "GET",
-                               UpdateTargetId = "targetResult",
-                               InsertionMode = InsertionMode.Replace
-                           }, new { @class = "NS64GK", id = "profileLink" })
 
-                        @Ajax.ActionLink("Orders", "GetOrders", "Order", null, new AjaxOptions
-                               {
-                                   HttpMethod = "GET",
-                                   UpdateTargetId = "targetResult",
-                                   InsertionMode = InsertionMode.Replace
-                               }, new { @class = "NS64GK", id = "ordersLink" })
 
-                        @Ajax.ActionLink("Wishlist", "WishlistIndex", "Wishlist", null, new AjaxOptions
-                           {
-                               HttpMethod = "GET",
-                               UpdateTargetId = "targetResult",
-                               InsertionMode = InsertionMode.Replace,
-                               LoadingElementId = "loadingImage"
-                           }, new { @class = "NS64GK", id = "wishlistLink" })
 
-                        @Ajax.ActionLink("Reviews & Ratings", "Index", "Feedback", null, new AjaxOptions
-                           {
-                               HttpMethod = "GET",
-                               UpdateTargetId = "targetResult",
-                               InsertionMode = InsertionMode.Replace,
-                               LoadingElementId = "loadingImage"
-                           }, new { @class = "NS64GK", id = "reviewsLink" })
-
-                        @Ajax.ActionLink("Notifications", "ManageAddress", "Account", new AjaxOptions
-                           {
-                               HttpMethod = "GET",
-                               UpdateTargetId = "targetResult",
-                               InsertionMode = InsertionMode.Replace
-
-                           }, new { @class = "NS64GK" })
-
-                        @Ajax.ActionLink("Logout", "ManageAddress", "Account", new AjaxOptions
-                           {
-                               HttpMethod = "GET",
-                               UpdateTargetId = "targetResult",
-                               InsertionMode = InsertionMode.Replace
-                           }, new { @class = "NS64GK" })
-                       
-                    </div>                   
-                </div>
             </div>
 
             <div class="col-12 col-lg-8 mt-2 p-2">

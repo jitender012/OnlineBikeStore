@@ -2,27 +2,25 @@
 @{
     Layout = null;
 }
-<style>
-    .img {
-        max-height: 100px;
-        max-width: 100px;
-    }
-</style>
+
 <div>
     @foreach (var item in Model)
     {
-        <div class="content-row d-flex" onclick="product()">
-            <div class="d-grid justify-content-center" style="width:120px">
-                <a href="@Url.Action("Product","Home",new {pId = item.product_id})">
-                    @if (item.product_img != null)
-                    {
-                        <img src="@Url.Content(item.product_img)" class="img" />
-                    }
-                    else
-                    {
-                        <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" class="img" />
-                    }
-                </a>
+        <div class="content-box" onclick="product()">
+            <div class="text-center">
+
+                <div class="img-container img-container-size2">
+                    <a href="@Url.Action("Product","Home",new {pId = item.product_id})">
+                        @if (item.product_img != null)
+                        {
+                            <img src="@Url.Content(item.product_img)"  />
+                        }
+                        else
+                        {
+                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png"  />
+                        }
+                    </a>
+                </div>
                 @item.product_name
             </div>
             <div class="d-flex mx-4">
@@ -39,8 +37,8 @@
                                 <i class="fa fa-star" style="color:grey"></i>
                             }
                         }
-                    </div>                        
-                  
+                    </div>
+
 
                     @item.feedback_text
                     <br />
@@ -53,7 +51,7 @@
                         @item.date.ToString("D")
                     </span>
                 </div>
-               
+
             </div>
             <p class="ms-auto align-self-center">Remove</p>
         </div>

@@ -146,7 +146,7 @@
                     {
                         if (Model.isReviewed)
                         {
-                            <a class="btn-cr w-auto"  href="@Url.Action("AddUpdateFeedback","Feedback", new {pId = Model.product_id})">
+                            <a class="btn-cr w-auto" href="@Url.Action("AddUpdateFeedback","Feedback", new {pId = Model.product_id})">
                                 Edit Review
                             </a>
                         }
@@ -158,97 +158,13 @@
                         }
                     }
                 </div>
-
-                <div id="reviewFormDiv" class="d-none section mt-3">
-                    <form id="reviewForm" enctype="multipart/form-data">
-                        <div id="stars" value=""></div>
-                        <p id="ratingError" style="color: red; display: none;">Please select a rating.</p>
-                        <input type="hidden" id="feedbackId" name="feedback_id" value="">
-                        <input type="hidden" id="ratingValue" name="ratingValue" required value="">
-                        <input type="hidden" name="product_id" id="product_id" required value="@Model.product_id">
-                        <textarea name="feedback_text" class="form-control" placeholder="Your Review"></textarea><br />
-                        <label class="form-label">Upload Image</label>
-                        <input type="file" accept="image/*" name="ImageFile" class="form-control" value="" /><br />
-                        <input type="hidden" id="image_url" name="image_url" value="">
-                        <button type="submit" class="btn-cr">Submit Review</button>
-                    </form>
-                </div>
-
-                <div id="message"></div>
-
-                <div class="mt-3">
-                    <div id="feedbacks">
-
-                    </div>
+                <div id="feedbacks">
+                    @foreach (var f in Model.Feedback)
+                    {
+                        <p>@f.feedback_text</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
-<
-<script src="~/Fractional-Star-Rating-jsRapStar/jsRapStar.js"></script>
-
-<script>
-
-    $(document).ready(function () {
-         loadFeedbacks();
-
-        //Toggle visibility of feedback form
-        $('#addReviewBtn, #editReviewBtn').click(function () {
-            $('#reviewFormDiv').toggleClass("d-none");
-
-                if ($('#reviewFormDiv').hasClass("d-none")) {
-                    $('#editReviewBtn').text("Edit Review");
-                    $('#addReviewBtn').text("Post Review");
-                } else {
-                    $(this).text("Cancel");
-                }
-        })
-
-        //set the rating value of the input
-        $('#stars').jsRapStar({
-            onClick: function (score) {
-                $("#ratingValue").val(score)
-            },
-            length: 5
-        });
-
-        $('#reviewForm').on('submit', function (event) {
-            event.preventDefault();
-
-            var ratingValue = $('#ratingValue').val();
-            var ratingError = $('#ratingError');
-
-            if (!ratingValue) {
-                ratingError.show();
-            } else {
-                ratingError.hide();
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: '@Url.Action("AddUpdateFeedback", "Feedback")',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        if (response.success) {
-                            loadFeedbacks();
-                            $('#message').html('<p style="color: green;">Feedback submitted successfully!</p>');
-                            $('#reviewFormDiv').toggleClass("d-none");
-                            $('#addReviewBtn, #editReviewBtn').text("Edit Review");
-                        } else {
-                            $('#message').html('<p style="color: red;">Error: ' + response.message + '</p>');
-                        }
-                    },
-                    error: function () {
-                        $('#message').html('<p style="color: red;">An unexpected error occurred.</p>');
-                    }
-                });
-            }
-        });
-    })
-
-
-</script>

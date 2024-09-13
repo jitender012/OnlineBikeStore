@@ -21,23 +21,23 @@ namespace OnlineBikeStore
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap.min.js",                       
                       "~/Scripts/fontawesome/all.min.js",
                       "~/Scripts/site.js"
                     ));
-           
+
             // Bundle for admin CSS files
             bundles.Add(new StyleBundle("~/Content/admin-css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/admin.css",                     
+                      "~/Content/admin.css",
                       "~/Content/fontawesome.min.css"));
 
             // Bundle for customer CSS files
             bundles.Add(new StyleBundle("~/Content/customer-css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/customer.css",                                         
+                      "~/Content/customer.css",
                       "~/Content/fontawesome.min.css"));
 
 

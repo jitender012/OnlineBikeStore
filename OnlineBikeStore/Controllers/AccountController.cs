@@ -148,6 +148,7 @@ namespace OnlineBikeStore.Controllers
                     .Where(e => e.email == email)
                     .Select(s => s.first_name)
                     .FirstOrDefault();
+
                 return View("UserProfile", "~/Views/Shared/_CustomerLayout.cshtml", name);
             }
             else

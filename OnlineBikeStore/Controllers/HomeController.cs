@@ -21,13 +21,8 @@ namespace OnlineBikeStore.Controllers
         {
             return View();
         }
-        public ActionResult Index()
-        {
-            var categories = context.categories.ToList();
-            ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
-            return View();
-        }
-
+        [Route("")]
+        [Route("Home")]
         public ActionResult Home()
         {
             if (TempData["SuccessMessage"] != null)
@@ -109,7 +104,7 @@ namespace OnlineBikeStore.Controllers
                         .Any(c => c.product_id == pId && c.user_id == uId);
 
                     isPurchased = context.orders
-                                            .Where(x => x.user.user_id == uId && x.order_items.Any(z => z.product_id == pId))
+                                            .Where(x => x.user.user_id == uId && x.order_status == 2 && x.order_items.Any(z => z.product_id == pId))
                                             .Any();
                     isReviewed = context.feedbacks
                         .Any(x => x.product_id == pId && x.customer_id == uId);

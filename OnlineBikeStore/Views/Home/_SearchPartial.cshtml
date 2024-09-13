@@ -8,42 +8,42 @@
 }
 else
 {
-   
-<div class="row">
-    @foreach (var item in Model)
-    {       
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 px-1 pb-2">
-            <div class="product-tile">
-                <div class="img-fluid d-flex justify-content-center align-items-center p-3 " style="height:250px;">
-                    <a href="@Url.Action("Product", "Home",new {pId= @item.product_id })" target="_blank">
-                        @if (item.url != null)
-                        {
-                            <img src="@Url.Content(item.url.ToString())" style="max-width:220px" alt="">
-                        }
-                        else
-                        {
-                            <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" alt="No Image">
-                        }
-                    </a>
-                </div>
-                <hr />
-                <div class="tile-body p-2">
-                    @{
-                    var pwd = item.list_price + ((item.list_price * 10) / 100);
 
-                    }
-                    <span class="tile-title">@item.product_name</span><br />
-                    <div class="info-product-price my-2">
-                        <span class="item_price">₹@item.list_price</span>
-                        <del>₹@pwd</del>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 px-1 pb-2">
+                <div class="product-tile scale-up-hover mx-2 mx-sm-0 ">
+                    <div class="img-fluid d-flex justify-content-center align-items-center" style="height:250px;">
+                        <a href="@Url.Action("Product", "Home",new {pId= @item.product_id })" target="_blank">
+                            @if (item.url != null)
+                            {
+                                <img src="@Url.Content(item.url.ToString())" style="max-width:220px" alt="">
+                            }
+                            else
+                            {
+                                <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" alt="No Image">
+                            }
+                        </a>
                     </div>
-                    <div class="text-center">
-                        Details
-                    </div>
+                    <hr />
+                    <div class="tile-body p-2">
+                        @{
+                            var pwd = item.list_price + ((item.list_price * 10) / 100);
 
+                        }
+                        <span class="tile-title">@item.product_name</span><br />
+                        <div class="info-product-price my-2">
+                            <span class="item_price">₹@item.list_price</span>
+                            <del>₹@pwd</del>
+                        </div>
+                        <div class="text-center">
+                            Details
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
 }

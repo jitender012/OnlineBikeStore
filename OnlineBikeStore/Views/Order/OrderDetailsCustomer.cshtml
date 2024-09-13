@@ -11,16 +11,16 @@
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
             My Account
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
-           
-           
+
+
         </a>
         <h4>
             My Order
         </h4>
     </div>
-    <div class="content-row">
-        <div class="row">
-            <div class="col-12 col-xl-6">
+    <div class="content-box">
+        <div class="row w-100">
+            <div class="col-12 col-xl-5">
                 <h4>Delivery Address</h4>
                 <span>@Model.userDetails.first_name @Model.userDetails.last_name</span><br />
                 <p>
@@ -29,7 +29,7 @@
                 <br />
                 <span>Mobile number: @Model.userDetails.phone</span>
             </div>
-            <div class="col-12 col-xl-6">
+            <div class="col-8 col-xl-4">
                 @switch (Model.order_status)
                 {
                     case 0:
@@ -53,36 +53,52 @@
                         @:Unknown Status
                         break;
                 }
-
             </div>
+            <div class="col-4 col-xl-3 d-flex flex-column justify-content-around align-items-center">
+                <div>
+                    <button class="btn btn-sm btn-dark">Download Invoice</button>
+                </div>
+                @if (Model.order_status == 0 || Model.order_status == 1)
+                {
+                    <div>
+                        <button class="btn btn-sm btn-danger">Cancel Order</button>
+                    </div>
+
+                }
+                @if (Model.order_status == 3)
+                { 
+                    <div>
+                        <button class="btn btn-sm btn-primary">Return Product</button>
+                    </div>
+                }
+
+                </div>
         </div>
     </div>
 
-    @foreach (var item in Model.orderItems.OrderByDescending(x=>x.item_id))
+    @foreach (var item in Model.orderItems.OrderByDescending(x => x.item_id))
     {
-        <div class="content-row orders-row " style="justify-content: space-between">
+        <div class="content-box">
             <div class="d-flex">
                 <div class="card1-imgdiv p-3 ">
                     @if (item.productDetails.url != null)
                     {
                         <img class="card1-img" src="@Url.Content(@item.productDetails.url)" />
-
                     }
                     else
                     {
                         <img class="card1-img" src="~/Images/Utilities/No-Image-Placeholder.svg.png" />
-
                     }
                 </div>
                 <div class="p-3 ms-xl-5 product-text">
                     @item.productDetails.product_name
                     <br />
-                    @item.productDetails.description
-                    <br />
-                    @item.productDetails.list_price
+                    ₹@item.productDetails.list_price
                 </div>
             </div>
+            <div>
 
+            </div>
             <div>
                 @if (Model.order_status == 3)
                 {
@@ -92,8 +108,6 @@
                 }
 
             </div>
-
-
         </div>
     }
 </div>

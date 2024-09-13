@@ -6,17 +6,20 @@
     <div>
         @foreach (var item in Model.OrderByDescending(x => x.order_id))
         {
-            <div class="content-row d-flex c-pointer" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
-                <div class="d-grid justify-content-center text-center" style="width:120px">
+            <div class="content-box scale-up-hover" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
+                <div class="text-center">
 
-                    @if (item.first_product_image != null)
-                    {
-                        <img src="@Url.Content(item.first_product_image)" style="max-width:150px" />
-                    }
-                    else
-                    {
-                        <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" style="max-width:100px" />
-                    }
+                    <div class="img-container" style="width:120px">
+
+                        @if (item.first_product_image != null)
+                        {
+                            <img src="@Url.Content(item.first_product_image)" />
+                        }
+                        else
+                        {
+                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" />
+                        }
+                    </div>
                     (@item.total_items Items)
                 </div>
                 <div class="d-flex mx-4">
