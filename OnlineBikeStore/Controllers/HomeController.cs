@@ -263,5 +263,11 @@ namespace OnlineBikeStore.Controllers
             }
             else return View("Search");
         }
+
+        public ActionResult NotFound()
+        {
+            Response.StatusCode = 404;
+            return View("Error"); 
+        }
     }
 }

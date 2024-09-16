@@ -5,6 +5,14 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .active-fliter{
+        background-color:#cbe1ce;
+    }
+    .your-element::-webkit-scrollbar {
+        display: none; 
+    }
+</style>
 <link href="~/Content/Admin/orders.css" rel="stylesheet" />
 
 
@@ -30,7 +38,7 @@
         </div>
         <div class="filterDivsParent row">
 
-            <div class="filterDiv col-lg-2 col-4">
+            <div class="filterDiv col-lg-2 col-4 active-fliter">
                 <span>All Orders</span>
                 <span id="allOrders"></span>
             </div>
@@ -62,7 +70,7 @@
 
 
     <div id="partialViewContainer">
-        @Html.Partial("_Orders")
+        @Html.Partial("_GetOrdersAdmin")
     </div>
 
 
@@ -78,24 +86,28 @@
         $("#Cancelled").text(@Model.Count(x=>x.order_status==3))
         $("#Returned").text(@Model.Count(x=>x.order_status==4))
 
-        var number = 0;
+        var query;
         var status;
 
         $("#searchQuery").on('input',function () {
-            number = $("#searchQuery").val();
+            query = $("#searchQuery").val();
             loadPartialView();
         })
 
         $('.filterDiv').on('click', function () {
             status = $(this).find('span').last().attr('id');
             loadPartialView();
+            $('.filterDiv').removeClass("active-fliter");
+            $(this).addClass("active-fliter");
         })
 
         function loadPartialView() {
             $.ajax({
-                url: '@Url.Action("Orders", "Order")',
+                url: '@Url.Action("GetOrdersPartial", "Order")',
                 type: 'GET',
-                data: {                   
+                data: {
+                    query: query,
+                    orderStatus: status
                 },
                 success: function (response) {
                     $('#partialViewContainer').html(response);

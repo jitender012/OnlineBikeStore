@@ -1,7 +1,7 @@
 ﻿@model OnlineBikeStore.Models.OrderDetailsViewModel
 @{
     ViewBag.Title = "OrderDetails";
-    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <link href="~/Content/Customer/order_details.css" rel="stylesheet" />
 <div class="container">
@@ -32,21 +32,21 @@
             <div class="col-12 col-xl-6">
                 @switch (Model.order_status)
                 {
-                    case 1:
+                    case 0:
                         <h6>Order Placed</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
-                    case 2:
+                    case 1:
                         <h6>Order Shipped</h6>
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
+                        break;
+                    case 2:
+                        <h6>Order Delivered</h6>
                         break;
                     case 3:
                         <h6>Order Cancelled</h6>
                         break;
                     case 4:
-                        <h6>Order Delivered</h6>
-                        break;
-                    case 5:
                         <h6>Order Returned</h6>
                         break;
                     default:
@@ -66,7 +66,6 @@
                     @if (item.productDetails.url != null)
                     {
                         <img class="card1-img" src="@Url.Content(@item.productDetails.url)" />
-
                     }
                     else
                     {
@@ -76,19 +75,11 @@
                 </div>
                 <div class="p-3 ms-xl-5 product-text">
                     @item.productDetails.product_name
-                    <br />
-                    @item.productDetails.description
-                    <br />
+                    <br />                  
                     @item.productDetails.list_price
                 </div>
             </div>
-
-            <div>
-                <h4 style="color:cornflowerblue">
-                    Rate and Review Product
-                </h4>
-            </div>
-
+           
 
         </div>
     }

@@ -4,22 +4,18 @@
     <thead>
         <tr>
             <th>Order ID</th>
-            <th>Amount</th>
             <th>Date</th>
             <th>Status</th>
-            <th>Expected Date</th>
-            <td></td>
+            <th>Total</th>            
+            <td>Actions</td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.OrderByDescending(x => x.order_id))
         {
-            <tr  onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'" style="justify-content: space-between">
+            <tr onclick="window.location.href='@Url.Action("OrderDetailsAdmin", "Order", new { orderId = item.order_id })'" style="justify-content: space-between">
                 <td>
                     @item.order_id
-                </td>
-                <td>
-                    @item.total_price
                 </td>
                 <td>
                     @item.order_date.ToString("D")
@@ -50,20 +46,12 @@
 
                 </td>
                 <td>
-                    <p>@item.required_date.ToString("D")</p>
-                </td>
+                    @item.total_price
+                </td>             
                 <td>
-
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-
-
-<script>
-
-        
-
-</script>

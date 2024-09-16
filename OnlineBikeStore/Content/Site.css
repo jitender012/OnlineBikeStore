@@ -6,6 +6,15 @@
 }
 
 /*Common elements style*/
+a{
+    text-decoration:none;
+}
+
+.text-style1{
+    font-size:13px;
+    color:#808080;
+    margin:0;
+}
 .content-box {
     display: flex;
     padding: 15px;
@@ -93,8 +102,7 @@ hr{
 
 .product-row {
     display: flex;
-    overflow: auto;
-    scrollbar-gutter: auto;
+    overflow: auto;    
 }
 
     .product-row::-webkit-scrollbar {

@@ -82,12 +82,13 @@ namespace OnlineBikeStore.Controllers
             if (query != null)
             {
                 ordersListVM = ordersListVM
-                    .Where(o => 
-                    o.item_names != null && o.item_names.Any(name => name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) || 
-                    o.order_date.ToString("D").Contains(query) || 
-                    o.total_price.ToString().Contains(query)
+                    .Where(o =>
+                    o.item_names != null && o.item_names.Any(name => name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    o.order_date.ToString("D").Contains(query) ||
+                    o.total_price.ToString().Contains(query) ||
+                    o.order_id.ToString().Contains(query)
                     )
-                    .ToList();                
+                    .ToList();
             }
             var o_status = -1;
 
@@ -135,6 +136,7 @@ namespace OnlineBikeStore.Controllers
                     .ToList();
                 return PartialView("_GetOrdersCustomer", ordersListVM);
             }
+            
             return PartialView("_GetOrdersAdmin", ordersListVM);
 
         }
@@ -170,7 +172,7 @@ namespace OnlineBikeStore.Controllers
             var orderItemsVM = orderItems.Select(oi => new OrderItem
             {
                 item_id = oi.item_id,
-                quantity = oi.quantity,               
+                quantity = oi.quantity,
                 productDetails = products
                             .Where(p => p.product_id == oi.product_id)
                             .Select(p => new ProductDetailsViewModel
@@ -194,7 +196,7 @@ namespace OnlineBikeStore.Controllers
                 userDetails = user,
                 orderItems = orderItemsVM
             };
-            return View("OrderDetailsCustomer",orderDetailsViewModel);
+            return View("OrderDetailsCustomer", orderDetailsViewModel);
 
         }
 
@@ -256,40 +258,26 @@ namespace OnlineBikeStore.Controllers
 
         }
 
-        public ActionResult UpdateOrderStatus(int orderId)
+        public JsonResult UpdateOrderStatus(int oID, string oStatus)
         {
-            var order = context.orders
-                .SingleOrDefault(o => o.order_id == orderId);
-
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            var orderDetails = new OrderViewModel
-            {
-                order_id = order.order_id,
-                order_status = order.order_status,
-                order_date = order.order_date
-            };
-            return View(orderDetails);
-        }
-        public ActionResult UpdateOrderStatus(OrderViewModel model)
-        {
-            if (model.order_id > 0)
+            byte orderStatus = byte.Parse(oStatus);
+            if (oID > 0)
             {
                 var order = context.orders
-                                .SingleOrDefault(o => o.order_id == model.order_id);
+                                .SingleOrDefault(o => o.order_id == oID);
                 if (order == null)
                 {
-                    return HttpNotFound();
+                    return Json(new {success= false, message="Order Not Found!"}, JsonRequestBehavior.AllowGet);
                 }
-                order.order_status = model.order_status;
+                order.order_status = orderStatus;
+                order.required_date = DateTime.Now;
                 context.SaveChanges();
 
-                return RedirectToAction("OrderDetails", new { id = model.order_id });
+                return  Json(new { success = true, message = "Order Cancelled" }, JsonRequestBehavior.AllowGet);
             }
-            return View(model);
+            return Json(new { success = false, message = "Invalid Order Id!" }, JsonRequestBehavior.AllowGet);
         }
+        
         public ActionResult OrderSummary(int pId = 0)
         {
             if (User.Identity.IsAuthenticated)

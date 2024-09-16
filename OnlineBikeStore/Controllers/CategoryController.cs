@@ -164,7 +164,7 @@ namespace OnlineBikeStore.Controllers
 
                     return Json(new { success = true, message = "Category deleted successfully!" });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Log the exception here for further analysis if needed
                     return Json(new { success = false, message = "An error occurred while deleting the category. Please try again." });

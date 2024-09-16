@@ -41,10 +41,10 @@
                         <p>Expected Date: @Model.required_date.ToString("D")</p>
                         break;
                     case 2:
-                        <h6>Order Cancelled</h6>
+                        <h6>Order Delivered</h6>
                         break;
                     case 3:
-                        <h6>Order Delivered</h6>
+                        <h6>Order Cancelled</h6>
                         break;
                     case 4:
                         <h6>Order Returned</h6>
@@ -60,19 +60,37 @@
                 </div>
                 @if (Model.order_status == 0 || Model.order_status == 1)
                 {
-                    <div>
-                        <button class="btn btn-sm btn-danger">Cancel Order</button>
+                    <div id="cancelBtnDiv">
+                        <button class="btn btn-sm btn-danger"  data-bs-toggle="modal"  data-bs-target="#exampleModal">Cancel Order</button>
+                    </div>                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to cancel this Order?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-danger" id="confirmDelete" data-bs-target="#confirmDeleteModal" onclick="cancelOrder(@Model.order_id)">Yes</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 }
-                @if (Model.order_status == 3)
-                { 
+              
+                @if (Model.order_status == 2)
+                {
                     <div>
                         <button class="btn btn-sm btn-primary">Return Product</button>
                     </div>
-                }
+                }               
 
-                </div>
+            </div>
         </div>
     </div>
 
@@ -111,3 +129,32 @@
         </div>
     }
 </div>
+
+
+
+<script>
+    function cancelOrder(oId) {
+         $.ajax({
+             url: "@Url.Action("UpdateOrderStatus", "Order")",
+             data: {
+                 oID:oId,
+                 oStatus: 3
+             },
+             type: "POST",
+             success: function (response) {
+                 if (response.success) {
+                     $('#exampleModal').modal('hide')
+                     $('#cancelBtnDiv').html('<span class="text-muted">Order Cancelled</span>');
+                 }
+                 else {
+                     $('#exampleModal').modal('hide')
+                     alert(response.message)
+                 }
+             },
+             error: function () {
+                 $('#exampleModal').modal('hide')
+                     alert("Something went wrong.")
+             }
+        })
+    }
+</script>

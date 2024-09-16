@@ -429,6 +429,11 @@
     <Content Include="Content\svg-with-js.min.css" />
     <Content Include="Content\v4-shims.css" />
     <Content Include="Content\v4-shims.min.css" />
+    <Content Include="cwa-lightbox-gallery\cwa_lightbox\css\cwa_lightbox_css.css" />
+    <Content Include="cwa-lightbox-gallery\cwa_lightbox\javascript\cwa_lightbox_v1.js" />
+    <Content Include="cwa-lightbox-gallery\cwa_lightbox_%28jquery with css%29\javascript\cwa_lightbox_bundle_v1.js" />
+    <Content Include="cwa-lightbox-gallery\cwa_main.css" />
+    <Content Include="cwa-lightbox-gallery\index.html" />
     <Content Include="favicon.ico" />
     <Content Include="Fractional-Star-Rating-jsRapStar\index.css" />
     <Content Include="Fractional-Star-Rating-jsRapStar\index.html" />
@@ -446,6 +451,7 @@
     <Content Include="Images\Utilities\logo.png" />
     <Content Include="Images\Utilities\logo1.png" />
     <Content Include="Images\Utilities\No-Image-Placeholder.svg.png" />
+    <Content Include="Images\Utilities\user-icon.png" />
     <Content Include="Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
@@ -485,6 +491,7 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="cwa-lightbox-gallery\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
@@ -754,6 +761,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Feedback\ProductReviews.cshtml" />
+    <Content Include="Views\Feedback\_ProductReviews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

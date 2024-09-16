@@ -7,7 +7,9 @@
 
 <link href="~/Content/Customer/product.css" rel="stylesheet" />
 <link href="~/Fractional-Star-Rating-jsRapStar/jsRapStar.css" rel="stylesheet" />
+<link href="~/cwa-lightbox-gallery/cwa_lightbox/css/cwa_lightbox_css.css" rel="stylesheet" />
 
+<div id="notification" class="notification">@ViewBag.SuccessMessage</div>
 <div class="view-body container d-flex justify-content-center">
 
     <div class="row content">
@@ -77,7 +79,7 @@
 
         <div class="col-lg-8  p-3">
             @*Product Details Section*@
-            <div class="section">
+            <div class="section p-3">
                 <h3 class="mb-3">@Model.product_name</h3>
                 <p class="mb-3">
                     <span class="item_price">@Model.list_price</span>
@@ -87,8 +89,26 @@
                     }
                     <del class="mx-2 font-weight-light">@pwd</del>
                     <label>Free delivery</label>
-                    <div id="overallRating">
 
+                    @{
+                        var reviewCount = Model.Feedback.Count;
+                        int avgRating = 0;
+                        if (reviewCount > 0)
+                        {
+
+                            avgRating = (Model.Feedback.Sum(x => x.ratingValue)) / reviewCount;
+                        }
+                    }
+                    <div id="overallRating">
+                        @if (reviewCount > 0)
+                        {
+                            <i class="fa fa-star" style="color:yellow"></i><span>@avgRating </span><span>(@reviewCount Reviews)</span>
+
+                        }
+                        else
+                        {
+                            <span>No Reviews</span>
+                        }
                     </div>
                 </p>
                 <p>
@@ -140,8 +160,8 @@
 
             @*Reviews Section*@
             <div class="section">
-                <div class="d-flex justify-content-between" style=" border-bottom: 1px solid #dedede;">
-                    <div><h2>Reviews</h2></div>
+                <div class="d-flex justify-content-between p-3" style="background-color:#ebebeb">
+                    <div><span>Reviews</span></div>
                     @if (Model.isPurchased)
                     {
                         if (Model.isReviewed)
@@ -158,13 +178,66 @@
                         }
                     }
                 </div>
-                <div id="feedbacks">
+                <div>
+
                     @foreach (var f in Model.Feedback)
                     {
-                        <p>@f.feedback_text</p>
+                        <div class="p-3" style="border-bottom: 1px solid #ebebeb">
+                            <div class="stars d-flex" style="text-shadow: 0px 0px 1px BLACK;" value="@f.ratingValue"></div>
+
+                            <div class="img-container" style="width:120px">
+                                @if (f.image_url != null)
+                                {
+                                    <a class="cwa-lightbox-image" href="@Url.Content(f.image_url)">
+                                        <img src="@Url.Content(f.image_url)" />
+                                        </a>
+                                        }
+                                </div>
+                            <p>@f.feedback_text</p>
+
+                            <p class="m-0" style="font-size:12px; color:grey">@f.customer_name, @f.date.ToString("D")</p>
+                        </div>
+                    }
+
+
+                </div>
+
+                <div class=" p-1" style="text-align: center; color:cornflowerblue">
+                    @if (reviewCount < 1)
+                    {
+
+                        <span>No Reviews</span>
+                    }
+                    @if (reviewCount > 0 && reviewCount <= 2)
+                    {
+
+                        <span>No More Reviews</span>
+                    }
+                    @if (reviewCount > 2)
+                    {
+
+                        <a href="@Url.Action("ProductReviews", "Feedback", new { pId = Model.product_id })">Show All Reviews</a>
                     }
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="~/Fractional-Star-Rating-jsRapStar/jsRapStar.js"></script>
+<script src="~/cwa-lightbox-gallery/cwa_lightbox/javascript/cwa_lightbox_v1.js"></script>
+<script src="~/cwa-lightbox-gallery/cwa_lightbox_(jquery with css)/javascript/cwa_lightbox_bundle_v1.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.stars').jsRapStar({
+            enabled: false,
+            length: 5
+        });
+
+    })
+     $(document).ready(function() {
+     var message = '@ViewBag.SuccessMessage';
+     if (message) {
+         showNotification(message);
+     }
+ });
+</script>

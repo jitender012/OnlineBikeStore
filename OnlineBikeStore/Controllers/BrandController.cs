@@ -160,7 +160,7 @@ namespace OnlineBikeStore.Controllers
 
                     return Json(new { success = true, message = "brand deleted successfully!" });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {                   
                     return Json(new { success = false, message = "An error occurred while deleting the brand. Please try again." });
                 }

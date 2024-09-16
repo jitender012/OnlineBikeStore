@@ -37,7 +37,7 @@
                                     </div>
                                 </a>
                                 <div class="dropdown">
-                                    <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn dropbtn">
+                                    <a href="@Url.Action( "GetOrders","Order")" id="loginLink" class="btn dropbtn">
                                         <div class="d-flex justify-content-between">
                                             <span class="login-icon">
                                                 <i class="fas fa-clipboard-check text-light"></i>
@@ -155,9 +155,9 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    <script src="~/Scripts/AdminJs.js"></script>
     <script src="~/Scripts/chart.min.js"></script>
-
     <script src="~/Scripts/dataTables.min.js"></script>
+
+    <script src="~/Scripts/AdminJs.js"></script>
 </body>
 </html>

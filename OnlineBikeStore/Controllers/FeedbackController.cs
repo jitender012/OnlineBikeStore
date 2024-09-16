@@ -60,26 +60,34 @@ namespace OnlineBikeStore.Controllers
             }
         }
         [HttpGet]
-        public JsonResult ProductReviews(int pId)
+        public ActionResult ProductReviews(int pId)
         {
             var feedbacks = (from f in context.feedbacks
                              join p in context.products on f.product_id equals p.product_id
                              where f.product_id == pId
-                             select new FeedbackViewModel
+                             select new FeedbackViewModel2
                              {
-                                 customer_id = f.customer_id,
-                                 feedback_id = f.feedback_id,
-                                 customer_name = context.users
-                                                    .Where(x => x.user_id == f.customer_id)
-                                                    .Select(z => z.first_name + " " + z.last_name)
-                                                    .FirstOrDefault(),
-                                 date = f.date,
-                                 feedback_text = f.feedback_text,
-                                 image_url = f.image_url,
-                                 ratingValue = f.ratingValue,
+                                 product_img = p.url,
+                                 product_name = p.product_name,
+                                 feedbacks = context.feedbacks
+                                 .Where(fb => fb.product_id == pId)
+                                 .Select(fb => new FeedbackViewModel
+                                 {
+                                     customer_id = fb.customer_id,
+                                     feedback_id = fb.feedback_id,
+                                     customer_name = context.users
+                                                        .Where(x => x.user_id == fb.customer_id)
+                                                        .Select(z => z.first_name + " " + z.last_name)
+                                                        .FirstOrDefault(),
+                                     date = fb.date,
+                                     feedback_text = fb.feedback_text,
+                                     image_url = fb.image_url,
+                                     ratingValue = fb.ratingValue
+
+                                 }).ToList()
                              })
-                             .ToList();
-            return Json(feedbacks, JsonRequestBehavior.AllowGet);
+                             .FirstOrDefault();
+            return View(feedbacks);
         }
         [Authorize]
         public ActionResult AddUpdateFeedback(int pId)
@@ -222,14 +230,14 @@ namespace OnlineBikeStore.Controllers
 
                     return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                 }
-                return Json(new { success = true, msg = "Feedback not found." }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, msg = "Feedback not found." }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { success = true, msg = "Invalid Feedback." }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = false, msg = "Invalid Feedback." }, JsonRequestBehavior.AllowGet);
         }
 
         public List<ProductViewModel> GetUnratedProducts()
         {
-            var userId = context.GetUserId(User.Identity.Name);            
+            var userId = context.GetUserId(User.Identity.Name);
 
             //get products that are not reviewed by logged in customer using stored procedure
             var unratedProducts = context.spGetUnratedProducts(userId)

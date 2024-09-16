@@ -50,4 +50,8 @@ tr:hover{
 #partialViewContainer{
     overflow-y:auto;
     max-height:430px;
+
+}
+#partialViewContainer::-webkit-scrollbar {
+    display: none;
 }

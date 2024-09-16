@@ -53,7 +53,9 @@ namespace OnlineBikeStore.Controllers
                 context.wishlists.Remove(existingItem);
                 context.SaveChanges();
 
+                ViewBag.SuccessMessage = "Removed from wishlist.";
                 return Json(new { success = true, inWishlist = false });
+                
             }
             // Add item if already not in the wishlist
             else
@@ -65,7 +67,7 @@ namespace OnlineBikeStore.Controllers
                 };
                 context.wishlists.Add(newItem);
                 context.SaveChanges();
-
+                ViewBag.SuccessMessage = "Added to wishlist.";
                 return Json(new { success = true, inWishlist = true });
             }
         }

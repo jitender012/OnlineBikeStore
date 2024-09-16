@@ -2,22 +2,27 @@
 @{
     Layout = null;
 }
-
+@if (Model.Count < 1)
+{
+    <div class="content-box">
+        No feedbacks.
+    </div>
+}
 <div>
     @foreach (var item in Model)
     {
-        <div class="content-box" onclick="product()">
+        <div class="content-box" id="fbContainer_@item.feedback_id">
             <div class="text-center">
 
                 <div class="img-container img-container-size2">
                     <a href="@Url.Action("Product","Home",new {pId = item.product_id})">
                         @if (item.product_img != null)
                         {
-                            <img src="@Url.Content(item.product_img)"  />
+                            <img src="@Url.Content(item.product_img)" />
                         }
                         else
                         {
-                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png"  />
+                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" />
                         }
                     </a>
                 </div>
@@ -53,8 +58,55 @@
                 </div>
 
             </div>
-            <p class="ms-auto align-self-center">Remove</p>
+
+            <button class="ms-auto align-self-center btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Remove</button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to remove this feedback?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="confirmDelete" data-bs-target="#confirmDeleteModal" onclick="removeFeedback(@item.feedback_id)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     }
 </div>
 
+
+
+<script>
+ function removeFeedback(fId) {
+     $.ajax({
+         url: "@Url.Action("RemoveFeedback","Feedback")",
+         data: { feedbackId: fId },
+         type: "POST",
+         success: function (response) {
+             if (response.success) {
+                 $("#fbContainer_" + fId).remove();
+                 $('#exampleModal').modal('hide')
+             }
+             else {
+                 alert("Feedback not found.")
+             }
+         },
+         error: function () {
+             alert("Something went wrong.")
+         }
+     })
+ }
+
+    $(document).ready(function () {
+
+    })
+</script>
