@@ -132,9 +132,9 @@
                                     <a href="#">Account</a>
                                     <a href="#">Notifications</a>
                                     <a href="#">Setting</a>
-                                    <button type="button" class="logout-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Log Out
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,24 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Are you leaving?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to log out?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cr-cyan-dark " data-bs-dismiss="modal">Cancel</button>
+                    <a href="@Url.Action("Logout","Account")" class="btn btn-cr-red">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

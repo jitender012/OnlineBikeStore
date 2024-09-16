@@ -55,14 +55,14 @@
                 }
             </div>
             <div class="col-4 col-xl-3 d-flex flex-column justify-content-around align-items-center">
-                <div>
-                    <button class="btn btn-sm btn-dark">Download Invoice</button>
-                </div>
+
                 @if (Model.order_status == 0 || Model.order_status == 1)
-                {
+                {<div>
+                        <button class="btn btn-sm btn-dark">Download Invoice</button>
+                    </div>
                     <div id="cancelBtnDiv">
-                        <button class="btn btn-sm btn-danger"  data-bs-toggle="modal"  data-bs-target="#exampleModal">Cancel Order</button>
-                    </div>                    
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Cancel Order</button>
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -82,13 +82,13 @@
                         </div>
                     </div>
                 }
-              
+
                 @if (Model.order_status == 2)
                 {
                     <div>
                         <button class="btn btn-sm btn-primary">Return Product</button>
                     </div>
-                }               
+                }
 
             </div>
         </div>
@@ -118,10 +118,13 @@
 
             </div>
             <div>
-                @if (Model.order_status == 3)
+                @if (Model.order_status == 2)
                 {
                     <h4 style="color:cornflowerblue">
-                        Rate and Review Product
+                        <a href="@Url.Action("AddUpdateFeedback","feedback", new {pId = item.productDetails.product_id})">
+
+                            Rate and Review Product
+                        </a>
                     </h4>
                 }
 

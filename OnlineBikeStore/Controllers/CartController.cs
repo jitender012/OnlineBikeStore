@@ -17,10 +17,10 @@ namespace OnlineBikeStore.Controllers
             context = new BikeStoreEntities();
         }
         // GET: Cart
+        [Authorize]
         public ActionResult CartIndex()
         {
-            if (User.Identity.IsAuthenticated)
-            {
+           
 
                 //get user id of logged in user
                 var userId = context.users
@@ -56,8 +56,7 @@ namespace OnlineBikeStore.Controllers
                 };
 
                 return View(cart);
-            }
-            return View("Error");
+           
         }
 
         public ActionResult AddToCart(int pId)

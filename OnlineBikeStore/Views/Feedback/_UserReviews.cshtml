@@ -11,7 +11,7 @@
 <div>
     @foreach (var item in Model)
     {
-        <div class="content-box" id="fbContainer_@item.feedback_id">
+        <div class="content-box scale-up-hover" id="fbContainer_@item.feedback_id">
             <div class="text-center">
 
                 <div class="img-container img-container-size2">
@@ -28,6 +28,8 @@
                 </div>
                 @item.product_name
             </div>
+            <a href="@Url.Action("AddUpdateFeedback","feedback", new {pId = item.product_id})">
+
             <div class="d-flex mx-4">
                 <div class="d-grid">
                     <div>
@@ -58,6 +60,7 @@
                 </div>
 
             </div>
+            </a>
 
             <button class="ms-auto align-self-center btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Remove</button>
             <!-- Modal -->

@@ -136,7 +136,7 @@ namespace OnlineBikeStore.Controllers
                     .ToList();
                 return PartialView("_GetOrdersCustomer", ordersListVM);
             }
-            
+
             return PartialView("_GetOrdersAdmin", ordersListVM);
 
         }
@@ -267,17 +267,26 @@ namespace OnlineBikeStore.Controllers
                                 .SingleOrDefault(o => o.order_id == oID);
                 if (order == null)
                 {
-                    return Json(new {success= false, message="Order Not Found!"}, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Order Not Found!" }, JsonRequestBehavior.AllowGet);
                 }
                 order.order_status = orderStatus;
-                order.required_date = DateTime.Now;
+
+                if (orderStatus == 1)
+                {
+                    order.shipped_date = DateTime.Now;
+                }
+                //required date will be used as cancelled and delivered date
+                if (orderStatus == 3 || orderStatus == 2)
+                {
+                    order.required_date = DateTime.Now;
+                }
                 context.SaveChanges();
 
-                return  Json(new { success = true, message = "Order Cancelled" }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { success = false, message = "Invalid Order Id!" }, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult OrderSummary(int pId = 0)
         {
             if (User.Identity.IsAuthenticated)

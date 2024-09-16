@@ -53,6 +53,7 @@
                     <div class="col-6 col-md-3 order-md-3 col-lg-2 text-end align-content-center justify-content-end text-md-center ">
 
                         <div class="justify-content-end d-flex flex-row ">
+                            @*when user is logged in*@
                             @if (User.Identity.IsAuthenticated)
                             {
 
@@ -98,11 +99,13 @@
                                     </div>
                                 </a>
                                 <div class="">
-                                    <button onclick="@Url.Action( "Index", "Cart")" class="btn cart-btn box-shadow-outset">
-                                        <span>
-                                            <i class="fa fa-shopping-cart text-light"></i>
-                                        </span>
-                                    </button>
+                                    <a href="@Url.Action( "CartIndex", "Cart")" class="btn cart-btn box-shadow-outset">
+                                        
+                                            <span>
+                                                <i class="fa fa-shopping-cart text-light"></i>
+                                            </span>
+                                        
+                                    </a>
                                 </div>
                             }
                         </div>

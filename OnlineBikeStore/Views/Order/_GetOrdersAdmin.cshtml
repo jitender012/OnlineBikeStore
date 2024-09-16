@@ -6,21 +6,20 @@
             <th>Order ID</th>
             <th>Date</th>
             <th>Status</th>
-            <th>Total</th>            
+            <th>Total</th>
             <td>Actions</td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.OrderByDescending(x => x.order_id))
         {
-            <tr onclick="window.location.href='@Url.Action("OrderDetailsAdmin", "Order", new { orderId = item.order_id })'" style="justify-content: space-between">
-                <td>
+            <tr style="justify-content: space-between">
+                <td  onclick="window.location.href='@Url.Action("OrderDetailsAdmin", "Order", new { orderId = item.order_id })'">
                     @item.order_id
                 </td>
                 <td>
                     @item.order_date.ToString("D")
                 </td>
-
                 <td>
                     @switch (item.order_status)
                     {
@@ -47,11 +46,90 @@
                 </td>
                 <td>
                     @item.total_price
-                </td>             
+                </td>
                 <td>
+                    @if (item.order_status != 2 && item.order_status != 3)
+                    {
+                        <select name="oStatus" id="oStatus_@item.order_id" onchange="enableButton(@item.order_id)">
+                            <option value=""  selected>Update Status</option>
+                            @if (item.order_status < 1)
+                            {
+                                <option value="1">Shipped</option>
+                            }
+                            @if (item.order_status < 2)
+                            {
+                                <option value="2">Delivered</option>
+                            }
+                        </select>
+                        <button onclick="updateOrderStatus(@item.order_id)"  id="statusUpdateBtn_@item.order_id" disabled>
+                            <i class="fa fa-check"></i>
+                        </button>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<script>
+    //$(document).ready(function () {
+    //    $("#oStatus").on("change", function () {
+    //        var aaa = $(this).val();
+    //        alert(aaa)
+    //    })
+    //})
+    function updateOrderStatus(oId) {
+        var o_status = $("#oStatus_" + oId).val();
+          $.ajax({
+              url: "@Url.Action("UpdateOrderStatus", "Order")",
+              data: {
+                  oID:oId,
+                  oStatus: o_status
+              },
+              type: "POST",
+              success: function (response) {
+                  if (response.success)
+                  {
+                      alert("Order status updated.");
+                      loadPartialView();
+                  }
+                  else {
+                      alert(response.message)
+                  }
+              },
+              error: function () {
+                      alert("Something went wrong.")
+              }
+         })
+    }
+    function enableButton(oId) {
+        var oStatus = $("#oStatus_" + oId).val();
+        var button = $("#statusUpdateBtn_" + oId);
+
+
+        if (oStatus) {
+            button.prop("disabled", false);
+        } else {
+            button.prop("disabled", true);
+        }
+    }
+
+    function loadPartialView() {
+        var _query = null;
+        var status = null;
+    $.ajax({
+        url: '@Url.Action("GetOrdersPartial", "Order")',
+        type: 'GET',
+        data: {
+            query: _query,
+            orderStatus: status
+        },
+        success: function (response) {
+            $('#partialViewContainer').html(response);
+        },
+        error: function () {
+            console.log('Error loading partial view.');
+        }
+    });
+}
+</script>
