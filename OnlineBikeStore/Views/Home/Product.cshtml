@@ -82,7 +82,7 @@
             <div class="section p-3">
                 <h3 class="mb-3">@Model.product_name</h3>
                 <p class="mb-3">
-                    <span class="item_price">@Model.list_price</span>
+                    <span class="item_price">Rs. @Model.list_price.ToString("N2")</span>
                     @{
                         var pwd = Model.list_price + ((Model.list_price * 10) / 100);
 
