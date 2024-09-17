@@ -55,8 +55,7 @@ namespace OnlineBikeStore.Controllers
                     products = cartProductsVM
                 };
 
-                return View(cart);
-           
+                return View(cart);           
         }
 
         public ActionResult AddToCart(int pId)

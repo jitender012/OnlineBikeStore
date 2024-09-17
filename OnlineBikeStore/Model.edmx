@@ -1090,7 +1090,7 @@
             <End Role="staffs" EntitySet="staffs" />
           </AssociationSet>
           <FunctionImport Name="spGetUnratedProducts" ReturnType="Collection(OnlineBikeStoreModel.spGetUnratedProducts_Result)">
-            <Parameter Name="customer_id" Mode="In" Type="Int32" />
+          <Parameter Name="customer_id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetUnratedProducts_Result">

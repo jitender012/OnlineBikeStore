@@ -14,7 +14,7 @@
         @foreach (var item in Model.OrderByDescending(x => x.order_id))
         {
             <tr style="justify-content: space-between">
-                <td  onclick="window.location.href='@Url.Action("OrderDetailsAdmin", "Order", new { orderId = item.order_id })'">
+                <td  onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
                     @item.order_id
                 </td>
                 <td>

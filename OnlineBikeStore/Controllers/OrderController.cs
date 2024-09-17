@@ -141,123 +141,74 @@ namespace OnlineBikeStore.Controllers
 
         }
 
-        [Authorize(Roles = "customer")]
+        [Authorize]
         public ActionResult OrderDetails(int orderId)
         {
+            //Get logged in user id
+            var userId = context.GetUserId(User.Identity.Name);
 
-            // Get user details
-            var user = Mapper.Map<UserViewModel>(context.users
-                            .Where(x => x.email == User.Identity.Name)
-                            .SingleOrDefault());
-
-            // Get the order details
-            var orderDetails = context.orders
-                            .Where(o => o.order_id == orderId)
-                            .SingleOrDefault();
-
-            // Get each order items in the order
-            List<order_items> orderItems = context.order_items
-                            .Where(x => x.order_id == orderId)
-                            .ToList();
-
-            var productIds = orderItems.Select(y => y.product_id).ToList();
-
-
-            // Get details of each product in order items
-            var products = context.products
-                            .Where(x => productIds.Contains(x.product_id))
-                            .ToList();
-
-            //Map each order items retrieved from database to the order items view model
-            var orderItemsVM = orderItems.Select(oi => new OrderItem
+            if (orderId > 0)
             {
-                item_id = oi.item_id,
-                quantity = oi.quantity,
-                productDetails = products
-                            .Where(p => p.product_id == oi.product_id)
-                            .Select(p => new ProductDetailsViewModel
-                            {
-                                product_id = p.product_id,
-                                product_name = p.product_name,
-                                list_price = p.list_price,
-                                url = p.url,
-                                description = p.description
-                            })
-                            .SingleOrDefault()
-            }).ToList();
+                //get order details
+                var orderDetailsViewModel = GetOrderDetails(orderId);
 
-            //Map all retrieved details to order details view model
-            OrderDetailsViewModel orderDetailsViewModel = new OrderDetailsViewModel()
-            {
-                order_id = orderDetails.order_id,
-                order_status = orderDetails.order_status,
-                order_date = orderDetails.order_date,
-                required_date = orderDetails.required_date,
-                userDetails = user,
-                orderItems = orderItemsVM
-            };
-            return View("OrderDetailsCustomer", orderDetailsViewModel);
+                //return to OrderDetailsCustomer view if user is customer
+                if (User.IsInRole("customer"))
+                {
+                    //ensure that customer can see thier own order details                   
+                    if (orderDetailsViewModel.userDetails.user_id != userId)
+                    {
+                        return View("error");
+                    }
+                    return View("OrderDetailsCustomer", orderDetailsViewModel);
+                }
 
+                //return to OrderDetailsAdmin view if user is admin
+                return View("OrderDetailsAdmin", orderDetailsViewModel);
+            }
+            return View("Error");
         }
 
-        [Authorize(Roles = "admin")]
-        public ActionResult OrderDetailsAdmin(int orderId)
+        public OrderDetailsViewModel GetOrderDetails(int orderId)
         {
-            // Get user details
-            var user = Mapper.Map<UserViewModel>(context.users
-                            .Where(x => x.email == User.Identity.Name)
-                            .SingleOrDefault());
-
-            // Get the order details
-            var orderDetails = context.orders
-                            .Where(o => o.order_id == orderId)
-                            .SingleOrDefault();
-
-            // Get each order items in the order
-            List<order_items> orderItems = context.order_items
-                            .Where(x => x.order_id == orderId)
-                            .ToList();
-
-            var productIds = orderItems.Select(y => y.product_id).ToList();
-
-
-            // Get details of each product in order items
-            var products = context.products
-                            .Where(x => productIds.Contains(x.product_id))
-                            .ToList();
-
-            //Map each order items retrieved from database to the order items view model
-            var orderItemsVM = orderItems.Select(oi => new OrderItem
-            {
-                item_id = oi.item_id,
-                quantity = oi.quantity,
-                productDetails = products
-                            .Where(p => p.product_id == oi.product_id)
-                            .Select(p => new ProductDetailsViewModel
-                            {
-                                product_id = p.product_id,
-                                product_name = p.product_name,
-                                list_price = p.list_price,
-                                url = p.url,
-                                description = p.description
-                            })
-                            .SingleOrDefault()
-            }).ToList();
-
-            //Map all retrieved details to order details view model
-            OrderDetailsViewModel orderDetailsViewModel = new OrderDetailsViewModel()
-            {
-                order_id = orderDetails.order_id,
-                order_status = orderDetails.order_status,
-                order_date = orderDetails.order_date,
-                required_date = orderDetails.required_date,
-                userDetails = user,
-                orderItems = orderItemsVM
-            };
-            return View(orderDetailsViewModel);
-
+            var orderDetailsVM = context.orders
+                .Where(o => o.order_id == orderId)
+                .Select(ovm => new OrderDetailsViewModel
+                {
+                    order_id = ovm.order_id,
+                    order_status = ovm.order_status,
+                    order_date = ovm.order_date,
+                    required_date = ovm.required_date,
+                    userDetails = new UserViewModel
+                    {
+                        user_id = ovm.user.user_id,
+                        first_name = ovm.user.first_name,
+                        last_name = ovm.user.last_name,
+                        city = ovm.user.city,
+                        email = ovm.user.email,
+                        phone = ovm.user.phone,
+                        street = ovm.user.street,
+                        state = ovm.user.state,
+                        zip_code = ovm.user.zip_code
+                    },
+                    orderItems = ovm.order_items.Select(oi => new OrderItem
+                    {
+                        item_id = oi.item_id,
+                        quantity = oi.quantity,
+                        productDetails = new ProductDetailsViewModel
+                        {
+                            product_id = oi.product.product_id,
+                            product_name = oi.product.product_name,
+                            list_price = oi.product.list_price,
+                            url = oi.product.url,
+                            description = oi.product.description
+                        }
+                    })
+                    .ToList()
+                })
+                .SingleOrDefault();
+            return orderDetailsVM;
         }
-
         public JsonResult UpdateOrderStatus(int oID, string oStatus)
         {
             byte orderStatus = byte.Parse(oStatus);
@@ -345,7 +296,6 @@ namespace OnlineBikeStore.Controllers
                     };
 
                     return View(orderSummary);
-
                 }
             }
             else
@@ -353,8 +303,6 @@ namespace OnlineBikeStore.Controllers
                 TempData["RedirectToLoginMsg"] = "Login to purchase.";
                 return RedirectToAction("Login", "Account");
             }
-
-
         }
 
         [HttpPost]
