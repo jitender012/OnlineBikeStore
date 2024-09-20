@@ -4,16 +4,26 @@
     Layout = null;
 }
 
-<div >
-    <div class="p-2">
-        <input type="text" class="form-control" placeholder="Search Order" id="searchOrderInput" />
+@if (Model.Count < 1)
+{
+    <div class="content-box">
+        No Orders.
     </div>
-    <br />
-   
-    <div id="partialViewContainer">
-        @Html.Partial("_GetOrdersCustomer")
+}
+else
+{
+    <div>
+        <div class="p-2">
+            <input type="text" class="form-control" placeholder="Search Order" id="searchOrderInput" />
+        </div>
+        <br />
+
+        <div id="partialViewContainer">
+            @Html.Partial("_GetOrdersCustomer")
+        </div>
     </div>
-</div>
+}
+
 <script>
     $(document).ready(function () {
 
@@ -23,7 +33,7 @@
 
         function loadPartialView() {
             var searchInput = $("#searchOrderInput").val();
-           
+
             $.ajax({
                  url: '@Url.Action("GetOrdersPartial", "Order")',
                  type: 'GET',

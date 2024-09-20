@@ -3,7 +3,7 @@
     Layout = null;
 
     var total = Model.item.Select(x => x.productDetails).Sum(s => s.list_price);
-    var disc = Model.item.Sum(z => z.discount);
+    var disc = Model.item.Select(z => z.discount).FirstOrDefault();
     var discAmount = total * disc;
     var grandTotal = total - discAmount;
 }
