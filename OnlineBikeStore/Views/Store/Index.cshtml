@@ -18,21 +18,26 @@
         @TempData["NotFound"]
     </div>
 }
-<div>
-    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
-        Home
-        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+<div class="d-flex justify-content-between align-items-end">
+    <div>
+        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+            Home
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
 
-    </a>
-    <h4>
-        Stores
-    </h4>
+        </a>
+        <h4>
+            Stores
+        </h4>
+    </div>
+    <div>
+        <a href="@Url.Action("Create", "Store")" class="addNewBtn">
+            <i class="bi bi-plus-circle"></i>
+            Add New Store
+        </a>
+    </div>
 </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="display" id="myTable">
+<table class="table table-striped" id="storeListTable">
     <thead>
         <tr>
             <th>
@@ -63,9 +68,9 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.store_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.store_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.store_id, @class = "btn" }) |
 
-                <a href="#" class="btn btn-danger delete-store" name="store_id" data-id="@item.store_id">Delete</a>
+                <a href="#" class="text-danger btn" name="store_id" data-id="@item.store_id">Delete</a>
             </td>
         </tr>
     }
@@ -75,9 +80,7 @@
 <script>
     $(document).ready(
         function () {
-            $('#myTable').DataTable();
-
-
+            $('#storeListTable').DataTable();
         }
 
     )

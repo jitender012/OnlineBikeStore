@@ -10,10 +10,9 @@ function getStores() {
         url: "/Store/GetStores",
         type: "GET",
         success: function (data) {
-            console.log(data)
             var store_dd = $('#stores-dropd');
             $.each(data, function (index, item) {
-                store_dd.append('<a href="/Dashboard/StoreDashboard?store_id=' + item.store_id + '">' + item.store_name + '</a>');
+                store_dd.append('<a href="/Dashboard/StoreDashboard?storeId=' + item.store_id + '">' + item.store_name + '</a>');
             });
         },
         error: function (xhr, status, error) {
@@ -27,13 +26,11 @@ function getStockDataByStore() {
     var storeId = $('#store-id').val();
 
     $.ajax({
-        url: '/Stock/GetStockInStore',
-        type: 'GET',
-        dataType: "json",
+        url: '/Dashboard/GetStockInStore',
+        type: 'GET',       
         data: { storeId: storeId },
         success: function (data) {
-            displayStockLevel(data);
-            loadProducts(data);
+            $('#_StoreDashboardContainer').html(data);
         },
         error: function () {
             console.error('Error occurred while loading products.');
@@ -94,68 +91,81 @@ function loadProducts(data) {
 }
 
 //load products that are not in store and diplay in modal
-function getStockNotInStore() {
-    var storeId = $('#store-id').val();
-
+function getStockNotInAnyStore() {
     $.ajax({
-        url: '/Stock/AddStock',
+        url: '/Stock/GetProductsNotInAnyStore',
         type: 'GET',
         dataType: "json",
-        data: { storeId: storeId },
         success: function (data) {
+         
             var tbody = $("#addItemsTblBody");
-            tbody.empty();
-            if (data.length === 0 || data.length < 1) {                
+
+            // Check if DataTable is already initialized and destroy it
+            if ($.fn.DataTable.isDataTable('#addItemsTable')) {
+                $('#addItemsTable').DataTable().clear().destroy();
+            }
+            tbody.empty();            
+
+            if (data.length === 0 || data.length < 1)
+            {
                 var noDataRow = $("<tr>").append($("<td>").attr("colspan", 3).text("All products are added!"));
                 tbody.append(noDataRow);
-            } else {
-
+            }
+            else
+            {
                 data.forEach(function (product, index) {
 
-                    var row = $("<tr>");
+                    var row =
+                        `<tr>
+                            <td>${product.product_name}</td>                           
+                            <td>
+                                <input type="number" id="${product.product_id}" name="quantity" class="form-control w-50" min="1" />
+                            </td>
+                            <td>
+                                <button class="btn" type="button" id="add-btn-${product.product_id}"><i class="bi bi-plus-square-fill"></i></button>
+                            </td>
+                        </tr>`;
 
-                    row.append($("<td>").text(product.product_name));
-                    row.append($("<td>").text(product.model_year));
+                    tbody.append(row);
 
-                    var quantityInput = $('<input>', {
-                        type: 'number',
-                        id: product.product_id,
-                        name: 'quantity',
-                        class: "qty-field"
-                    });
-                    row.append(quantityInput);
+                    $(`#add-btn-${product.product_id}`).on('click', function () {
 
-                    var addProductBtn = $('<button>', {
-                        class: 'btn',
-                        text: 'Add',
-                        type: 'button',
-                    }).on('click', function () {
-                        var btn = $(this);
-                        var qty = $('#' + product.product_id).val();
+                        var qty = $(`#${product.product_id}`).val();
+                        var storeId = $("#store-id").val();
+
+                        if (!qty || qty <= 0) {
+                            alert("Please enter a valid quantity.");
+                            return;
+                        }
+
                         $.ajax({
                             url: '/Stock/AddStock/',
-                            type: "POST",
-                            dataType: "json",
+                            type: 'POST',
+                            dataType: 'json',
                             data: {
                                 store_id: storeId,
                                 product_id: product.product_id,
                                 quantity: qty
                             },
-                            success: function (result) {
-                                $(btn).text('Added').prop('disabled', true);
+                            success: function () {
+                                $(`#add-btn-${product.product_id}`).text('Added').prop('disabled', true);
                                 getStockDataByStore();
                             },
                             error: function (xhr, status, error) {
                                 console.error('Error occurred:', error);
                             }
                         });
-
                     });
-                    row.append(addProductBtn);
-                    tbody.append(row);
 
                 });
             }
+
+            $('#addItemsTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true
+            });
         },
         error: function () {
             console.error('Error occurred while loading products.');

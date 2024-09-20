@@ -108,7 +108,7 @@ namespace OnlineBikeStore.Controllers
                 var user = context.users.FirstOrDefault(u => u.email == data.email && u.password == data.password);
                 if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(data.email, false);
+                    FormsAuthentication.SetAuthCookie(data.email, true);
                     TempData["SuccessMessage"] = "Login successfully!";
 
                     if (user.user_role.Select(x=>x.role).SingleOrDefault()=="admin")

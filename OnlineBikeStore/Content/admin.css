@@ -147,3 +147,10 @@
     border: 2px solid #adadad;
     border-radius: 10px;
 }
+
+.addNewBtn {
+    padding: 7px 10px;
+    background-color: dodgerblue;
+    border-radius: 17px;
+    color: white;
+}

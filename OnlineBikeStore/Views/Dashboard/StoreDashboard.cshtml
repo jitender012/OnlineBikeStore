@@ -1,4 +1,4 @@
-﻿@model OnlineBikeStore.Models.StoreViewModel
+﻿@model OnlineBikeStore.Models.StoreDashboardViewModel
 
 @{
     ViewBag.Title = "StoreDashBoard";
@@ -26,8 +26,8 @@
 
                 <div>
 
-                    <button type="button" onclick="getStockNotInStore()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemsModal">
-                        Add Items
+                    <button type="button" onclick="getStockNotInAnyStore()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemsModal">
+                        Add More Items
                     </button>
                 </div>
 
@@ -39,34 +39,15 @@
                 <div class="summary-item">Recommendations<br> <span id="all-inventory">1</span></div>
             </div>
 
-            <div class="filters">
-                <select id="categories">
-                    <option value="">Categories</option>
-                </select>
-                <select id="brands">
-                    <option value="">Brands</option>
-                </select>
-                <button>Apply</button>
-            </div>
-
-            <div class="inventory-table">
-                <table id="store-table" class="">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Model Year</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventory-table-body">
-                    </tbody>
-                </table>
+            <div class="inventory-table" id="_StoreDashboardContainer">
+                @Html.Partial("_StoreDashboard")
             </div>
         </div>
 
     </div>
 </div>
+
+
 <!-- Modal -->
 <div class="modal fade" id="updateStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -110,12 +91,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table">
+                <table class="table w-100" id="addItemsTable">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th> Model Year</th>
+                            <th>Product Name</th>                           
                             <th>Quantity</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="addItemsTblBody">
@@ -127,3 +108,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(
+        function () {
+            $('#store-table').DataTable();
+        }
+
+    )
+
+</script>

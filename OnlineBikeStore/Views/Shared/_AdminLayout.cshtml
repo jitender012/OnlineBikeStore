@@ -8,8 +8,8 @@
     @Styles.Render("~/Content/admin-css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
-<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-
+    <link href="~/Content/bootstrap-icons-1.11.0/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap5.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -36,23 +36,24 @@
                                         <span class="login-text text-light"> Home</span>
                                     </div>
                                 </a>
-                                <div class="dropdown">
-                                    <a href="@Url.Action( "GetOrders","Order")" id="loginLink" class="btn dropbtn">
-                                        <div class="d-flex justify-content-between">
-                                            <span class="login-icon">
-                                                <i class="fas fa-clipboard-check text-light"></i>
-                                            </span>&nbsp;&nbsp;
-                                            <span class="login-text text-light"> Orders</span>
-                                        </div>
-                                    </a>
-                                    <div class="dropdown-content">
-                                        <a href="@Url.Action("OrderIndex","Order")">All Orders</a>
-                                        <a href="#">Pending</a>
-                                        <a href="#">Shipped</a>
-                                        <a href="#">Cancelled</a>
-                                        <a href="#">Returned</a>
+                                <a href="@Url.Action( "GetOrders","Order")" id="loginLink" class="btn dropbtn">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="login-icon">
+                                            <i class="fas fa-clipboard-check text-light"></i>
+                                        </span>&nbsp;&nbsp;
+                                        <span class="login-text text-light"> Orders</span>
                                     </div>
-                                </div>
+                                </a>
+                                @*<div class="dropdown">
+
+                                        <div class="dropdown-content">
+                                            <a href="@Url.Action("OrderIndex","Order")">All Orders</a>
+                                            <a href="#">Pending</a>
+                                            <a href="#">Shipped</a>
+                                            <a href="#">Cancelled</a>
+                                            <a href="#">Returned</a>
+                                        </div>
+                                    </div>*@
 
                                 <div class="dropdown">
                                     <a href="@Url.Action( "Index","Product")" id="loginLink" class="btn dropbtn">
@@ -170,11 +171,12 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    <script src="~/Scripts/chart.min.js"></script>
     <script src="~/Scripts/dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap5.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/chart.min.js"></script>
 
-    <script src="~/Scripts/AdminJs.js"></script>
+    @RenderSection("scripts", required: false)
+
 </body>
 </html>

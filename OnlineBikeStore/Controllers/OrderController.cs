@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Microsoft.Ajax.Utilities;
 using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
+using Rotativa;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace OnlineBikeStore.Controllers
 {
@@ -24,24 +24,10 @@ namespace OnlineBikeStore.Controllers
         public ActionResult GetOrders()
         {
             //Get logged in user id
-            var userId = context.GetUserId(User.Identity.Name);
+            int userId = context.GetUserId(User.Identity.Name);
 
-            //Get all orders from database and map to the OrderViewModel
-            List<OrderViewModel> ordersListVM = context.orders
-                .Select(z => new OrderViewModel
-                {
-                    customer_id = z.customer_id.Value,
-                    order_date = z.order_date,
-                    order_id = z.order_id,
-                    order_status = z.order_status,
-                    required_date = z.required_date,
-                    shipped_date = z.shipped_date,
-                    total_price = z.order_items.Sum(a => a.list_price),
-                    item_names = z.order_items.Select(x => x.product.product_name).ToList(),
-                    first_product_image = z.order_items.Select(x => x.product.url).FirstOrDefault(),
-                    total_items = z.order_items.Count()
-                })
-                .ToList();
+            //Get all orders 
+            List<OrderViewModel> ordersListVM = GetOrdersViewModel();
 
             //Check if logged in user is customer
             if (User.IsInRole("customer"))
@@ -55,30 +41,14 @@ namespace OnlineBikeStore.Controllers
             return View("GetOrdersAdmin", ordersListVM);
         }
 
-        [Authorize]
-        [HttpGet]
         public PartialViewResult GetOrdersPartial(string query, string orderStatus)
         {
-            var userId = context.GetUserId(User.Identity.Name);
+            int userId = context.GetUserId(User.Identity.Name);
 
             //Get all orders
-            var ordersListVM = context.orders
-               .Select(z => new OrderViewModel
-               {
-                   customer_id = z.customer_id.Value,
-                   order_date = z.order_date,
-                   order_id = z.order_id,
-                   order_status = z.order_status,
-                   required_date = z.required_date,
-                   shipped_date = z.shipped_date,
-                   total_price = z.order_items.Sum(a => a.list_price),
-                   item_names = z.order_items.Select(x => x.product.product_name).ToList(),
-                   first_product_image = z.order_items.Select(x => x.product.url).FirstOrDefault(),
-                   total_items = z.order_items.Count()
+            var ordersListVM = GetOrdersViewModel();
 
-               }).ToList();
-
-            //Search orders using order id
+            //Search orders using order id/price/name/date
             if (query != null)
             {
                 ordersListVM = ordersListVM
@@ -108,9 +78,6 @@ namespace OnlineBikeStore.Controllers
                     case "Cancelled":
                         o_status = 3;
                         break;
-                    case "Returned":
-                        o_status = 4;
-                        break;
 
                     case "allOrders":
                         o_status = -5;
@@ -129,6 +96,7 @@ namespace OnlineBikeStore.Controllers
                     .ToList();
             }
 
+            //Select only customer order if logged in user is customer
             if (User.IsInRole("customer"))
             {
                 ordersListVM = ordersListVM
@@ -138,10 +106,28 @@ namespace OnlineBikeStore.Controllers
             }
 
             return PartialView("_GetOrdersAdmin", ordersListVM);
-
         }
 
-        [Authorize]
+        // Helper method to RETRIEVE ORDERS and map it to view model
+        private List<OrderViewModel> GetOrdersViewModel()
+        {
+            List<OrderViewModel> ordersListVM = context.orders
+                .Select(z => new OrderViewModel
+                {
+                    customer_id = z.customer_id.Value,
+                    order_date = z.order_date,
+                    order_id = z.order_id,
+                    order_status = z.order_status,
+                    required_date = z.required_date,
+                    shipped_date = z.shipped_date,
+                    total_price = z.order_items.Sum(a => a.list_price),
+                    item_names = z.order_items.Select(x => x.product.product_name).ToList(),
+                    first_product_image = z.order_items.Select(x => x.product.url).FirstOrDefault(),
+                    total_items = z.order_items.Count()
+                }).ToList();
+            return ordersListVM;
+        }
+
         public ActionResult OrderDetails(int orderId)
         {
             //Get logged in user id
@@ -169,7 +155,8 @@ namespace OnlineBikeStore.Controllers
             return View("Error");
         }
 
-        public OrderDetailsViewModel GetOrderDetails(int orderId)
+        //Helper method to Get order details using order id
+        private OrderDetailsViewModel GetOrderDetails(int orderId)
         {
             var orderDetailsVM = context.orders
                 .Where(o => o.order_id == orderId)
@@ -195,6 +182,8 @@ namespace OnlineBikeStore.Controllers
                     {
                         item_id = oi.item_id,
                         quantity = oi.quantity,
+                        list_price = oi.list_price,
+                        discount = oi.discount,
                         productDetails = new ProductDetailsViewModel
                         {
                             product_id = oi.product.product_id,
@@ -208,34 +197,6 @@ namespace OnlineBikeStore.Controllers
                 })
                 .SingleOrDefault();
             return orderDetailsVM;
-        }
-        public JsonResult UpdateOrderStatus(int oID, string oStatus)
-        {
-            byte orderStatus = byte.Parse(oStatus);
-            if (oID > 0)
-            {
-                var order = context.orders
-                                .SingleOrDefault(o => o.order_id == oID);
-                if (order == null)
-                {
-                    return Json(new { success = false, message = "Order Not Found!" }, JsonRequestBehavior.AllowGet);
-                }
-                order.order_status = orderStatus;
-
-                if (orderStatus == 1)
-                {
-                    order.shipped_date = DateTime.Now;
-                }
-                //required date will be used as cancelled and delivered date
-                if (orderStatus == 3 || orderStatus == 2)
-                {
-                    order.required_date = DateTime.Now;
-                }
-                context.SaveChanges();
-
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { success = false, message = "Invalid Order Id!" }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult OrderSummary(int pId = 0)
@@ -305,28 +266,33 @@ namespace OnlineBikeStore.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult PlaceOrder(int pId = 0)
         {
-            if (User.Identity.IsAuthenticated)
+            order newOrder = new order();
+            int orderId;
+            bool isInStock;
+            decimal discountPercentage = 15m / 100m;
+            //get the logged in user id
+            var userId = context.users
+                            .Where(x => x.email == User.Identity.Name)
+                            .Select(u => u.user_id)
+                            .SingleOrDefault();
+
+            //for single product order --------------
+            if (pId > 0)
             {
-                //get the logged in user id
-                var userId = context.users
-                                .Where(x => x.email == User.Identity.Name)
-                                .Select(u => u.user_id)
-                                .SingleOrDefault();
+                //Check if product is in stock
+                isInStock = context.stocks
+                       .Any(z => z.product_id == pId && z.quantity > 0);
 
-                // Map the user to the UserViewModel
-                var userVm = Mapper.Map<UserViewModel>(context.users
-                                .Where(u => u.user_id == userId)
-                                .SingleOrDefault());
-
-                //for single product order
-                if (pId > 0)
+                if (isInStock)
                 {
-                    var product = context.products.FirstOrDefault(p => p.product_id == pId);
+                    var product = context.products
+                    .FirstOrDefault(p => p.product_id == pId);
 
-                    order newOrder = new order()
+                    newOrder = new order()
                     {
                         customer_id = userId,
                         order_status = (byte)OrderStatus.Placed,
@@ -336,7 +302,7 @@ namespace OnlineBikeStore.Controllers
                     context.orders.Add(newOrder);
                     context.SaveChanges();
 
-                    var orderId = newOrder.order_id;
+                    orderId = newOrder.order_id;
                     if (orderId > 0)
                     {
                         order_items item = new order_items()
@@ -344,77 +310,220 @@ namespace OnlineBikeStore.Controllers
                             order_id = orderId,
                             product_id = pId,
                             quantity = 1,
-                            list_price = product.list_price,
-                            discount = 0
+                            list_price = product.list_price - (product.list_price * discountPercentage),
+                            discount = discountPercentage
                         };
                         context.order_items.Add(item);
+
+                        //decrease the stock
+                        var stock = context.stocks
+                            .Where(p => p.product_id == pId)
+                            .FirstOrDefault();
+                        stock.quantity = stock.quantity - 1;
+
                         context.SaveChanges();
-
-                        return RedirectToAction("OrderSuccess");
-                    }
-
-                }
-                //when order through cart
-                else
-                {
-                    order newOrder = new order()
-                    {
-                        customer_id = userId,
-                        order_status = (byte)OrderStatus.Placed,
-                        order_date = DateTime.Now,
-                        required_date = DateTime.Now.AddDays(7),
-                    };
-                    context.orders.Add(newOrder);
-                    context.SaveChanges();
-
-                    var orderId = newOrder.order_id;
-
-                    if (orderId > 0)
-                    {
-                        // Get the user's cart items
-                        var cartItems = context.userCarts
-                            .Where(c => c.user_id == userId)
-                            .ToList();
-
-                        //get product id's from user cart
-                        var productIds = cartItems.Select(q => q.product_id).ToList();
-
-                        // Fetch the products from the product IDs
-                        var cartProducts = context.products
-                                                  .Where(p => productIds.Contains(p.product_id))
-                                                  .ToList();
-                        foreach (var product in cartProducts)
-                        {
-                            order_items item = new order_items()
-                            {
-                                order_id = orderId,
-                                product_id = product.product_id,
-                                quantity = 1,
-                                list_price = product.list_price,
-                                discount = 0
-                            };
-                            context.order_items.Add(item);
-                            userCart cart = context.userCarts
-                                    .FirstOrDefault(c => c.user_id == userId && c.product_id == product.product_id);
-                            context.userCarts.Remove(cart);
-                            context.SaveChanges();
-                        }
                         return RedirectToAction("OrderSuccess");
                     }
                 }
+                return View("Error");
+
             }
-            else
+
+            //when order through cart ----------------
+            // Get the user's cart items
+            var productIds = context.userCarts
+                .Where(c => c.user_id == userId)
+                .Select(p => p.product_id)
+                .ToList();
+
+            //check if products are in stock
+            isInStock = productIds
+                .All(c => context.stocks.Any(s => s.product_id == c && s.quantity > 0));
+
+            if (isInStock)
             {
-                TempData["RedirectToLoginMsg"] = "Login to purchase.";
-                return RedirectToAction("Login", "Account");
+                newOrder = new order()
+                {
+                    customer_id = userId,
+                    order_status = (byte)OrderStatus.Placed,
+                    order_date = DateTime.Now,
+                    required_date = DateTime.Now.AddDays(7),
+                };
+
+                context.orders.Add(newOrder);
+                context.SaveChanges();
+
+                orderId = newOrder.order_id;
+
+                if (orderId > 0)
+                {
+
+                    var cartProducts = context.products
+                                              .Where(p => productIds.Contains(p.product_id))
+                                              .ToList();
+
+                    foreach (var product in cartProducts)
+                    {
+                        order_items item = new order_items()
+                        {
+                            order_id = orderId,
+                            product_id = product.product_id,
+                            quantity = 1,
+                            list_price = product.list_price - (product.list_price * discountPercentage),
+                            discount = discountPercentage
+                        };
+
+                        context.order_items.Add(item);
+                        //decrease the stocks for each items
+                        foreach (var productId in productIds)
+                        {
+                            var stock = context.stocks
+                                .Where(s => s.product_id == productId)
+                                .FirstOrDefault();
+
+                            stock.quantity = stock.quantity - 1;
+                        }
+
+                        //Empty the cart
+                        userCart cart = context.userCarts
+                                .FirstOrDefault(c => c.user_id == userId && c.product_id == product.product_id);
+                        context.userCarts.Remove(cart);
+
+                        context.SaveChanges();
+                    }
+                    return RedirectToAction("OrderSuccess");
+                }
             }
 
-            return View();
+            return View("Error");
         }
 
+        public JsonResult UpdateOrderStatus(int oID, string oStatus)
+        {
+            byte orderStatus = byte.Parse(oStatus);
+            if (oID > 0)
+            {
+                var order = context.orders
+                                .SingleOrDefault(o => o.order_id == oID);
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Order Not Found!" }, JsonRequestBehavior.AllowGet);
+                }
+                order.order_status = orderStatus;
+
+                if (orderStatus == 1)
+                {
+                    order.shipped_date = DateTime.Now;
+                }
+                //required date will be used as cancelled and delivered date
+                if (orderStatus == 3 || orderStatus == 2)
+                {
+                    order.required_date = DateTime.Now;
+                }
+                context.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, message = "Invalid Order Id!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        //Redirect user to order success page if order confirmed
         public ActionResult OrderSuccess()
         {
             return View();
+        }
+
+        public ActionResult DownloadOrderSummary(int orderId)
+        {
+            if (orderId < 0)
+            {
+                return View("Error");
+            }
+            SummaryPDFmodel orderSummary = context.orders
+                .Where(o => o.order_id == orderId)
+                .Select(x => new SummaryPDFmodel
+                {
+                    orderId = x.order_id,
+                    downloadDate = DateTime.Now,
+                    orderDate = x.order_date,
+                    orderTotal = x.order_items.Sum(oi => oi.list_price),
+                    item = x.order_items
+                        .Where(oi => oi.order_id == orderId)
+                        .Select(oi => new OrderItem
+                        {
+                            list_price = oi.list_price,
+                            discount = oi.discount,
+                            item_id = oi.item_id,
+                            quantity = oi.quantity,
+                            product_id = oi.product_id,
+                            productDetails = new ProductDetailsViewModel
+                            {
+                                product_name = oi.product.product_name,
+                                list_price = oi.product.list_price
+                            }
+                        }).ToList(),
+                    userDetails = new UserViewModel
+                    {
+                        first_name = x.user.first_name,
+                        street = x.user.street,
+                        city = x.user.city,
+                        state = x.user.state,
+                        zip_code = x.user.zip_code,
+                        email = x.user.email,
+                        phone = x.user.phone,
+                        user_id = x.user.user_id,
+                    }
+                }).FirstOrDefault();
+            return View("_DownloadOrderSummary", orderSummary);
+        }
+        public ActionResult _DownloadOrderSummary(int orderId)
+        {
+            if (orderId < 0)
+            {
+                return View("Error");
+            }
+            SummaryPDFmodel orderSummary = context.orders
+                .Where(o => o.order_id == orderId)
+                .Select(x => new SummaryPDFmodel
+                {
+                    orderId = x.order_id,
+                    downloadDate = DateTime.Now,
+                    orderDate = x.order_date,
+                    orderTotal = x.order_items.Sum(oi => oi.list_price),
+                    item = x.order_items
+                        .Where(oi => oi.order_id == orderId)
+                        .Select(oi => new OrderItem
+                        {
+                            list_price = oi.list_price,
+                            discount = oi.discount,
+                            item_id = oi.item_id,
+                            quantity = oi.quantity,
+                            product_id = oi.product_id,
+                            productDetails = new ProductDetailsViewModel
+                            {
+                                product_name = oi.product.product_name,
+                                list_price = oi.product.list_price
+                            }
+                        }).ToList(),
+                    userDetails = new UserViewModel
+                    {
+                        first_name = x.user.first_name,
+                        street = x.user.street,
+                        city = x.user.city,
+                        state = x.user.state,
+                        zip_code = x.user.zip_code,
+                        email = x.user.email,
+                        phone = x.user.phone,
+                        user_id = x.user.user_id,
+                    }
+                }).FirstOrDefault();
+
+            return new ViewAsPdf("_DownloadOrderSummary", orderSummary)
+            {
+                FileName = $"Order_{orderId}.pdf",
+                PageSize = Rotativa.Options.Size.A4,
+                CustomSwitches = "--disable-smart-shrinking"
+            };
         }
     }
 }

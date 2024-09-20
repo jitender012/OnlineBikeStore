@@ -4,6 +4,21 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+<style>
+    td {
+        vertical-align: middle;      
+    }
+    #myTable th, #myTable td {
+        text-align: center;
+    }
+    thead {
+        background-color: dodgerblue;
+    }
+
+   
+</style>
+
 <!-- Display TempData messages -->
 @if (TempData["SuccessMessage"] != null)
 {
@@ -17,21 +32,29 @@
         @TempData["NotFound"]
     </div>
 }
-<div>
-    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
-        Home
-        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
 
-    </a>
-    <h4>
-        Products
-    </h4>
+<div class="d-flex justify-content-between align-items-end">
+    <div>
+
+        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+            Home
+            <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+
+        </a>
+        <h4>
+            Products
+        </h4>
+    </div>
+    <div>
+        <a href="@Url.Action("Create New", "Create")" class="addNewBtn">
+            <i class="bi bi-plus-circle"></i>
+            Add New Product
+        </a>
+    </div>
 </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="display " id="myTable">
+
+<table class="table table-striped " id="myTable">
     <thead>
         <tr>
             <th>
@@ -40,7 +63,7 @@
             <th>
                 Image
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
 
@@ -62,21 +85,26 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.product_id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.product_id }) |
 
-                <a href="#" class="btn btn-danger delete-product" name="product_id" data-id="@item.product_id">Delete</a>
+                <a href="#" class="text-danger" name="product_id" data-id="@item.product_id">Delete</a>
             </td>
         </tr>
     }
 
 </table>
 
+<script src="~/Scripts/dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap5.js"></script>
 <script>
-    $(document).ready(
-        function () {
-           $("#myTable").DataTable();
-           
-        }
+    new DataTable('#myTable', {
+        layout: {
+            bottomStart: {
+                info: {
 
-    )
+                }
+            }
+        }
+    });
+
       $(document).ready(function () {
             $(".delete-product").click(function (e) {
                 e.preventDefault();

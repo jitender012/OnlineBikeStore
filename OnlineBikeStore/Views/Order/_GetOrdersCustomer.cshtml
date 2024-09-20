@@ -35,7 +35,11 @@
 
                         </div>
                         <span>
-                            ₹@item.total_price.Value.ToString("N2")
+                            @if (item.total_price!=null)
+                            {
+                                <span>Rs.</span>   @item.total_price.Value.ToString("N2")
+
+                            }
                         </span>
                         <span style="font-size: 13px; color: grey; align-self:baseline">
                             Ordered: @item.order_date.ToString("D")

@@ -9,6 +9,14 @@
 <link href="~/Fractional-Star-Rating-jsRapStar/jsRapStar.css" rel="stylesheet" />
 <link href="~/cwa-lightbox-gallery/cwa_lightbox/css/cwa_lightbox_css.css" rel="stylesheet" />
 
+<style>
+    .disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+</style>
+
 <div id="notification" class="notification">@ViewBag.SuccessMessage</div>
 <div class="view-body container d-flex justify-content-center">
 
@@ -18,26 +26,27 @@
                 <div class="ml-1">
                     <div class="row ">
 
-                        <div class="col-12 p-1">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-
-                                <i id="wishlist_@Model.product_id"
-                                   class=" fa-lg heart-style @(@Model.isInWishList ? "fa fa-heart red-heart" : "far fa-heart")"
-                                   onclick="AddRemoveWishlist(@Model.product_id)">
-                                </i>
-                            }
-                            else
-                            {
-                                <i class="far fa-heart fa-lg heart-style"
-                                   onclick="alert('Login to add item in Wishlist')">
-                                </i>
-                            }
+                        <div class="col-12 p-1 ">
 
 
                             @if (Model.url != null)
                             {
                                 <div class="imgDiv">
+                                    <div style="" class="heart-style">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <i id="wishlist_@Model.product_id"
+                                               class=" fa-lg heart-style @(@Model.isInWishList ? "fa fa-heart red-heart" : "far fa-heart")"
+                                               onclick="AddRemoveWishlist(@Model.product_id)">
+                                            </i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-heart fa-lg heart-style"
+                                               onclick="alert('Login to add item in Wishlist')">
+                                            </i>
+                                        }
+                                    </div>
                                     <img src="@Url.Content(Model.url)" class="img-fluid image example" alt="">
                                 </div>
                             }
@@ -46,8 +55,10 @@
                                 <img src="~/Images/Utilities/No-Image-Placeholder.svg.png" class="img-fluid image example" alt="">
 
                             }
-                            <div class=" p-2 btnsDiv  row">
-                                @if (Model.isInCart)
+                        <div class=" p-2 btnsDiv  row">
+                            @if (Model.currentStock > 0)
+                            {
+                                if (Model.isInCart)
                                 {
                                     <div class="col  m-1 p-0">
                                         <a href="@Url.Action("CartIndex", "Cart")" class=" p-btn1 p-btn"> GO TO CART</a>
@@ -65,10 +76,19 @@
                                         }
                                     </div>
                                 }
+                            }
                                 <div class="col m-1 p-0">
-                                    @Html.ActionLink("BUY NOW", "OrderSummary", "Order", new { pId = Model.product_id }, new { @class = "p-btn2 p-btn" })
+                                    @if (Model.currentStock < 1)
+                                    {
+                                        <a href="#" class="p-btn2 p-btn disabled" aria-disabled="true">NOT AVAILABLE</a>
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("BUY NOW", "OrderSummary", "Order", new { pId = Model.product_id }, new { @class = "p-btn2 p-btn" })
+                                    }
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -111,6 +131,14 @@
                         }
                     </div>
                 </p>
+                @if (Model.currentStock <= 5 && Model.currentStock>0)
+                {
+                    <span style="color:coral">Only @Model.currentStock left.</span>
+                }
+                @if (Model.currentStock == 0)
+                {
+                    <span style="color:red">Out of stock.</span>
+                }
                 <p>
                     @Html.Raw(Model.description.Replace("--", "<br />-"))
                 </p>
@@ -190,9 +218,9 @@
                                 {
                                     <a class="cwa-lightbox-image" href="@Url.Content(f.image_url)">
                                         <img src="@Url.Content(f.image_url)" />
-                                        </a>
-                                        }
-                                </div>
+                                    </a>
+                                }
+                            </div>
                             <p>@f.feedback_text</p>
 
                             <p class="m-0" style="font-size:12px; color:grey">@f.customer_name, @f.date.ToString("D")</p>

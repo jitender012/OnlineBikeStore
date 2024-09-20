@@ -38,9 +38,10 @@
     height: auto;
 }
 .heart-style {
-    position: absolute;
-    margin: 14px;
-    cursor:pointer;
+    width:100%;
+    display:flex;
+    justify-content:end;
+    cursor: pointer;
 }
 .red-heart{
     color:red;

@@ -15,6 +15,7 @@ namespace OnlineBikeStore.Models
         public string url { get; set; }
         public string product_type { get; set; }       
         public HttpPostedFileBase ImageFile { get; set; }
+        public bool isInWishList { get; set; }
     }
 
     public class ProductDetailsViewModel
@@ -36,5 +37,6 @@ namespace OnlineBikeStore.Models
         public bool isReviewed { get; set; }
         public List<FeedbackViewModel> Feedback { get; set; }
         public HttpPostedFileBase ImageFile { get; set; }
+        public int currentStock { get; set; }
     }
 }

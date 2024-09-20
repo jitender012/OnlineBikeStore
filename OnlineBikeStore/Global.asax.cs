@@ -1,4 +1,5 @@
-﻿using OnlineBikeStore.AutoMapperConfig;
+﻿//using OnlineBikeStore.App_Start;
+using OnlineBikeStore.AutoMapperConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,27 @@ namespace OnlineBikeStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapper.Mapper.Initialize(config:cfg=>cfg.AddProfile<AutomapperProfile>());
-            
+            //RotativaConfig.Setup();
+
         }
+        protected void Application_BeginRequest(Object sender, EventArgs e)
+        {
+            if (Request.IsAuthenticated)
+            {                                
+                if (User.IsInRole("admin"))
+                {
+                    Response.Redirect("~/Dashboard/Dashboard");
+                }
+                else if (User.IsInRole("customer"))
+                {
+                    Response.Redirect("~/Home/Home");
+                }
+                else
+                {
+                    Response.Redirect("~/Home/Index");
+                }
+            }
+        }
+
     }
 }

@@ -1,0 +1,27 @@
+﻿@model OnlineBikeStore.Models.StoreDashboardViewModel
+<table id="store-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Product Details</th>
+            <th>Model Year</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stockItem in Model.stock)
+        {
+            <tr>
+                <td>
+                    <div class="image-container">
+                        <img src="@Url.Content(stockItem.product_image)" style="max-width:100px" />
+                        @stockItem.product_name
+                    </div>
+                </td>
+                <td>@stockItem.model_year</td>
+                <td>@stockItem.quantity</td>
+                <td><a href="">Update Quantity</a>|<a href="">Remove</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

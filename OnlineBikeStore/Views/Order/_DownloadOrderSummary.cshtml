@@ -1,0 +1,117 @@
+﻿@model OnlineBikeStore.Models.SummaryPDFmodel
+@{
+    Layout = null;
+
+    var total = Model.item.Select(x => x.productDetails).Sum(s => s.list_price);
+    var disc = Model.item.Sum(z => z.discount);
+    var discAmount = total * disc;
+    var grandTotal = total - discAmount;
+}
+<style>
+    .image-row {
+        text-align: center;
+    }
+
+    td {
+        padding-left: 10px
+    }
+</style>
+<div class="main-container" style="font-size: 13px; font-family: 'Times New Roman', Times, serif ">
+    <div class="image-row">
+        <img src="@Url.Content("~/Images/Utilities/logo.png")" style="max-width:100px" />
+        <h3 style="margin:0">OnlineBikeStore </h3>
+    </div>
+    <hr />
+    <br />
+    <div>
+        <div>
+            <b>Order Placed: </b>@Model.orderDate
+            <span style="float:right">
+                <b>Download Date: </b>@Model.downloadDate
+            </span><br />
+            <b>Order Id: </b>@Model.orderId<br />
+            <b>Order Total: </b>Rs. @Model.orderTotal.ToString("N2")
+        </div>
+
+        <br />
+    </div>
+    <hr />
+    <div>
+        <center>
+            <h3 style="margin:0">Order Details</h3>
+        </center>
+        @{
+            int i = 1;
+        }
+        <b style="display:block">Ordered Items</b>
+        @foreach (var item in Model.item)
+        {
+            <div style="overflow: hidden; padding: 10px 0;">
+                <div style="width: 70%; float: left;">
+                    @i. @item.productDetails.product_name
+                    <br />&nbsp;&nbsp;&nbsp; Sold by: My Nutra Mart (seller profile)
+                </div>
+                <div style="float: right;">
+                    @item.productDetails.list_price
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+
+            i++;
+        }
+        <br /><br />
+
+        <div>
+            <b> Delivery Address:</b>
+            <br />
+            @Model.userDetails.first_name
+            <br />
+            @Model.userDetails.street, @Model.userDetails.city,
+            <br />@Model.userDetails.state, @Model.userDetails.zip_code
+            <br />
+            <span>Mobile number: @Model.userDetails.phone</span>
+        </div>
+        <br /><br />
+    </div>
+
+
+    <hr />
+    <div>
+        <center>
+            <h3 style="margin:0">Payment Information</h3>
+        </center>
+        <div style="width: 70%; float: left;">
+            <b> Billing Address:</b>
+            <br />
+            @Model.userDetails.first_name
+            <br />
+            @Model.userDetails.street, @Model.userDetails.city,
+            <br />@Model.userDetails.state, @Model.userDetails.zip_code
+            <br />
+            <span>Mobile number: @Model.userDetails.phone</span>
+        </div>
+    </div>
+    <div style="float:right">
+        <table>
+            <tr>
+                <td>Item(s) Subtotal:</td>
+                <td> @total</td>
+            </tr>
+            <tr>
+
+                <td>Discount:</td>
+                <td>- @discAmount</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>-----------</td>
+            </tr>
+            <tr>
+                <td>Total:</td>
+                <td> @grandTotal</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<br />

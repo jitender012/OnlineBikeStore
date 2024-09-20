@@ -27,10 +27,10 @@
                     <p>
                         @Model.userDetails.street, @Model.userDetails.city,
                         <BR />@Model.userDetails.state, @Model.userDetails.zip_code
-                    </p>                    
+                    </p>
                     <span>Mobile number: @Model.userDetails.phone</span>
                 </div>
-                
+
             </div>
             <div class="col-12 col-xl-4">
                 <div class="content-box flex-column">
@@ -45,7 +45,7 @@
                         </tr>
                         <tr>
                             <td>Total</td>
-                            <td>Rs.@Model.orderItems.Sum(oi => oi.productDetails.list_price).ToString("N2")</td>
+                            <td>Rs.@Model.orderItems.Sum(oi => oi.list_price).ToString("N2")</td>
                         </tr>
                         <tr>
                             <td>Status</td>
@@ -54,20 +54,17 @@
                                 {
                                     case 0:
                                         <h6>Order Placed</h6>
-                                        
+
                                         break;
                                     case 1:
                                         <h6>Order Shipped</h6>
-                                        
+
                                         break;
                                     case 2:
                                         <h6>Order Delivered</h6>
                                         break;
                                     case 3:
                                         <h6>Order Cancelled</h6>
-                                        break;
-                                    case 4:
-                                        <h6>Order Returned</h6>
                                         break;
                                     default:
                                         @:Unknown Status
@@ -76,19 +73,20 @@
                             </td>
                         </tr>
                     </table>
-                    
-                   
+
+
                 </div>
-               
-                        <button class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</button>
+
+                <a href="@Url.Action("_DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</a>
+                <a href="@Url.Action("DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">View Invoice</a>
             </div>
             <div class="col-12 col-xl-3 d-flex flex-column justify-content-around align-items-center my-1">
 
                 @if (Model.order_status == 0 || Model.order_status == 1)
                 {
-                  
+
                     <div id="cancelBtnDiv">
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">Cancel Order</button>
+                        <button class="btn btn-sm btn-danger w-100" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">Cancel Order</button>
                     </div>
                     <!-- Modal -->
                     <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
@@ -110,12 +108,6 @@
                     </div>
                 }
 
-                @if (Model.order_status == 2)
-                {
-                    <div>
-                        <button class="btn btn-sm btn-primary">Return Product</button>
-                    </div>
-                }
 
             </div>
         </div>
@@ -138,7 +130,10 @@
                 <div class="p-3 ms-xl-5 product-text">
                     @item.productDetails.product_name
                     <br />
-                    ₹@item.productDetails.list_price
+                    @{
+                        var itemPrice = item.productDetails.list_price - (item.productDetails.list_price * item.discount);
+                    }
+                    ₹@itemPrice
                 </div>
             </div>
             <div>

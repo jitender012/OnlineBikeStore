@@ -3,6 +3,7 @@ using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
@@ -69,91 +70,106 @@ namespace OnlineBikeStore.Controllers
         }
         public ActionResult Product(int? pId)
         {
-            if (pId > 0 && pId != null)
+            if (pId <= 0 && pId == null)
             {
-                var categories = context.categories.ToList();
-                ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
+                return View("Error");
+            }
 
-                var product = context.products
-                    .SingleOrDefault(c => c.product_id == pId);
-                var category = context.categories
-                    .SingleOrDefault(x => x.category_id == product.category_id);
-                var brand = context.brands
-                    .SingleOrDefault(x => x.brand_id == product.brand_id);
+            // Check if the product found
+            var product = context.products
+                .SingleOrDefault(c => c.product_id == pId);
+            if (product == null)
+            {
+                return HttpNotFound("Product not found.");
+            }
 
-                // Check if the product found
-                if (product == null)
+            var categories = context.categories.ToList();
+            ViewBag.Categories = Mapper.Map<List<CategoryViewModel>>(categories);
+
+
+            var category = context.categories
+                .SingleOrDefault(x => x.category_id == product.category_id);
+            var brand = context.brands
+                .SingleOrDefault(x => x.brand_id == product.brand_id);
+
+            bool isInCart = false;
+            bool isInWishlist = false;
+            bool isPurchased = false;
+            bool isReviewed = false;
+            ViewBag.UserId = 0;
+
+
+            if (User.Identity.IsAuthenticated)
+            {
+                int uId = context.GetUserId(User.Identity.Name);
+
+                var userData = context.users
+                       .Include(u => u.userCarts)
+                       .Include(u => u.wishlists)
+                       .Include(u => u.orders.Select(o => o.order_items))
+                       .Include(u => u.feedbacks)
+                       .SingleOrDefault(u => u.user_id == uId);
+
+                if (userData != null)
                 {
-                    return HttpNotFound("Product not found.");
-                }
-
-
-                bool isInCart = false;
-                bool isInWishlist = false;
-                bool isPurchased = false;
-                bool isReviewed = false;
-                ViewBag.UserId = 0;
-                if (User.Identity.IsAuthenticated)
-                {
-                    int uId = context.GetUserId(User.Identity.Name);
-
-                    isInCart = context.userCarts
-                        .Any(c => c.product_id == pId && c.user_id == uId);
-
-                    isInWishlist = context.wishlists
-                        .Any(c => c.product_id == pId && c.user_id == uId);
-
-                    isPurchased = context.orders
-                                            .Where(x => x.user.user_id == uId && x.order_status == 2 && x.order_items.Any(z => z.product_id == pId))
-                                            .Any();
-                    isReviewed = context.feedbacks
-                        .Any(x => x.product_id == pId && x.customer_id == uId);
+                    isInCart = userData.userCarts
+                        .Any(c => c.product_id == pId);
+                    isInWishlist = userData.wishlists
+                        .Any(w => w.product_id == pId);
+                    isPurchased = userData.orders
+                        .Any(o => o.order_status == 2 && o.order_items.Any(oi => oi.product_id == pId));
+                    isReviewed = userData.feedbacks
+                        .Any(f => f.product_id == pId);
 
                     ViewBag.UserId = uId;
                 }
-
-                var feedbackViewModel = context.feedbacks
-                                        .Where(x => x.product_id == pId)
-                                        .Select(f => new FeedbackViewModel
-                                        {
-                                            feedback_id = f.feedback_id,
-                                            ratingValue = f.ratingValue,
-                                            customer_id = f.customer_id,
-                                            date = f.date,
-                                            feedback_text = f.feedback_text,
-                                            image_url = f.image_url,
-                                            customer_name = context.users
-                                                    .Where(x => x.user_id == f.customer_id)
-                                                    .Select(z => z.first_name + " " + z.last_name)
-                                                    .FirstOrDefault()
-                                        })
-                                        .ToList();
-
-                //Map database product to view model
-                ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel()
-                {
-                    product_name = product.product_name,
-                    product_id = product.product_id,
-                    list_price = product.list_price,
-                    product_type = product.product_type,
-                    description = product.description,
-                    url = product.url,
-                    model_year = product.model_year,
-                    category_id = product.category_id,
-                    brand_id = product.brand_id,
-                    category_name = category.category_name,
-                    brand_name = brand.brand_name,
-                    isInCart = isInCart,
-                    isInWishList = isInWishlist,
-                    isPurchased = isPurchased,
-                    isReviewed = isReviewed,
-                    Feedback = feedbackViewModel
-                };
-
-                return View(productDetailsViewModel);
             }
-            else
-                return View("Error");
+
+            var feedbackViewModel = context.feedbacks
+                                    .Where(x => x.product_id == pId)
+                                    .Select(f => new FeedbackViewModel
+                                    {
+                                        feedback_id = f.feedback_id,
+                                        ratingValue = f.ratingValue,
+                                        customer_id = f.customer_id,
+                                        date = f.date,
+                                        feedback_text = f.feedback_text,
+                                        image_url = f.image_url,
+                                        customer_name = context.users
+                                                .Where(x => x.user_id == f.customer_id)
+                                                .Select(z => z.first_name + " " + z.last_name)
+                                                .FirstOrDefault()
+                                    })
+                                    .ToList();
+
+
+            //Map database product to view model
+            ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel()
+            {
+                product_name = product.product_name,
+                product_id = product.product_id,
+                list_price = product.list_price,
+                product_type = product.product_type,
+                description = product.description,
+                url = product.url,
+                model_year = product.model_year,
+                category_id = product.category_id,
+                brand_id = product.brand_id,
+                category_name = category.category_name,
+                brand_name = brand.brand_name,
+                isInCart = isInCart,
+                isInWishList = isInWishlist,
+                isPurchased = isPurchased,
+                isReviewed = isReviewed,
+                Feedback = feedbackViewModel,
+                currentStock = context.stocks
+                    .Where(p => p.product_id == pId)
+                    .Select(s => (int)s.quantity)
+                    .DefaultIfEmpty()
+                    .FirstOrDefault()
+            };
+
+            return View(productDetailsViewModel);
         }
         public ActionResult Search(string searchWord)
         {
@@ -221,7 +237,7 @@ namespace OnlineBikeStore.Controllers
                 productIds = context.products
                     .Where(p => p.category_id.ToString() == catId)
                     .Select(x => x.product_id)
-                    .ToList();               
+                    .ToList();
             }
 
             if (filters.brands != null)
@@ -267,7 +283,7 @@ namespace OnlineBikeStore.Controllers
         public ActionResult NotFound()
         {
             Response.StatusCode = 404;
-            return View("Error"); 
+            return View("Error");
         }
     }
 }

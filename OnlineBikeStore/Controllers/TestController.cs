@@ -1,5 +1,6 @@
 ﻿using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace OnlineBikeStore.Controllers
         {
             context = new BikeStoreEntities();
         }
-        public ActionResult pageDesign() 
-        { 
+        public ActionResult pageDesign()
+        {
 
             return View("~/Views/Feedback/FeedbackSuccess.cshtml");
         }
@@ -25,6 +26,7 @@ namespace OnlineBikeStore.Controllers
         {
             return View();
         }
+
         public ActionResult jQuery()
         {
             List<Student> student = new List<Student>()
@@ -34,22 +36,26 @@ namespace OnlineBikeStore.Controllers
                 new Student(){Id= 3,Name = "Test3",Age = 6},
                 new Student(){Id= 4,Name = "Test4",Age = 7},
                 new Student(){Id= 5,Name = "Test5",Age = 3},
-                new Student(){Id= 6,Name = "Test6",Age = 5},
-                new Student(){Id= 7,Name = "Test7",Age = 4},
-                new Student(){Id= 8,Name = "Test8",Age = 8},
-                new Student(){Id= 9,Name = "Test9",Age = 3},
-                new Student(){Id= 10,Name = "Test10",Age = 12},
-                new Student(){Id= 11,Name = "Test11",Age = 16},
-                new Student(){Id= 12,Name = "Test12",Age = 17},
-                new Student(){Id= 13,Name = "Test13",Age = 13},
-                new Student(){Id= 14,Name = "Test14",Age = 15},
-                new Student(){Id= 15,Name = "Test15",Age = 14},
-                new Student(){Id= 16,Name = "Test16",Age = 18}
+               
             };
-            return View(student);
+            return View( student);
+        }
+        public PartialViewResult jQueryPartial()
+        {
+            List<Student> student = new List<Student>()
+            {
+                new Student(){Id= 1,Name = "Test1",Age = 3},
+                new Student(){Id= 2,Name = "Test2",Age = 2},
+                new Student(){Id= 3,Name = "Test3",Age = 6},
+                new Student(){Id= 4,Name = "Test4",Age = 7},
+                new Student(){Id= 5,Name = "Test5",Age = 3},           
+            };
+            return PartialView("_jQuery", student);
         }
 
-        public PartialViewResult getStudents()
+
+  
+        public ActionResult DownloadStudentDetails()
         {
             List<Student> student = new List<Student>()
             {
@@ -58,20 +64,15 @@ namespace OnlineBikeStore.Controllers
                 new Student(){Id= 3,Name = "Test3",Age = 6},
                 new Student(){Id= 4,Name = "Test4",Age = 7},
                 new Student(){Id= 5,Name = "Test5",Age = 3},
-                new Student(){Id= 6,Name = "Test6",Age = 5},
-                new Student(){Id= 7,Name = "Test7",Age = 4},
-                new Student(){Id= 8,Name = "Test8",Age = 8},
-                new Student(){Id= 9,Name = "Test9",Age = 3},
-                new Student(){Id= 10,Name = "Test10",Age = 12},
-                new Student(){Id= 11,Name = "Test11",Age = 16},
-                new Student(){Id= 12,Name = "Test12",Age = 17},
-                new Student(){Id= 13,Name = "Test13",Age = 13},
-                new Student(){Id= 14,Name = "Test14",Age = 15},
-                new Student(){Id= 15,Name = "Test15",Age = 14},
-                new Student(){Id= 16,Name = "Test16",Age = 18}
+                
             };
-            return PartialView("_jQuery",student);
+            var uniqueId = Guid.NewGuid();
+            return new PartialViewAsPdf("_jQuery", student)
+            {
+                FileName = $"Order_{uniqueId}.pdf"
+            };
         }
+
         public ActionResult Method(FeedbackViewModel data)
         {
             return View();

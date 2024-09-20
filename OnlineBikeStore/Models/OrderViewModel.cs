@@ -19,15 +19,7 @@ namespace OnlineBikeStore.Models
         public int total_items { get; set; }
               
     }
-
-    public class OrderStatusModel
-    {
-        public int placed { get; set; }
-        public int shipped { get; set; }
-        public int delivered { get; set; }
-        public int cancelled { get; set; }
-        public int returned { get; set; }
-    }
+   
     public class OrderDetailsViewModel
     {
         public int order_id { get; set; }             
@@ -40,8 +32,12 @@ namespace OnlineBikeStore.Models
 
     public class OrderItem
     {
-        public int item_id { get; set; }        
-        public int quantity { get; set; }        
+        public int item_id { get; set; }
+        public int order_id { get; set; }
+        public int product_id { get; set; }
+        public int quantity { get; set; }
+        public decimal list_price { get; set; }
+        public decimal discount { get; set; }
         public ProductDetailsViewModel productDetails { get; set; }
     }
     public class OrderSummaryViewModel
@@ -49,12 +45,20 @@ namespace OnlineBikeStore.Models
         public UserViewModel user { get; set; }
         public List<ProductViewModel> products { get; set; }
     }
+    public class SummaryPDFmodel
+    {
+        public int orderId { get; set; }
+        public DateTime orderDate { get; set; }
+        public DateTime downloadDate { get; set; }
+        public decimal orderTotal { get; set; }
+        public List<OrderItem> item { get;set; }
+        public UserViewModel userDetails { get; set; }
+    }
     public enum OrderStatus
     {
         Placed = 0,
         Shipped = 1,
         Delivered = 2,
-        Cancelled = 3,
-        Returned = 4
+        Cancelled = 3     
     }
 }

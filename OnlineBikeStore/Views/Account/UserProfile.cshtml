@@ -40,7 +40,8 @@
                                            {
                                                HttpMethod = "GET",
                                                UpdateTargetId = "targetResult",
-                                               InsertionMode = InsertionMode.Replace
+                                               InsertionMode = InsertionMode.Replace,
+                                               LoadingElementId = "loadingImage"
                                            }, new { @class = "NS64GK", id = "profileLink" })
 
                                     </div>
@@ -49,7 +50,8 @@
                                            {
                                                HttpMethod = "GET",
                                                UpdateTargetId = "targetResult",
-                                               InsertionMode = InsertionMode.Replace
+                                               InsertionMode = InsertionMode.Replace,
+                                               LoadingElementId = "loadingImage"
                                            }, new { @class = "NS64GK", id = "ordersLink" })
                                     </div>
                                     <div data-bs-dismiss="offcanvas">
@@ -87,29 +89,22 @@
                                                 InsertionMode = InsertionMode.Replace
                                             }, new { @class = "NS64GK" })
                                     </div>
-
-
-
-
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </nav>
-
-
-
-
             </div>
 
             <div class="col-12 col-lg-8 mt-2 p-2">
+                <div  class="d-flex justify-content-center" >
 
+                <div id="loadingImage" style="display: none;margin-top:20px">                    
+                    <img src="~/Images/Utilities/loading.gif" alt="Loading..."/>
+                </div>
+                </div>
                 <div id="targetResult">
+
                 </div>
             </div>
         </div>

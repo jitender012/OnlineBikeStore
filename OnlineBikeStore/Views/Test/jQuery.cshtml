@@ -29,8 +29,12 @@
         <input type="checkbox" value="off" id="cb3" />
         <input type="checkbox" value="off" id="cb4" />
     </div>
+    <a href="@Url.Action("DownloadStudentDetails")" class="btn btn-primary">
+        Download PDF
+    </a>
+
     <div id="partialViewContainer">
-        @Html.Partial("_jQuery")
+        @Html.Partial("getStudents")
     </div>
 
     <script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
@@ -61,7 +65,7 @@
         })
 
         $(document).ready(function () {
-            $("i").on("click", function () {                
+            $("i").on("click", function () {
                 $(this).toggleClass("fa-angle-down fa-angle-up");
                 $(this).css("color", "red")
             })
