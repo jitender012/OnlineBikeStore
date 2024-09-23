@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
@@ -165,7 +162,7 @@ namespace OnlineBikeStore.Controllers
                 currentStock = context.stocks
                     .Where(p => p.product_id == pId)
                     .Select(s => (int)s.quantity)
-                    .DefaultIfEmpty()
+                    .DefaultIfEmpty(-1)
                     .FirstOrDefault()
             };
 

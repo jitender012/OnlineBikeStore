@@ -1,5 +1,4 @@
-﻿
-@model OnlineBikeStore.Models.ProductDetailsViewModel
+﻿@model OnlineBikeStore.Models.ProductDetailsViewModel
 @{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
@@ -131,13 +130,17 @@
                         }
                     </div>
                 </p>
-                @if (Model.currentStock <= 5 && Model.currentStock>0)
+                @if (Model.currentStock <= 5 && Model.currentStock > 0)
                 {
                     <span style="color:coral">Only @Model.currentStock left.</span>
                 }
-                @if (Model.currentStock == 0)
+                else if (Model.currentStock == 0)
                 {
                     <span style="color:red">Out of stock.</span>
+                }
+                else if (Model.currentStock == -1)
+                {
+                    <span style="color:red">Not Available.</span>
                 }
                 <p>
                     @Html.Raw(Model.description.Replace("--", "<br />-"))

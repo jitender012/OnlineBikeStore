@@ -12,18 +12,12 @@ namespace OnlineBikeStore
     using System;
     using System.Collections.Generic;
     
-    public partial class order_items
+    public partial class sysdiagram
     {
-        public int item_id { get; set; }
-        public int order_id { get; set; }
-        public int product_id { get; set; }
-        public int quantity { get; set; }
-        public decimal list_price { get; set; }
-        public decimal discount { get; set; }
-        public Nullable<int> store_id { get; set; }
-    
-        public virtual product product { get; set; }
-        public virtual order order { get; set; }
-        public virtual store store { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

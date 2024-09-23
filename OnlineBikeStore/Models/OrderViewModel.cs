@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OnlineBikeStore.Models
 {
@@ -35,6 +33,8 @@ namespace OnlineBikeStore.Models
         public int item_id { get; set; }
         public int order_id { get; set; }
         public int product_id { get; set; }
+        public int? store_id { get; set; }
+        public string store_name{ get; set; }
         public int quantity { get; set; }
         public decimal list_price { get; set; }
         public decimal discount { get; set; }

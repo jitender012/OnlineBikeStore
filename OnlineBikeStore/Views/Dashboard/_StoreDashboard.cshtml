@@ -20,8 +20,67 @@
                 </td>
                 <td>@stockItem.model_year</td>
                 <td>@stockItem.quantity</td>
-                <td><a href="">Update Quantity</a>|<a href="">Remove</a></td>
+                <td>
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#updateStockModal">Update Quantity</button><br />
+                    <button onclick="removeStockFromStore(@stockItem.product_id)" class="btn">Remove</button>
+                </td>
             </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="updateStockModal" tabindex="-1" aria-labelledby="updateStockModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 h1-label" id="exampleModalLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="m-body">
+                            <div>
+                                <form id="updateQuantityForm">                                                                        
+                                    <div class="mb-3">
+                                        <label for="quantity" class="form-label">Product Name</label>
+                                        <input type="text" value="@stockItem.product_name" class="form-control" readonly />
+                                        <label for="quantity" class="form-label">Current Quantity</label>
+                                        <input type="number" value="@stockItem.quantity" readonly name="quantity" id="current-quantity" class="form-control" min="0" />
+                                        <label for="quantity" class="form-label">New Quantity</label>
+                                        <input type="number" name="quantity" id="newQuantity" class="form-control" min="0" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="UpdateQuantity(@stockItem.product_id, @Model.store_id)" class="btn btn-primary">Update Quantity</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </tbody>
 </table>
+
+<script>
+    $(document).ready(
+        function () {
+            $('#store-table').DataTable();
+        }
+    )
+    function removeStockFromStore(p_id) {
+        $.ajax({
+            url: '@Url.Action("RemoveStockFromStore", "Stock")',
+            type: 'POST',
+            data: {
+                product_id: p_id,
+                store_id: @Model.store_id
+            },
+           success: function (response) {
+               getStockDataByStore()
+               alert(response.message)
+            },
+            error: function () {
+                console.log('Something went wrong.');
+            }
+        });
+    }
+
+</script>
+

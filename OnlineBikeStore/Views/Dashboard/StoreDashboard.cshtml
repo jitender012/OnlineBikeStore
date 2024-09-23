@@ -4,11 +4,15 @@
     ViewBag.Title = "StoreDashBoard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<style>
+    .border {
+        border: 1px solid grey;
+        border-radius: 5px;
+    }
+</style>
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
-
         <div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
@@ -25,20 +29,47 @@
                 </div>
 
                 <div>
-
                     <button type="button" onclick="getStockNotInAnyStore()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemsModal">
                         Add More Items
                     </button>
                 </div>
 
             </div>
-            <div class="summary">
-                <div class="summary-item">All Inventory <br /><span id="allInventory"></span></div>
-                <div class="summary-item">Low Stock <br /><span id="lowInventory"></span></div>
-                <div class="summary-item">Out of Stock<br> <span id="finishedInventory"></span></div>
-                <div class="summary-item">Recommendations<br> <span id="all-inventory">1</span></div>
-            </div>
+            <div class="row g-4 mb-4">
+                <div class="col-6 col-lg-3 ">
+                    <div class=" shadow-sm h-100 border">
+                        <div class="p-3 p-lg-4">
+                            <h4 class="mb-1">All Inventory</h4>
+                            <div>$12,628</div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-6 col-lg-3 ">
+                    <div class=" shadow-sm h-100 border">
+                        <div class="p-3 p-lg-4">
+                            <h4 class="mb-1">Low Stock</h4>
+                            <div>$12,628</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 ">
+                    <div class=" shadow-sm h-100 border">
+                        <div class="p-3 p-lg-4">
+                            <h4 class="mb-1">Out Of Stock</h4>
+                            <div>$12,628</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 ">
+                    <div class=" shadow-sm h-100 border">
+                        <div class="p-3 p-lg-4">
+                            <h4 class="mb-1">Customers</h4>
+                            <div>$12,628</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="inventory-table" id="_StoreDashboardContainer">
                 @Html.Partial("_StoreDashboard")
             </div>
@@ -48,37 +79,6 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="updateStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5 h1-label" id="exampleModalLabel"></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="m-body">
-                <div>
-                    <form id="updateQuantityForm">
-                        <input type="hidden" name="productId" id="productId" />
-                        <input type="hidden" name="storeId" id="storeId" />
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Product Name</label>
-                            <input type="text" name="quantity" id="product-name" class="form-control" min="0" />
-                            <label for="quantity" class="form-label">Current Quantity</label>
-                            <input type="number" readonly name="quantity" id="current-quantity" class="form-control" min="0" />
-                            <label for="quantity" class="form-label">New Quantity</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control" min="0" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="updateQuantityButton" class="btn btn-primary">Update Quantity</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -94,17 +94,16 @@
                 <table class="table w-100" id="addItemsTable">
                     <thead>
                         <tr>
-                            <th>Product Name</th>                           
+                            <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="addItemsTblBody">
-
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
     </div>
 </div>

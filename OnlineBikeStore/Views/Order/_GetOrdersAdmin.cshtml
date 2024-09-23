@@ -50,7 +50,7 @@
                 <td>
                     @if (item.order_status != 2 && item.order_status != 3)
                     {
-                        <select name="oStatus" id="oStatus_@item.order_id" onchange="enableButton(@item.order_id)">
+                        <select name="oStatus" class="form-control d-inline w-50" id="oStatus_@item.order_id" onchange="enableButton(@item.order_id)">
                             <option value=""  selected>Update Status</option>
                             @if (item.order_status < 1)
                             {
@@ -61,7 +61,7 @@
                                 <option value="2">Delivered</option>
                             }
                         </select>
-                        <button onclick="updateOrderStatus(@item.order_id)"  id="statusUpdateBtn_@item.order_id" disabled>
+                        <button class="btn " onclick="updateOrderStatus(@item.order_id)"  id="statusUpdateBtn_@item.order_id" disabled>
                             <i class="fa fa-check"></i>
                         </button>
                     }
@@ -72,12 +72,7 @@
 </table>
 
 <script>
-    //$(document).ready(function () {
-    //    $("#oStatus").on("change", function () {
-    //        var aaa = $(this).val();
-    //        alert(aaa)
-    //    })
-    //})
+   
     function updateOrderStatus(oId) {
         var o_status = $("#oStatus_" + oId).val();
           $.ajax({

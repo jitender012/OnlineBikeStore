@@ -20,93 +20,91 @@
                     </div>
 
                 </div>
-                @if (Model.products.Count < 1)
-                {
-                    <span>Your cart is Empty!</span>
-                }
-
-                <div class="r-box d-flex flex-wrap justify-content-between  mb-3" style="padding: 10px 15px 10px 15px;">
-                    <div class="d-flex">
-                        <div>
-
-                            <div style="max-width:500px">
-                                <p>Deliver To</p>
-                                @Model.user.first_name @Model.user.city
-                            </div>
-
-                        </div>
-                    </div>
-                    <div><button class="btn btn-default" style="color:cornflowerblue">Change</button></div>
-                </div>
-
                 @{
                     decimal totalAmount = 0;
                 }
-
-                @*Container for Item list*@
-                <div class="r-box" id="item-list">
-
-                    @*Container for each item*@
-                    @foreach (var item in Model.products)
-                    {
-                        <div class="item " style="border-bottom: 1px solid #e6e6e6" id="@item.product_id">
-                            <div style="padding: 20px 15px 0px 15px;">
-                                <div class=" row">
-                                    <div class="col d-flex">
-                                        <div class="p-2">
-                                            @if (item.url != null)
-                                            {
-                                                <img src="@Url.Content(item.url)" width="100" />
-
-                                            }
-                                        </div>
-                                        <div class="name-price">
-                                            <div>
-                                                <a>@item.product_name</a>
-                                            </div>
-                                            <div class="list-price">
-                                                @item.list_price
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col d-flex flex-column align-items-end justify-content-center">
-                                        <div>
-                                            <div class="p2uyH2 d-flex ">
-                                                <button class="LcLcvv" disabled=""> - </button>
-                                                <div class="">
-                                                    <input type="text" class="p6sArZ mx-2" value="1">
-                                                </div>
-                                                <button class="LcLcvv"> + </button>
-
-                                            </div>
-                                            <div>
-                                                <button onclick="RemoveItem(@item.product_id)" class="btn">Remove</button>
-                                            </div>
-                                        </div>
+                @if (Model.products.Count < 1)
+                {
 
 
+                    <div class="content-box">
+                        <span>Your cart is Empty!</span>
 
-                                    </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="r-box d-flex flex-wrap justify-content-between  mb-3" style="padding: 10px 15px 10px 15px;">
+                        <div class="d-flex">
+                            <div>
+
+                                <div style="max-width:500px">
+                                    <p>Deliver To</p>
+                                    @Model.user.first_name @Model.user.city
                                 </div>
 
                             </div>
-
                         </div>
-
-                        totalAmount += item.list_price;
-                    }
-                    @*end of Container for each item/*@
-
-
-                    <div class="px-4 py-3 place-order-div" style="position:sticky">
-                        <a href="@Url.Action( "OrderSummary", "Order")" class="place-order-btn" style="text-decoration:none">
-                            Continue
-                        </a>
+                        <div><a href="@Url.Action("UserProfile","Account", new {linkId = 0})" class="btn btn-default" style="color:cornflowerblue">Change</a></div>
                     </div>
 
 
-                </div>
+                    @*Container for Item list*@
+                    <div class="r-box" id="item-list">
+
+                        @*Container for each item*@
+                        @foreach (var item in Model.products)
+                        {
+                            <div class="item " style="border-bottom: 1px solid #e6e6e6" id="@item.product_id">
+                                <div style="padding: 20px 15px 0px 15px;">
+                                    <div class=" row">
+                                        <div class="col d-flex">
+                                            <div class="p-2">
+                                                @if (item.url != null)
+                                                {
+                                                    <img src="@Url.Content(item.url)" width="100" />
+
+                                                }
+                                            </div>
+                                            <div class="name-price">
+                                                <div>
+                                                    <a>@item.product_name</a>
+                                                </div>
+                                                <div class="list-price">
+                                                    @item.list_price
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col d-flex flex-column align-items-end justify-content-center">
+                                            
+                                                <div>
+                                                    <button onclick="RemoveItem(@item.product_id)" class="btn">Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                          
+
+                            totalAmount += item.list_price;
+                        }
+                        @*end of Container for each item/*@
+
+
+                        <div class="px-4 py-3 place-order-div" style="position:sticky">
+                            <a href="@Url.Action( "OrderSummary", "Order")" class="place-order-btn" style="text-decoration:none">
+                                Continue
+                            </a>
+                        </div>
+
+
+                    </div>
+                }
+
+
 
             </div>
 
@@ -125,7 +123,7 @@
                     </div>
                     <div class="d-flex flex-wrap justify-content-between">
                         @{
-                            var discount = (totalAmount) * 10 / 100;
+                            var discount = (totalAmount) * 15 / 100;
                             var payable = totalAmount - discount;
                         }
                         <p>Discount</p>

@@ -4,3 +4,42 @@ Password: 123
 
 Customer: debra.burks@yahoo.com
 Password: 123
+
+
+
+cart css
+
+
+<div>
+    <div class="p2uyH2 d-flex ">
+        <button class="LcLcvv" disabled=""> - </button>
+        <div class="">
+            <input type="text" class="p6sArZ mx-2" value="1">
+        </div>
+        <button class="LcLcvv"> + </button>
+
+    </div>
+.p2uyH2 {
+    align-items: center;
+}
+.p2uyH2 .LcLcvv {
+    width: 20px;
+    height: 20px;    
+    display: flex;       
+    align-content:center;
+    border: 1px solid #c2c2c2;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-top: 1px;
+    line-height: 1;    
+}
+
+
+.p6sArZ {
+    text-align:center;
+    width: 40px;
+    padding: 0px 2px 0px 5px;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+}

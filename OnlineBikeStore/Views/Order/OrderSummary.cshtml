@@ -37,8 +37,7 @@
                             </div>
 
                         </div>
-                    </div>
-                    <div><button class="btn btn-default" style="color:cornflowerblue">Update</button></div>
+                    </div>                    
                 </div>
 
                 @{
@@ -67,22 +66,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col d-flex flex-column align-items-end justify-content-center">
-                                        <div>
-                                            <div class="p2uyH2 d-flex ">
-                                                <button class="LcLcvv" disabled=""> - </button>
-                                                <div class="">
-                                                    <input type="text" class="p6sArZ mx-2" value="1">
-                                                </div>
-                                                <button class="LcLcvv"> + </button>
-
-                                            </div>
-                                            <div>
-                                                <button onclick="RemoveItem(@item.product_id)" class="btn">Remove</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
 
                             </div>
@@ -144,44 +128,44 @@
                         <div class="row bg-light m-0">
                             <div class="col-12 px-4 my-2">
                                 <p class="fw-bold">Payment Options</p>
-                               
-                                    <label>
-                                        <input type="radio" name="payment" value="cod" checked> Cash on Delivery
-                                    </label><br>
 
-                                    <label>
-                                        <input type="radio" name="payment" value="upi"> UPI
-                                    </label><br>
+                                <label>
+                                    <input type="radio" name="payment" value="cod" checked> Cash on Delivery
+                                </label><br>
 
-                                    <label>
-                                        <input type="radio" name="payment" value="card"> Credit Card / Debit Card
-                                    </label><br>
+                                <label>
+                                    <input type="radio" name="payment" value="upi"> UPI
+                                </label><br>
 
-                                    <!-- Cash on Delivery has no input field, so no extra fields for COD -->
-                                    <!-- UPI input field -->
-                                    <div id="upiField" class="payment-input" style="display:none;">
-                                        <label for="upiId" class="text-muted">Enter UPI ID:</label>
-                                        <input type="text" id="upiId" name="upiId" placeholder="example@upi">
-                                    </div>
+                                <label>
+                                    <input type="radio" name="payment" value="card"> Credit Card / Debit Card
+                                </label><br>
 
-                                    <!-- Credit/Debit Card input fields -->
-                                    <div id="cardFields" class="payment-input" style="display:none;">
-                                        <table>
-                                            <tr>
-                                                <td><label class="text-muted" for="cardNumber">Card Number:</label></td>
-                                                <td> <input  class="form-control" type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>  <label class="text-muted" for="expiryDate">Expiry Date:</label></td>
-                                                <td> <input class="form-control" type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td> <label class="text-muted" for="cvv">CVV:</label></td>
-                                                <td>  <input class="form-control" type="text" id="cvv" name="cvv" placeholder="123"><br></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                               
+                                <!-- Cash on Delivery has no input field, so no extra fields for COD -->
+                                <!-- UPI input field -->
+                                <div id="upiField" class="payment-input" style="display:none;">
+                                    <label for="upiId" class="text-muted">Enter UPI ID:</label>
+                                    <input type="text" id="upiId" name="upiId" placeholder="example@upi">
+                                </div>
+
+                                <!-- Credit/Debit Card input fields -->
+                                <div id="cardFields" class="payment-input" style="display:none;">
+                                    <table>
+                                        <tr>
+                                            <td><label class="text-muted" for="cardNumber">Card Number:</label></td>
+                                            <td> <input class="form-control" type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"><br></td>
+                                        </tr>
+                                        <tr>
+                                            <td>  <label class="text-muted" for="expiryDate">Expiry Date:</label></td>
+                                            <td> <input class="form-control" type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"><br></td>
+                                        </tr>
+                                        <tr>
+                                            <td> <label class="text-muted" for="cvv">CVV:</label></td>
+                                            <td>  <input class="form-control" type="text" id="cvv" name="cvv" placeholder="123"><br></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
                             </div>
 
                         </div>

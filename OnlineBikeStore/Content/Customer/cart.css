@@ -13,36 +13,6 @@
     box-shadow: 0px 1px 2px 0px #a0a0a08c;
 }
 
-.n-box {
-    background-color: #f1f3f6;
-    color: cornflowerblue;
-    padding: 0px 7px 2px 7px;
-    height: 26px;
-    position: absolute;
-    font-size: 14px;
-}
-
-.p2uyH2 .LcLcvv {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(#fff, #f9f9f9);
-    display: inline-block;
-    border: 1px solid #c2c2c2;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 50%;
-    padding-top: 1px;
-    line-height: 1;
-}
-
-
-.p6sArZ {
-    width: 40px;
-    padding: 0px 2px 0px 5px;
-    border: 1px solid lightgrey;
-    border-radius: 3px;
-}
-
 .place-order-div {
     box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -52,10 +22,6 @@
     background-color: coral;
     border: none;
     color: white;
-}
-.name-price{
-    
-    margin:15px 0 0 20px;
 }
 
 @media(max-width: 568px){

@@ -28,6 +28,16 @@
           <Property Name="date" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ans_text" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="user_role">
           <Key>
             <PropertyRef Name="role_id" />
@@ -117,6 +127,7 @@
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="list_price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="discount" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="store_id" Type="int" />
         </EntityType>
         <EntityType Name="orders">
           <Key>
@@ -128,19 +139,6 @@
           <Property Name="order_date" Type="date" Nullable="false" />
           <Property Name="required_date" Type="date" Nullable="false" />
           <Property Name="shipped_date" Type="date" />
-        </EntityType>
-        <EntityType Name="staffs">
-          <Key>
-            <PropertyRef Name="staff_id" />
-          </Key>
-          <Property Name="staff_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="phone" Type="varchar" MaxLength="25" />
-          <Property Name="active" Type="tinyint" Nullable="false" />
-          <Property Name="store_id" Type="int" Nullable="false" />
-          <Property Name="manager_id" Type="int" />
         </EntityType>
         <EntityType Name="stores">
           <Key>
@@ -225,68 +223,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__staffs__manager___13F1F5EB">
-          <End Role="staffs" Type="Self.staffs" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staffs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___2334397B">
-          <End Role="staffs" Type="Self.staffs" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staffs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___24285DB4">
-          <End Role="staffs" Type="Self.staffs" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staffs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___44FF419A">
-          <End Role="staffs" Type="Self.staffs" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staffs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__store_id__440B1D61">
-          <End Role="stores" Type="Self.stores" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="staffs" Type="Self.staffs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="stores">
-              <PropertyRef Name="store_id" />
-            </Principal>
-            <Dependent Role="staffs">
-              <PropertyRef Name="store_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__stocks__product___52593CB8">
           <End Role="products" Type="Self.products" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -298,20 +234,6 @@
             </Principal>
             <Dependent Role="stocks">
               <PropertyRef Name="product_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__stocks__store_id__5165187F">
-          <End Role="stores" Type="Self.stores" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="stocks" Type="Self.stocks" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="stores">
-              <PropertyRef Name="store_id" />
-            </Principal>
-            <Dependent Role="stocks">
-              <PropertyRef Name="store_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -339,6 +261,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_order_items_stores">
+          <End Role="stores" Type="Self.stores" Multiplicity="0..1" />
+          <End Role="order_items" Type="Self.order_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stores">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="order_items">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_query_products">
           <End Role="products" Type="Self.products" Multiplicity="1" />
           <End Role="query" Type="Self.query" Multiplicity="*" />
@@ -360,6 +294,18 @@
             </Principal>
             <Dependent Role="query">
               <PropertyRef Name="qus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stores_stores">
+          <End Role="stores" Type="Self.stores" Multiplicity="1" />
+          <End Role="stores1" Type="Self.stores" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="stores">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="stores1">
+              <PropertyRef Name="store_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -429,6 +375,7 @@
         <EntityContainer Name="OnlineBikeStoreModelStoreContainer">
           <EntitySet Name="feedback" EntityType="Self.feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="query" EntityType="Self.query" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_role" EntityType="Self.user_role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userCart" EntityType="Self.userCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
@@ -439,7 +386,6 @@
           <EntitySet Name="stocks" EntityType="Self.stocks" Schema="production" store:Type="Tables" />
           <EntitySet Name="order_items" EntityType="Self.order_items" Schema="sales" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="sales" store:Type="Tables" />
-          <EntitySet Name="staffs" EntityType="Self.staffs" Schema="sales" store:Type="Tables" />
           <EntitySet Name="stores" EntityType="Self.stores" Schema="sales" store:Type="Tables" />
           <AssociationSet Name="FK__order_ite__order__4D94879B" Association="Self.FK__order_ite__order__4D94879B">
             <End Role="orders" EntitySet="orders" />
@@ -461,32 +407,8 @@
             <End Role="categories" EntitySet="categories" />
             <End Role="products" EntitySet="products" />
           </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___13F1F5EB" Association="Self.FK__staffs__manager___13F1F5EB">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___2334397B" Association="Self.FK__staffs__manager___2334397B">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___24285DB4" Association="Self.FK__staffs__manager___24285DB4">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___44FF419A" Association="Self.FK__staffs__manager___44FF419A">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__store_id__440B1D61" Association="Self.FK__staffs__store_id__440B1D61">
-            <End Role="stores" EntitySet="stores" />
-            <End Role="staffs" EntitySet="staffs" />
-          </AssociationSet>
           <AssociationSet Name="FK__stocks__product___52593CB8" Association="Self.FK__stocks__product___52593CB8">
             <End Role="products" EntitySet="products" />
-            <End Role="stocks" EntitySet="stocks" />
-          </AssociationSet>
-          <AssociationSet Name="FK__stocks__store_id__5165187F" Association="Self.FK__stocks__store_id__5165187F">
-            <End Role="stores" EntitySet="stores" />
             <End Role="stocks" EntitySet="stocks" />
           </AssociationSet>
           <AssociationSet Name="FK_feedback_products" Association="Self.FK_feedback_products">
@@ -497,6 +419,10 @@
             <End Role="users" EntitySet="users" />
             <End Role="feedback" EntitySet="feedback" />
           </AssociationSet>
+          <AssociationSet Name="FK_order_items_stores" Association="Self.FK_order_items_stores">
+            <End Role="stores" EntitySet="stores" />
+            <End Role="order_items" EntitySet="order_items" />
+          </AssociationSet>
           <AssociationSet Name="FK_query_products" Association="Self.FK_query_products">
             <End Role="products" EntitySet="products" />
             <End Role="query" EntitySet="query" />
@@ -504,6 +430,10 @@
           <AssociationSet Name="FK_query_users" Association="Self.FK_query_users">
             <End Role="users" EntitySet="users" />
             <End Role="query" EntitySet="query" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stores_stores" Association="Self.FK_stores_stores">
+            <End Role="stores" EntitySet="stores" />
+            <End Role="stores1" EntitySet="stores" />
           </AssociationSet>
           <AssociationSet Name="FK_Table_1_customers:uid" Association="Self.FK_Table_1_customers:uid">
             <End Role="users" EntitySet="users" />
@@ -671,6 +601,8 @@
           <Property Name="discount" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
           <NavigationProperty Name="product" Relationship="Self.FK__order_ite__produ__4E88ABD4" FromRole="order_items" ToRole="products" />
           <NavigationProperty Name="order" Relationship="Self.FK__order_ite__order__4D94879B" FromRole="order_items" ToRole="orders" />
+          <Property Name="store_id" Type="Int32" />
+          <NavigationProperty Name="store" Relationship="OnlineBikeStoreModel.FK_order_items_stores" FromRole="order_items" ToRole="store" />
         </EntityType>
         <EntityType Name="order">
           <Key>
@@ -685,28 +617,7 @@
           <NavigationProperty Name="user" Relationship="Self.FK__orders__customer__47DBAE45" FromRole="orders" ToRole="users" />
           <NavigationProperty Name="order_items" Relationship="Self.FK__order_ite__order__4D94879B" FromRole="orders" ToRole="order_items" />
         </EntityType>
-        <EntityType Name="staff">
-          <Key>
-            <PropertyRef Name="staff_id" />
-          </Key>
-          <Property Name="staff_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="phone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="active" Type="Byte" Nullable="false" />
-          <Property Name="store_id" Type="Int32" Nullable="false" />
-          <Property Name="manager_id" Type="Int32" />
-          <NavigationProperty Name="staffs1" Relationship="Self.FK__staffs__manager___13F1F5EB" FromRole="staffs" ToRole="staffs1" />
-          <NavigationProperty Name="staff1" Relationship="Self.FK__staffs__manager___13F1F5EB" FromRole="staffs1" ToRole="staffs" />
-          <NavigationProperty Name="staffs11" Relationship="Self.FK__staffs__manager___2334397B" FromRole="staffs" ToRole="staffs1" />
-          <NavigationProperty Name="staff2" Relationship="Self.FK__staffs__manager___2334397B" FromRole="staffs1" ToRole="staffs" />
-          <NavigationProperty Name="staffs12" Relationship="Self.FK__staffs__manager___24285DB4" FromRole="staffs" ToRole="staffs1" />
-          <NavigationProperty Name="staff3" Relationship="Self.FK__staffs__manager___24285DB4" FromRole="staffs1" ToRole="staffs" />
-          <NavigationProperty Name="staffs13" Relationship="Self.FK__staffs__manager___44FF419A" FromRole="staffs" ToRole="staffs1" />
-          <NavigationProperty Name="staff4" Relationship="Self.FK__staffs__manager___44FF419A" FromRole="staffs1" ToRole="staffs" />
-          <NavigationProperty Name="store" Relationship="Self.FK__staffs__store_id__440B1D61" FromRole="staffs" ToRole="stores" />
-        </EntityType>
+        
         <EntityType Name="store">
           <Key>
             <PropertyRef Name="store_id" />
@@ -719,8 +630,10 @@
           <Property Name="city" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="state" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="zip_code" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="stocks" Relationship="Self.FK__stocks__store_id__5165187F" FromRole="stores" ToRole="stocks" />
-          <NavigationProperty Name="staffs" Relationship="Self.FK__staffs__store_id__440B1D61" FromRole="stores" ToRole="staffs" />
+          <NavigationProperty Name="stocks" Relationship="Self.FK__stocks__store_id__5165187F" FromRole="stores" ToRole="stocks" />          
+          <NavigationProperty Name="order_items" Relationship="OnlineBikeStoreModel.FK_order_items_stores" FromRole="store" ToRole="order_items" />
+          <NavigationProperty Name="stores1" Relationship="OnlineBikeStoreModel.FK_stores_stores" FromRole="store" ToRole="store1" />
+          <NavigationProperty Name="store1" Relationship="OnlineBikeStoreModel.FK_stores_stores" FromRole="store1" ToRole="store" />
         </EntityType>
         <Association Name="FK_feedback_products">
           <End Role="products" Type="Self.product" Multiplicity="1" />
@@ -928,68 +841,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__staffs__manager___13F1F5EB">
-          <End Role="staffs" Type="Self.staff" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staff" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___2334397B">
-          <End Role="staffs" Type="Self.staff" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staff" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___24285DB4">
-          <End Role="staffs" Type="Self.staff" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staff" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__manager___44FF419A">
-          <End Role="staffs" Type="Self.staff" Multiplicity="0..1" />
-          <End Role="staffs1" Type="Self.staff" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="staffs">
-              <PropertyRef Name="staff_id" />
-            </Principal>
-            <Dependent Role="staffs1">
-              <PropertyRef Name="manager_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__staffs__store_id__440B1D61">
-          <End Role="stores" Type="Self.store" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="staffs" Type="Self.staff" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="stores">
-              <PropertyRef Name="store_id" />
-            </Principal>
-            <Dependent Role="staffs">
-              <PropertyRef Name="store_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+      
         <EntityContainer Name="BikeStoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="feedbacks" EntityType="Self.feedback" />
           <EntitySet Name="queries" EntityType="Self.query" />
@@ -1002,8 +854,7 @@
           <EntitySet Name="products" EntityType="Self.product" />
           <EntitySet Name="stocks" EntityType="Self.stock" />
           <EntitySet Name="order_items" EntityType="Self.order_items" />
-          <EntitySet Name="orders" EntityType="Self.order" />
-          <EntitySet Name="staffs" EntityType="Self.staff" />
+          <EntitySet Name="orders" EntityType="Self.order" />          
           <EntitySet Name="stores" EntityType="Self.store" />
           <AssociationSet Name="FK_feedback_products" Association="Self.FK_feedback_products">
             <End Role="products" EntitySet="products" />
@@ -1068,36 +919,60 @@
           <AssociationSet Name="FK__order_ite__order__4D94879B" Association="Self.FK__order_ite__order__4D94879B">
             <End Role="orders" EntitySet="orders" />
             <End Role="order_items" EntitySet="order_items" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___13F1F5EB" Association="Self.FK__staffs__manager___13F1F5EB">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___2334397B" Association="Self.FK__staffs__manager___2334397B">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___24285DB4" Association="Self.FK__staffs__manager___24285DB4">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__manager___44FF419A" Association="Self.FK__staffs__manager___44FF419A">
-            <End Role="staffs" EntitySet="staffs" />
-            <End Role="staffs1" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__staffs__store_id__440B1D61" Association="Self.FK__staffs__store_id__440B1D61">
-            <End Role="stores" EntitySet="stores" />
-            <End Role="staffs" EntitySet="staffs" />
-          </AssociationSet>
+          </AssociationSet>         
+         
           <FunctionImport Name="spGetUnratedProducts" ReturnType="Collection(OnlineBikeStoreModel.spGetUnratedProducts_Result)">
           <Parameter Name="customer_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="sysdiagrams" EntityType="OnlineBikeStoreModel.sysdiagram" />
+          <AssociationSet Name="FK_order_items_stores" Association="OnlineBikeStoreModel.FK_order_items_stores">
+            <End Role="store" EntitySet="stores" />
+            <End Role="order_items" EntitySet="order_items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stores_stores" Association="OnlineBikeStoreModel.FK_stores_stores">
+            <End Role="store" EntitySet="stores" />
+            <End Role="store1" EntitySet="stores" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="spGetUnratedProducts_Result">
           <Property Type="Int32" Name="product_id" Nullable="false" />
           <Property Type="String" Name="product_name" Nullable="false" MaxLength="255" />
           <Property Type="String" Name="url" Nullable="true" MaxLength="1000" />
         </ComplexType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_order_items_stores">
+          <End Type="OnlineBikeStoreModel.store" Role="store" Multiplicity="0..1" />
+          <End Type="OnlineBikeStoreModel.order_items" Role="order_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="order_items">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stores_stores">
+          <End Type="OnlineBikeStoreModel.store" Role="store" Multiplicity="1" />
+          <End Type="OnlineBikeStoreModel.store" Role="store1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="store1">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1217,6 +1092,7 @@
           <EntitySetMapping Name="order_items">
             <EntityTypeMapping TypeName="OnlineBikeStoreModel.order_items">
               <MappingFragment StoreEntitySet="order_items">
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
                 <ScalarProperty Name="item_id" ColumnName="item_id" />
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -1235,20 +1111,6 @@
                 <ScalarProperty Name="order_date" ColumnName="order_date" />
                 <ScalarProperty Name="required_date" ColumnName="required_date" />
                 <ScalarProperty Name="shipped_date" ColumnName="shipped_date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="staffs">
-            <EntityTypeMapping TypeName="OnlineBikeStoreModel.staff">
-              <MappingFragment StoreEntitySet="staffs">
-                <ScalarProperty Name="staff_id" ColumnName="staff_id" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="active" ColumnName="active" />
-                <ScalarProperty Name="store_id" ColumnName="store_id" />
-                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1275,6 +1137,17 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="OnlineBikeStoreModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

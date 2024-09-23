@@ -21,11 +21,21 @@ namespace OnlineBikeStore.Controllers
             return View();
         }
 
+
+        //Create new customer
         [HttpPost]
         public ActionResult Create(AccountViewModel data)
         {
             if (ModelState.IsValid)
             {
+                // Check if the email already exists
+                var existingUser = context.users.FirstOrDefault(u => u.email == data.email);
+
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("email", "This email is already registered.");
+                    return View(data);
+                }
                 user customer = new user()
                 {
                     first_name = data.first_name,
@@ -36,10 +46,11 @@ namespace OnlineBikeStore.Controllers
                 context.users.Add(customer);
                 context.SaveChanges();
 
+                //Save user role and Set user role to "customer"
                 int uid = customer.user_id;
                 user_role role = new user_role()
                 {
-                    role = data.role,
+                    role = "customer",
                     user_id = customer.user_id
                 };
                 context.user_role.Add(role);
@@ -49,16 +60,7 @@ namespace OnlineBikeStore.Controllers
                 return RedirectToAction("Login", "Account");
             }
             return View(data);
-        }
-
-        [Authorize]
-        public ActionResult CustomerProfile(int userId)
-        {
-            var customer = context.users.Where(u => u.user_id == userId).FirstOrDefault();
-            ProfileViewModel profileViewModel = AutoMapper.Mapper.Map<ProfileViewModel>(customer);
-
-            return View(profileViewModel);
-        }
+        }        
 
         [HttpPost]
         public ActionResult UpdateProfile(ProfileViewModel customer)
@@ -95,7 +97,7 @@ namespace OnlineBikeStore.Controllers
         {
             if (TempData["RedirectToLoginMsg"] != null)
             {
-                ViewBag.msg = TempData["RedirectToLoginMsg"];
+                ViewBag.SuccessMsg = TempData["RedirectToLoginMsg"];
             }
             return View();
         }
@@ -137,6 +139,7 @@ namespace OnlineBikeStore.Controllers
             return RedirectToAction("Home", "Home");
         }
 
+        [Route("Account/Profile/")]
         [Authorize]
         public ActionResult UserProfile(int linkId)
         {
@@ -154,6 +157,7 @@ namespace OnlineBikeStore.Controllers
             else
                 return RedirectToAction("Login");
         }
+        
         [Authorize]
         public PartialViewResult UserInformation()
         {
@@ -171,9 +175,5 @@ namespace OnlineBikeStore.Controllers
             return Json(userId,  JsonRequestBehavior.AllowGet);
         }
     }
-    public class NavLink
-    {
-        public string uname { get; set; }
-        public int link { get; set; }
-    }
+   
 }

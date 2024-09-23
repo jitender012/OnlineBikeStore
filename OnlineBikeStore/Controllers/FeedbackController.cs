@@ -1,15 +1,9 @@
-﻿using AutoMapper;
-using Newtonsoft.Json;
-using OnlineBikeStore.Extensions;
+﻿using OnlineBikeStore.Extensions;
 using OnlineBikeStore.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
-using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
@@ -90,8 +84,12 @@ namespace OnlineBikeStore.Controllers
             return View(feedbacks);
         }
         [Authorize]
-        public ActionResult AddUpdateFeedback(int pId)
+        public ActionResult AddUpdateFeedback(int? pId)
         {
+            if (pId < 1 || pId == null)
+            {
+                return View("Error");
+            }
             int uId = context.GetUserId(User.Identity.Name);
 
             //check if review existed
@@ -106,7 +104,7 @@ namespace OnlineBikeStore.Controllers
             {
                 product_name = product.product_name,
                 product_img = product.url,
-                product_id = pId
+                product_id = pId.Value
             };
 
             //set values for fields if review existed
@@ -137,13 +135,23 @@ namespace OnlineBikeStore.Controllers
         public ActionResult AddUpdateFeedback(FeedbackViewModel data)
         {
             var userId = context.GetUserId(User.Identity.Name);
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var isReviewed = context.feedbacks
-                                    .Where(x => x.product_id == data.product_id && x.customer_id == userId)
-                                    .Any();
+                return View(data);
+            }
+            var isItemDelivered = context.orders
+                        .Any(o => o.customer_id == userId
+                        && o.order_status == 2
+                        && o.order_items.Any(oi => oi.product_id == data.product_id));
 
-                //addd review if not reviewed
+            var isReviewed = context.feedbacks
+                                .Where(x => x.product_id == data.product_id && x.customer_id == userId)
+                                .Any();
+
+            //Varify that item is delivered
+            if (isItemDelivered)
+            {
+                //Add review if not reviewed
                 if (!isReviewed)
                 {
                     try
@@ -179,7 +187,8 @@ namespace OnlineBikeStore.Controllers
                         return View(data);
                     }
                 }
-                //edit review if already reviewed
+
+                //Edit review if already reviewed
                 else
                 {
                     var existingFeedback = context.feedbacks
@@ -207,8 +216,7 @@ namespace OnlineBikeStore.Controllers
                     return RedirectToAction("FeedbackSuccess");
                 }
             }
-            return View(data);
-
+            return RedirectToAction("UnauthorisedAccessError", "Error", new { msg = "You have not purchased this item." });
         }
 
         public ActionResult FeedbackSuccess()
@@ -218,21 +226,21 @@ namespace OnlineBikeStore.Controllers
         }
 
         [HttpPost]
-        public JsonResult RemoveFeedback(int feedbackId)
+        public JsonResult RemoveFeedback(int? feedbackId)
         {
-            if (feedbackId > 0)
+            if (feedbackId < 1 || feedbackId == null)
             {
-                var feedback = context.feedbacks.FirstOrDefault(f => f.feedback_id == feedbackId);
-                if (feedback != null)
-                {
-                    context.feedbacks.Remove(feedback);
-                    context.SaveChanges();
-
-                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-                }
-                return Json(new { success = false, msg = "Feedback not found." }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, msg = "Invalid Feedback." }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { success = false, msg = "Invalid Feedback." }, JsonRequestBehavior.AllowGet);
+            var feedback = context.feedbacks.FirstOrDefault(f => f.feedback_id == feedbackId);
+            if (feedback != null)
+            {
+                context.feedbacks.Remove(feedback);
+                context.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, msg = "Feedback not found." }, JsonRequestBehavior.AllowGet);
         }
 
         public List<ProductViewModel> GetUnratedProducts()

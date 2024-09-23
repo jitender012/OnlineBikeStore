@@ -77,8 +77,7 @@
 
                 </div>
 
-                <a href="@Url.Action("_DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</a>
-                <a href="@Url.Action("DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">View Invoice</a>
+                <a href="@Url.Action("_DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</a>               
             </div>
             <div class="col-12 col-xl-3 d-flex flex-column justify-content-around align-items-center my-1">
 
@@ -93,7 +92,7 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Cancel</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -113,9 +112,9 @@
         </div>
     </div>
 
-    @foreach (var item in Model.orderItems.OrderByDescending(x => x.item_id))
+    @foreach (var item in Model.orderItems)
     {
-        <div class="content-box">
+        <div class="content-box  align-items-center">
             <div class="d-flex">
                 <div class="card1-imgdiv p-3 ">
                     @if (item.productDetails.url != null)
@@ -127,25 +126,24 @@
                         <img class="card1-img" src="~/Images/Utilities/No-Image-Placeholder.svg.png" />
                     }
                 </div>
-                <div class="p-3 ms-xl-5 product-text">
+                <div class="p-3 ms-xl-5 product-text ">
                     @item.productDetails.product_name
                     <br />
                     @{
                         var itemPrice = item.productDetails.list_price - (item.productDetails.list_price * item.discount);
                     }
                     ₹@itemPrice
+                    <br />
+                    <spna class="text-muted">Seller:</spna>@item.store_name
                 </div>
             </div>
-            <div>
-
-            </div>
-            <div>
+           
+            <div style="margin-left:auto;">
                 @if (Model.order_status == 2)
                 {
                     <h4 style="color:cornflowerblue">
-                        <a href="@Url.Action("AddUpdateFeedback","feedback", new {pId = item.productDetails.product_id})">
-
-                            Rate and Review Product
+                        <a class="btn btn-outline-dark" href="@Url.Action("AddUpdateFeedback","feedback", new {pId = item.productDetails.product_id})">
+                           Review Product
                         </a>
                     </h4>
                 }
@@ -168,16 +166,16 @@
              type: "POST",
              success: function (response) {
                  if (response.success) {
-                     $('#exampleModal').modal('hide')
+                     $('#cancelOrderModal').modal('hide')
                      $('#cancelBtnDiv').html('<span class="text-muted">Order Cancelled</span>');
                  }
                  else {
-                     $('#exampleModal').modal('hide')
+                     $('#cancelOrderModal').modal('hide')
                      alert(response.message)
                  }
              },
              error: function () {
-                 $('#exampleModal').modal('hide')
+                 $('#cancelOrderModal').modal('hide')
                      alert("Something went wrong.")
              }
         })

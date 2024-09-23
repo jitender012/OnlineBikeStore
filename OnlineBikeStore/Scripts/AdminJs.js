@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
     getStores();
-    getStockDataByStore();
-    UpdateQuantity();
+    getStockDataByStore();  
 })
 
 //admin layout stores dropdown
@@ -27,7 +26,7 @@ function getStockDataByStore() {
 
     $.ajax({
         url: '/Dashboard/GetStockInStore',
-        type: 'GET',       
+        type: 'GET',
         data: { storeId: storeId },
         success: function (data) {
             $('#_StoreDashboardContainer').html(data);
@@ -90,29 +89,27 @@ function loadProducts(data) {
     });
 }
 
-//load products that are not in store and diplay in modal
+//GET Modal Data: load products that are not in store and diplay in modal
 function getStockNotInAnyStore() {
     $.ajax({
         url: '/Stock/GetProductsNotInAnyStore',
         type: 'GET',
         dataType: "json",
         success: function (data) {
-         
+
             var tbody = $("#addItemsTblBody");
 
             // Check if DataTable is already initialized and destroy it
             if ($.fn.DataTable.isDataTable('#addItemsTable')) {
                 $('#addItemsTable').DataTable().clear().destroy();
             }
-            tbody.empty();            
+            tbody.empty();
 
-            if (data.length === 0 || data.length < 1)
-            {
+            if (data.length === 0 || data.length < 1) {
                 var noDataRow = $("<tr>").append($("<td>").attr("colspan", 3).text("All products are added!"));
                 tbody.append(noDataRow);
             }
-            else
-            {
+            else {
                 data.forEach(function (product, index) {
 
                     var row =
@@ -139,7 +136,7 @@ function getStockNotInAnyStore() {
                         }
 
                         $.ajax({
-                            url: '/Stock/AddStock/',
+                            url: '/Stock/AddOrUpdateStock/',
                             type: 'POST',
                             dataType: 'json',
                             data: {
@@ -172,28 +169,28 @@ function getStockNotInAnyStore() {
         }
     });
 }
-function UpdateQuantity() {
-    $('#updateQuantityButton').click(function () {
-        var productId = $("#productId").val();
-        var storeId = $("#storeId").val();
-        var quantity = $("#quantity").val();
+function UpdateQuantity(productId, storeId) {
+   
+    var quantity = $("#newQuantity").val();
+    /*var storeId = $("#storeId").val();*/    
 
-        $.ajax({
-            url: '@Url.Action("AddStock", "Stock")',
-            type: "POST",
-            dataType: "json",
-            data: {
-                store_id: storeId,
-                product_id: productId,
-                quantity: quantity
-            },
-            success: function (result) {
-                $('#updateStockModal').modal('hide');
-                getTableData();
-            },
-            error: function (xhr, status, error) {
-                console.error('Error occurred:', error);
-            }
-        });
+    $.ajax({       
+        url: '/Stock/AddOrUpdateStock',
+        type: "POST",
+        dataType: "json",
+        data: {
+            store_id: storeId,
+            product_id: productId,
+            quantity: quantity
+        },
+        success: function (result) {
+            $('#updateStockModal').modal('hide');
+            getStockDataByStore();
+            alert("Quantity updated")
+        },
+        error: function (xhr, status, error) {
+            console.error('Error occurred:', error);
+        }
     });
+
 };

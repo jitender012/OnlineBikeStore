@@ -39,8 +39,8 @@ namespace OnlineBikeStore
         public virtual DbSet<stock> stocks { get; set; }
         public virtual DbSet<order_items> order_items { get; set; }
         public virtual DbSet<order> orders { get; set; }
-        public virtual DbSet<staff> staffs { get; set; }
         public virtual DbSet<store> stores { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
         public virtual ObjectResult<spGetUnratedProducts_Result> spGetUnratedProducts(Nullable<int> customer_id)
         {

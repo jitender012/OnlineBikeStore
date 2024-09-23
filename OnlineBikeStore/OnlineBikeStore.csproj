@@ -146,6 +146,8 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -207,13 +209,13 @@
     <Compile Include="spGetUnratedProducts_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="staff.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="stock.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="store.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="user.cs">
@@ -2835,6 +2837,7 @@
     <Content Include="Views\Dashboard\_StoreDashboard.cshtml" />
     <Content Include="Views\Test\getStudents.cshtml" />
     <Content Include="Views\Order\_DownloadOrderSummary.cshtml" />
+    <Content Include="Views\Error\UnauthorisedAccessError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

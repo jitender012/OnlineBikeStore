@@ -18,7 +18,7 @@ namespace OnlineBikeStore
         public store()
         {
             this.stocks = new HashSet<stock>();
-            this.staffs = new HashSet<staff>();
+            this.order_items = new HashSet<order_items>();
         }
     
         public int store_id { get; set; }
@@ -33,6 +33,8 @@ namespace OnlineBikeStore
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<stock> stocks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<staff> staffs { get; set; }
+        public virtual ICollection<order_items> order_items { get; set; }
+        public virtual store stores1 { get; set; }
+        public virtual store store1 { get; set; }
     }
 }

@@ -4,10 +4,8 @@ using OnlineBikeStore.Models;
 using Rotativa;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using System.Xml;
 
 namespace OnlineBikeStore.Controllers
 {
@@ -128,31 +126,33 @@ namespace OnlineBikeStore.Controllers
             return ordersListVM;
         }
 
-        public ActionResult OrderDetails(int orderId)
+        public ActionResult OrderDetails(int? orderId)
         {
+
             //Get logged in user id
             var userId = context.GetUserId(User.Identity.Name);
 
-            if (orderId > 0)
+            if (orderId < 1 || orderId == null)
             {
-                //get order details
-                var orderDetailsViewModel = GetOrderDetails(orderId);
-
-                //return to OrderDetailsCustomer view if user is customer
-                if (User.IsInRole("customer"))
-                {
-                    //ensure that customer can see thier own order details                   
-                    if (orderDetailsViewModel.userDetails.user_id != userId)
-                    {
-                        return View("error");
-                    }
-                    return View("OrderDetailsCustomer", orderDetailsViewModel);
-                }
-
-                //return to OrderDetailsAdmin view if user is admin
-                return View("OrderDetailsAdmin", orderDetailsViewModel);
+                return View("Error");
             }
-            return View("Error");
+            //get order details
+            var orderDetailsViewModel = GetOrderDetails(orderId.Value);
+
+            //return to OrderDetailsCustomer view if user is customer
+            if (User.IsInRole("customer"))
+            {
+                //ensure that customer can see thier own order details                   
+                if (orderDetailsViewModel.userDetails.user_id != userId)
+                {
+                    return RedirectToAction("UnauthorisedAccessError","Error", new {msg=""});
+                }
+                return View("OrderDetailsCustomer", orderDetailsViewModel);
+            }
+
+            //return to OrderDetailsAdmin view if user is admin
+            return View("OrderDetailsAdmin", orderDetailsViewModel);
+
         }
 
         //Helper method to Get order details using order id
@@ -184,6 +184,8 @@ namespace OnlineBikeStore.Controllers
                         quantity = oi.quantity,
                         list_price = oi.list_price,
                         discount = oi.discount,
+                        store_id = oi.store_id,
+                        store_name = oi.store.store_name,
                         productDetails = new ProductDetailsViewModel
                         {
                             product_id = oi.product.product_id,
@@ -201,68 +203,60 @@ namespace OnlineBikeStore.Controllers
 
         public ActionResult OrderSummary(int pId = 0)
         {
-            if (User.Identity.IsAuthenticated)
+            //get the logged in user id
+            var userId = context.users
+                            .Where(x => x.email == User.Identity.Name)
+                            .Select(u => u.user_id)
+                            .SingleOrDefault();
+
+            // Map the user to the UserViewModel
+            var userVm = Mapper.Map<UserViewModel>(context.users
+                            .Where(u => u.user_id == userId)
+                            .SingleOrDefault());
+
+            //for single product order
+            if (pId > 0)
             {
-                //get the logged in user id
-                var userId = context.users
-                                .Where(x => x.email == User.Identity.Name)
-                                .Select(u => u.user_id)
-                                .SingleOrDefault();
+                var cartProducts = context.products
+                            .Where(p => p.product_id == pId)
+                            .ToList();
 
-                // Map the user to the UserViewModel
-                var userVm = Mapper.Map<UserViewModel>(context.users
-                                .Where(u => u.user_id == userId)
-                                .SingleOrDefault());
+                // Map the products to the ProductViewModel
+                var cartProductsVM = Mapper.Map<List<ProductViewModel>>(cartProducts);
 
-                //for single product order
-                if (pId > 0)
+                OrderSummaryViewModel orderSummary = new OrderSummaryViewModel()
                 {
-                    var cartProducts = context.products
-                                .Where(p => p.product_id == pId)
-                                .ToList();
-
-                    // Map the products to the ProductViewModel
-                    var cartProductsVM = Mapper.Map<List<ProductViewModel>>(cartProducts);
-
-                    OrderSummaryViewModel orderSummary = new OrderSummaryViewModel()
-                    {
-                        user = userVm,
-                        products = cartProductsVM
-                    };
-                    return View(orderSummary);
-                }
-                //when order through cart
-                else
-                {
-                    // Get the user's cart items
-                    var cartItems = context.userCarts
-                                .Where(c => c.user_id == userId)
-                                .ToList();
-
-                    //get product id's from user cart
-                    var productIds = cartItems.Select(q => q.product_id).ToList();
-
-                    // Fetch the products from the product IDs
-                    var cartProducts = context.products
-                                .Where(p => productIds.Contains(p.product_id))
-                                .ToList();
-
-                    // Map the products to the ProductViewModel
-                    var cartProductsVM = Mapper.Map<List<ProductViewModel>>(cartProducts);
-
-                    OrderSummaryViewModel orderSummary = new OrderSummaryViewModel()
-                    {
-                        user = userVm,
-                        products = cartProductsVM
-                    };
-
-                    return View(orderSummary);
-                }
+                    user = userVm,
+                    products = cartProductsVM
+                };
+                return View(orderSummary);
             }
+            //when order through cart
             else
             {
-                TempData["RedirectToLoginMsg"] = "Login to purchase.";
-                return RedirectToAction("Login", "Account");
+                // Get the user's cart items
+                var cartItems = context.userCarts
+                            .Where(c => c.user_id == userId)
+                            .ToList();
+
+                //get product id's from user cart
+                var productIds = cartItems.Select(q => q.product_id).ToList();
+
+                // Fetch the products from the product IDs
+                var cartProducts = context.products
+                            .Where(p => productIds.Contains(p.product_id))
+                            .ToList();
+
+                // Map the products to the ProductViewModel
+                var cartProductsVM = Mapper.Map<List<ProductViewModel>>(cartProducts);
+
+                OrderSummaryViewModel orderSummary = new OrderSummaryViewModel()
+                {
+                    user = userVm,
+                    products = cartProductsVM
+                };
+
+                return View(orderSummary);
             }
         }
 
@@ -272,29 +266,38 @@ namespace OnlineBikeStore.Controllers
         {
             order newOrder = new order();
             int orderId;
-            bool isInStock;
+            
             decimal discountPercentage = 15m / 100m;
+
             //get the logged in user id
-            var userId = context.users
-                            .Where(x => x.email == User.Identity.Name)
-                            .Select(u => u.user_id)
+            var user = context.users
+                            .Where(x => x.email == User.Identity.Name)                            
                             .SingleOrDefault();
 
-            //for single product order --------------
+            // Check if user address is available
+            if (user == null || string.IsNullOrEmpty(user.street) || string.IsNullOrEmpty(user.city) ||
+                string.IsNullOrEmpty(user.state) || string.IsNullOrEmpty(user.zip_code))
+            {
+                ViewBag.ErrorMsg = "Address information is incomplete. Please update your address before placing an order.";
+                return View("Error");
+            }
+            //For single product order --------------
             if (pId > 0)
             {
-                //Check if product is in stock
-                isInStock = context.stocks
-                       .Any(z => z.product_id == pId && z.quantity > 0);
+                //Get product stock details
+                stock itemStock = context.stocks
+                       .Where(z => z.product_id == pId)
+                       .FirstOrDefault();
 
-                if (isInStock)
+                //Check if product is in stock
+                if (itemStock.quantity > 0)
                 {
                     var product = context.products
                     .FirstOrDefault(p => p.product_id == pId);
 
                     newOrder = new order()
                     {
-                        customer_id = userId,
+                        customer_id = user.user_id,
                         order_status = (byte)OrderStatus.Placed,
                         order_date = DateTime.Now,
                         required_date = DateTime.Now.AddDays(7),
@@ -305,13 +308,16 @@ namespace OnlineBikeStore.Controllers
                     orderId = newOrder.order_id;
                     if (orderId > 0)
                     {
+
                         order_items item = new order_items()
                         {
                             order_id = orderId,
                             product_id = pId,
                             quantity = 1,
                             list_price = product.list_price - (product.list_price * discountPercentage),
-                            discount = discountPercentage
+                            discount = discountPercentage,
+                            store_id = itemStock.store_id,
+                           
                         };
                         context.order_items.Add(item);
 
@@ -332,19 +338,23 @@ namespace OnlineBikeStore.Controllers
             //when order through cart ----------------
             // Get the user's cart items
             var productIds = context.userCarts
-                .Where(c => c.user_id == userId)
+                .Where(c => c.user_id == user.user_id)
                 .Select(p => p.product_id)
                 .ToList();
 
-            //check if products are in stock
-            isInStock = productIds
-                .All(c => context.stocks.Any(s => s.product_id == c && s.quantity > 0));
+            //Get product stock details
+            List<stock> itemStockList = context.stocks
+                   .Where(z=>productIds.Contains(z.product_id))
+                   .ToList();
 
-            if (isInStock)
+            //check if all products are in stock
+            bool isInStock = itemStockList.All(x => x.quantity > 0);
+
+            if (productIds.Count > 0 && isInStock)
             {
                 newOrder = new order()
                 {
-                    customer_id = userId,
+                    customer_id = user.user_id,
                     order_status = (byte)OrderStatus.Placed,
                     order_date = DateTime.Now,
                     required_date = DateTime.Now.AddDays(7),
@@ -357,20 +367,24 @@ namespace OnlineBikeStore.Controllers
 
                 if (orderId > 0)
                 {
-
+                    
                     var cartProducts = context.products
                                               .Where(p => productIds.Contains(p.product_id))
                                               .ToList();
 
                     foreach (var product in cartProducts)
                     {
+                        var stockInfo = itemStockList
+                                .FirstOrDefault(x => x.product_id == product.product_id);
+
                         order_items item = new order_items()
                         {
                             order_id = orderId,
                             product_id = product.product_id,
                             quantity = 1,
                             list_price = product.list_price - (product.list_price * discountPercentage),
-                            discount = discountPercentage
+                            discount = discountPercentage,
+                            store_id = stockInfo != null ? stockInfo.store_id : 0
                         };
 
                         context.order_items.Add(item);
@@ -386,7 +400,7 @@ namespace OnlineBikeStore.Controllers
 
                         //Empty the cart
                         userCart cart = context.userCarts
-                                .FirstOrDefault(c => c.user_id == userId && c.product_id == product.product_id);
+                                .FirstOrDefault(c => c.user_id == user.user_id && c.product_id == product.product_id);
                         context.userCarts.Remove(cart);
 
                         context.SaveChanges();
@@ -433,49 +447,6 @@ namespace OnlineBikeStore.Controllers
             return View();
         }
 
-        public ActionResult DownloadOrderSummary(int orderId)
-        {
-            if (orderId < 0)
-            {
-                return View("Error");
-            }
-            SummaryPDFmodel orderSummary = context.orders
-                .Where(o => o.order_id == orderId)
-                .Select(x => new SummaryPDFmodel
-                {
-                    orderId = x.order_id,
-                    downloadDate = DateTime.Now,
-                    orderDate = x.order_date,
-                    orderTotal = x.order_items.Sum(oi => oi.list_price),
-                    item = x.order_items
-                        .Where(oi => oi.order_id == orderId)
-                        .Select(oi => new OrderItem
-                        {
-                            list_price = oi.list_price,
-                            discount = oi.discount,
-                            item_id = oi.item_id,
-                            quantity = oi.quantity,
-                            product_id = oi.product_id,
-                            productDetails = new ProductDetailsViewModel
-                            {
-                                product_name = oi.product.product_name,
-                                list_price = oi.product.list_price
-                            }
-                        }).ToList(),
-                    userDetails = new UserViewModel
-                    {
-                        first_name = x.user.first_name,
-                        street = x.user.street,
-                        city = x.user.city,
-                        state = x.user.state,
-                        zip_code = x.user.zip_code,
-                        email = x.user.email,
-                        phone = x.user.phone,
-                        user_id = x.user.user_id,
-                    }
-                }).FirstOrDefault();
-            return View("_DownloadOrderSummary", orderSummary);
-        }
         public ActionResult _DownloadOrderSummary(int orderId)
         {
             if (orderId < 0)
@@ -499,6 +470,7 @@ namespace OnlineBikeStore.Controllers
                             item_id = oi.item_id,
                             quantity = oi.quantity,
                             product_id = oi.product_id,
+                            store_name = oi.store.store_name,
                             productDetails = new ProductDetailsViewModel
                             {
                                 product_name = oi.product.product_name,
@@ -524,6 +496,11 @@ namespace OnlineBikeStore.Controllers
                 PageSize = Rotativa.Options.Size.A4,
                 CustomSwitches = "--disable-smart-shrinking"
             };
+        }
+        public ActionResult GetLogoImage()
+        {
+            string imagePath = Server.MapPath("~/Images/Utilities/logo.png");
+            return File(imagePath, "image/png");
         }
     }
 }

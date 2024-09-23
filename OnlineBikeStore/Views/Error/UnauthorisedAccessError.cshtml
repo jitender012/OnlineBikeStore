@@ -1,0 +1,26 @@
+﻿@model OnlineBikeStore.Models.ErrorViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <title>UnauthorisedAccessError</title>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="alert alert-danger text-center">
+            <h3>Unauthorized Access</h3>
+            <p>@Model.Message</p>
+        </div>
+        <div class="text-center">
+            <h3>Go to <a href="@Url.Action("home","home")">Home</a> page.</h3>
+        </div>
+    </div>
+
+</body>
+</html>

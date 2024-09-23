@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
@@ -18,6 +17,7 @@ namespace OnlineBikeStore.Controllers
             context = new BikeStoreEntities();
         }
         // GET: Products
+        [Authorize(Roles ="admin")]
         public ActionResult Index()
         {
             var products = context.products.ToList();
@@ -26,6 +26,7 @@ namespace OnlineBikeStore.Controllers
         }
 
         // GET: Products
+        [Authorize(Roles = "admin")]
         public ActionResult Details(int id)
         {
             //Find product in database
@@ -62,6 +63,7 @@ namespace OnlineBikeStore.Controllers
             var viewModelList = Mapper.Map<List<TViewModel>>(domainModels);
             return new SelectList(viewModelList, dataValueField, dataTextField);
         }
+        [Authorize(Roles = "admin")]
         // GET: Products/Create
         public ActionResult Create()
         {
@@ -71,7 +73,7 @@ namespace OnlineBikeStore.Controllers
             ViewBag.CategoryList = GetSelectList<category, CategoryViewModel>(categories, "category_id", "category_name");
             return View();
         }
-
+        [Authorize(Roles = "admin")]
         // POST: Products/Create
         [HttpPost]
         public ActionResult Create(ProductViewModel data)
@@ -110,6 +112,7 @@ namespace OnlineBikeStore.Controllers
             ViewBag.CategoryList = GetSelectList<category, CategoryViewModel>(categories, "category_id", "category_name");
             return View(data);
         }
+        [Authorize(Roles = "admin")]
         // GET: Products/Edit
         public ActionResult Edit(int? id)
         {
@@ -131,7 +134,7 @@ namespace OnlineBikeStore.Controllers
             }
             return View("Error");
         }
-
+        [Authorize(Roles = "admin")]
         // POST: Products/Edit
         [HttpPost]
         public ActionResult Edit(ProductViewModel data)
@@ -186,7 +189,7 @@ namespace OnlineBikeStore.Controllers
         }
 
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public JsonResult Delete(int id)
         {

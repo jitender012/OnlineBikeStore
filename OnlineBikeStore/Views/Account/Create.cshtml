@@ -44,8 +44,7 @@
                                         <label class="control-label col-md">Password</label>
                                         @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                                    </div>                                    
-                                    <input type="hidden" name="role" value="customer" id="customer" />
+                                    </div>                                                                        
                                     <div class="pt-1 mb-4">
                                         <button class="btn login-form-btn" type="submit">Register</button>
                                     </div>

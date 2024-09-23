@@ -18,11 +18,14 @@
 </style>
 <div class="main-container" style="font-size: 13px; font-family: 'Times New Roman', Times, serif ">
     <div class="image-row">
-        <img src="@Url.Content("~/Images/Utilities/logo.png")" style="max-width:100px" />
+        <img src="@Url.Content("https://localhost:44372/Images/Utilities/logo.png")" style="max-width:100px" />
+
+
         <h3 style="margin:0">OnlineBikeStore </h3>
     </div>
     <hr />
     <br />
+    
     <div>
         <div>
             <b>Order Placed: </b>@Model.orderDate
@@ -49,7 +52,7 @@
             <div style="overflow: hidden; padding: 10px 0;">
                 <div style="width: 70%; float: left;">
                     @i. @item.productDetails.product_name
-                    <br />&nbsp;&nbsp;&nbsp; Sold by: My Nutra Mart (seller profile)
+                    <br />&nbsp;&nbsp;&nbsp; Sold by: @item.store_name
                 </div>
                 <div style="float: right;">
                     @item.productDetails.list_price
@@ -80,7 +83,7 @@
         <center>
             <h3 style="margin:0">Payment Information</h3>
         </center>
-        <div style="width: 70%; float: left;">
+        <div style="width: 60%; float: left;">
             <b> Billing Address:</b>
             <br />
             @Model.userDetails.first_name
@@ -91,7 +94,7 @@
             <span>Mobile number: @Model.userDetails.phone</span>
         </div>
     </div>
-    <div style="float:right">
+    <div style="float:right; margin-top:0px">
         <table>
             <tr>
                 <td>Item(s) Subtotal:</td>

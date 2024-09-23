@@ -36,40 +36,54 @@
             <input type="text" id="searchQuery" placeholder="Enter order id..." />
 
         </div>
-        <div class="filterDivsParent row">
-
-            <div class="filterDiv col-lg-2 col-4 active-fliter">
-                <span>All Orders</span>
-                <span id="allOrders"></span>
-            </div>
-            <div class="filterDiv col-lg-2 col-4">
-                <span>Placed</span>
-                <span id="Placed"></span>
-            </div>
-            <div class="filterDiv col-lg-2 col-4">
-                <span>Shipped</span>
-                <span id="Shipped"></span>
+        <div class="row g-4 mb-4 mt-3">
+            <div class="col-6 col-lg-3 ">
+                <div class=" shadow-sm h-100  active-fliter filterDiv">
+                    <div class="p-3 p-lg-4">
+                        <h4 class="mb-1">All Inventory</h4>
+                        <span id="allOrders"></span>
+                    </div>
+                </div>
             </div>
 
-            <div class="filterDiv col-lg-2 col-4">
-                <span>Delivered</span>
-                <span id="Delivered"></span>
+            <div class="col-6 col-lg-3 ">
+                <div class=" shadow-sm h-100  filterDiv">
+                    <div class="p-3 p-lg-4">
+                        <h4 class="mb-1">Low Stock</h4>
+                        <span id="Placed"></span>
+                    </div>
+                </div>
             </div>
-            <div class="filterDiv col-lg-2 col-4">
-                <span>Cancelled</span>
-                <span id="Cancelled"></span>
+            <div class="col-6 col-lg-3 ">
+                <div class=" shadow-sm h-100  filterDiv">
+                    <div class="p-3 p-lg-4">
+                        <h4 class="mb-1">Out Of Stock</h4>
+                        <span id="Shipped"></span>
+                    </div>
+                </div>
             </div>
-            <div class="filterDiv col-lg-2 col-4">
-                <span>Returned</span>
-                <span id="Returned"></span>
+            <div class="col-6 col-lg-3 ">
+                <div class=" shadow-sm h-100  filterDiv">
+                    <div class="p-3 p-lg-4">
+                        <h4 class="mb-1">Delivered</h4>
+                        <span id="Delivered"></span>
+                    </div>
+                </div>
             </div>
-
-        </div>
+            <div class="col-6 col-lg-3 ">
+                <div class=" shadow-sm h-100  filterDiv">
+                    <div class="p-3 p-lg-4">
+                        <h4 class="mb-1">Cancelled</h4>
+                        <span id="Cancelled"></span>
+                    </div>
+                </div>
+            </div>
+        </div>      
     </div>
 
 
 
-    <div id="partialViewContainer">
+    <div id="partialViewContainer" class="table-div">
         @Html.Partial("_GetOrdersAdmin")
     </div>
 
@@ -83,8 +97,7 @@
         $("#Placed").text(@Model.Count(x=>x.order_status==0))
         $("#Shipped").text(@Model.Count(x=>x.order_status==1))
         $("#Delivered").text(@Model.Count(x=>x.order_status==2))
-        $("#Cancelled").text(@Model.Count(x=>x.order_status==3))
-        $("#Returned").text(@Model.Count(x=>x.order_status==4))
+        $("#Cancelled").text(@Model.Count(x=>x.order_status==3))        
 
         var query;
         var status;

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class BrandController : Controller
     {
         BikeStoreEntities context;

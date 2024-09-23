@@ -7,7 +7,16 @@
 <body>
     <hgroup class="text-center text-danger">
         <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        @if (ViewBag.ErrorMsg != null)
+        {
+
+            <h2>@ViewBag.ErrorMsg</h2>
+        }
+        else
+        {
+
+            <h2>An error occurred while processing your request.</h2>
+        }
         <h3>Go to <a href="@Url.Action("home","home")">Home</a> page.</h3>
     </hgroup>
 </body>
