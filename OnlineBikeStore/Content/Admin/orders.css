@@ -53,3 +53,24 @@ tr:hover{
 #partialViewContainer::-webkit-scrollbar {
     display: none;
 }
+.active-fliter {
+    background-color: #cbe1ce;
+    border: 1px solid #6ebb4a;
+    border-radius: 5px;
+}
+
+.your-element::-webkit-scrollbar {
+    display: none;
+}
+
+.updateStatus{
+        padding: 3px;
+    border-radius: 2px;
+    margin-right: 5px;
+    border-color: #c7c7c7;
+}
+.updateStatusBtn {
+    padding: 0px 5px;
+    border: 1px solid #c7c7c7;
+    border-radius: 3px;
+}

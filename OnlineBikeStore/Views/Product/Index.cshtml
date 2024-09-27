@@ -7,16 +7,18 @@
 
 <style>
     td {
-        vertical-align: middle;      
+        vertical-align: middle;
     }
+
     #myTable th, #myTable td {
         text-align: center;
     }
+
     thead {
         background-color: dodgerblue;
     }
 
-   
+    
 </style>
 
 <!-- Display TempData messages -->
@@ -33,7 +35,7 @@
     </div>
 }
 
-<div class="d-flex justify-content-between align-items-end">
+<div class="d-flex justify-content-between align-items-end mb-3">
     <div>
 
         <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
@@ -46,51 +48,54 @@
         </h4>
     </div>
     <div>
-        <a href="@Url.Action("Create New", "Create")" class="addNewBtn">
+        <a href="@Url.Action("Create", "Product")" class="addNewBtn" style="background-color: dodgerblue;">
             <i class="bi bi-plus-circle"></i>
             Add New Product
         </a>
     </div>
 </div>
 
+<div class="table-div">
 
-<table class="table table-striped " id="myTable">
-    <thead>
-        <tr>
-            <th>
-                Product Name
-            </th>
-            <th>
-                Image
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+    <table class="table table-bordered table-hover " id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
 
-    @foreach (var item in Model)
-    {
-        <tr id="@item.product_id">
-            <td>
-                @Html.DisplayFor(modelItem => item.product_name)
-            </td>
-            <td>
-                @if (item.url != null)
-                {
+        @foreach (var item in Model)
+        {
+            <tr id="@item.product_id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.product_name)
+                </td>
+                <td>
+                    @if (item.url != null)
+                    {
 
-                    <img src="@Url.Content(item.url)" alt="Alternate Text" style="max-height:100px; " />
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.product_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.product_id }) |
+                        <img src="@Url.Content(item.url)" alt="Alternate Text" style="max-height:100px; " />
+                    }
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a href="@Url.Action("Details", "Product", new {id= item.product_id})" class=" btn btn-outline-secondary" name="product_id" data-id="@item.product_id"><i class="bi bi-info-circle"></i>&nbsp; Details</a>
+                        <a href="@Url.Action("Edit", "Product", new {id= item.product_id})" class=" btn btn-outline-info" name="product_id" data-id="@item.product_id"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
+                        <a href="#" class=" btn btn-outline-danger" name="product_id" data-id="@item.product_id"><i class="bi bi-trash"></i>&nbsp; Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
 
-                <a href="#" class="text-danger" name="product_id" data-id="@item.product_id">Delete</a>
-            </td>
-        </tr>
-    }
-
-</table>
+    </table>
+</div>
 
 <script src="~/Scripts/dataTables.min.js"></script>
 <script src="~/Scripts/dataTables.bootstrap5.js"></script>

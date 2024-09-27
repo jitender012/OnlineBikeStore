@@ -1,24 +1,29 @@
-﻿
+﻿@model OnlineBikeStore.Models.DashboardViewModel
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
-    .border{
-        border:1px solid grey;
-        border-radius:5px;
+    .table-div {
+        height: 310PX;
+        overflow-y: auto;
+    }
+
+    .border {
+        border: 1px solid grey;
+        border-radius: 5px;
     }
 </style>
 @if (ViewBag.SuccessMessage != null)
 {
-    <div id="notification" class="notification">@ViewBag.SuccessMessage</div>    
+    <div id="notification" class="notification">@ViewBag.SuccessMessage</div>
 }
 <div class="row g-4 mb-4">
     <div class="col-6 col-lg-3 ">
         <div class=" shadow-sm h-100 border">
             <div class="p-3 p-lg-4">
                 <h4 class="mb-1">Total Sales</h4>
-                <div>$12,628</div>
+                <div>Rs. @Model.TotalSales.ToString("N2")</div>
             </div>
         </div>
     </div>
@@ -26,16 +31,16 @@
     <div class="col-6 col-lg-3 ">
         <div class=" shadow-sm h-100 border">
             <div class="p-3 p-lg-4">
-                <h4 class="mb-1">Order Delivered</h4>
-                <div>$12,628</div>
+                <h4 class="mb-1">Products Delivered</h4>
+                <div>@Model.ItemsDelivered</div>
             </div>
         </div>
     </div>
     <div class="col-6 col-lg-3 ">
         <div class=" shadow-sm h-100 border">
             <div class="p-3 p-lg-4">
-                <h4 class="mb-1">Cancelled</h4>
-                <div>$12,628</div>
+                <h4 class="mb-1">Orders Cancelled</h4>
+                <div>@Model.OrderCancelled</div>
             </div>
         </div>
     </div>
@@ -43,97 +48,68 @@
         <div class=" shadow-sm h-100 border">
             <div class="p-3 p-lg-4">
                 <h4 class="mb-1">Customers</h4>
-                <div>$12,628</div>
+                <div>@Model.TotalCustomers</div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
+    <div class="col-12 col-md-6">
+        <span class=""><b>LOW STOCKS</b></span>
+        <a href="@Url.Action("Index","store")" style="float:right">Manage</a>
+        <div class="table-div">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Store ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stock in Model.LowStocks)
+                    {
+                        <tr>
+                            <td>@stock.product_id</td>
+                            <td>@stock.product_name</td>
+                            <td>@stock.quantity</td>
+                            <td>@stock.store_id</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-    <div class="col-6">
-        <canvas id="barChart"></canvas>
+        </div>
     </div>
+    <div class="col-12 col-md-6">
+        <span class=""><b>PENDING ORDERS</b></span>
+        <a href="@Url.Action("GetOrders","Order")" style="float:right">Manage</a>
 
-    <div class="col-6" >
-        <canvas id="pieChart"></canvas>
+        <div class="table-div">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.PendingOrders)
+                    {
+                        <tr>
+                            <td>@order.order_id</td>
+                            <td>@order.order_date.ToString("D")</td>
+                            <td>@((OnlineBikeStore.Models.OrderStatus)order.order_status)</td>
+                            <td>@order.total_price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var barChart = new Chart(ctx, {
-            type: 'line', // Choose the type of chart (e.g., 'bar', 'line', 'pie', etc.)
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], // X-axis labels
-                datasets: [{
-                    label: '# of Votes', // Chart label
-                    data: [12, 19, 3, 5, 2, 3], // Data points
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        var ctx = document.getElementById('pieChart').getContext('2d');
-        var pieChart = new Chart(ctx, {
-            type: 'pie', // Choose the type of chart (e.g., 'bar', 'line', 'pie', etc.)
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], // X-axis labels
-                datasets: [{
-                    label: '# of Votes', // Chart label
-                    data: [12, 19, 3, 5, 2, 3], // Data points
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            //options: {
-            //    scales: {
-            //        y: {
-            //            beginAtZero: true
-            //        }
-            //    }
-            //}
-        });
-    });
-</script>

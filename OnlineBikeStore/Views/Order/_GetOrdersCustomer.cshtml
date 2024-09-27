@@ -1,87 +1,53 @@
 ﻿@model List<OnlineBikeStore.Models.OrderViewModel>
 
-<div class="">
 
+<div>
+    @foreach (var item in Model.OrderByDescending(x => x.order_id))
+    {
+        <div class="content-box scale-up-hover" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
+            <div class="text-center">
 
-    <div>
-        @foreach (var item in Model.OrderByDescending(x => x.order_id))
-        {
-            <div class="content-box scale-up-hover" onclick="window.location.href='@Url.Action("OrderDetails", "Order", new { orderId = item.order_id })'">
-                <div class="text-center">
+                <div class="img-container" style="width:120px">
 
-                    <div class="img-container" style="width:120px">
-
-                        @if (item.first_product_image != null)
-                        {
-                            <img src="@Url.Content(item.first_product_image)" />
-                        }
-                        else
-                        {
-                            <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" />
-                        }
-                    </div>
-                    (@item.total_items Items)
-                </div>
-                <div class="d-flex mx-4">
-                    <div class="d-grid">
-                        <div>
-
-                            <h6>
-                                @item.item_names.FirstOrDefault() @if (item.item_names.Count() > 1)
-                                {
-                                    <span>, ...</span>
-                                }
-                            </h6>
-
-                        </div>
-                        <span>
-                            @if (item.total_price!=null)
-                            {
-                                <span>Rs.</span>   @item.total_price.Value.ToString("N2")
-
-                            }
-                        </span>
-                        <span style="font-size: 13px; color: grey; align-self:baseline">
-                            Ordered: @item.order_date.ToString("D")
-                        </span>
-                    </div>
-
-
-
-
-                </div>
-                <p class="ms-auto align-self-center">
-                    @switch (item.order_status)
+                    @if (item.first_product_image != null)
                     {
-                        case 0:
-                        <p>Order Placed</p>
-                        break;
-                    case 1:
-                        <p>Order Shipped</p>
-                        break;
-                    case 2:
-                        <p>Order Delivered</p>
-                        break;
-                    case 3:
-                        <p> Order Cancelled</p>
-                        break;
-                    case 4:
-                        <p> Order Returned</p>
-                        break;
-                    default:
-                        @:Unknown Status
-                        break;
-                }</p>
+                        <img src="@Url.Content(item.first_product_image)" />
+                    }
+                    else
+                    {
+                        <img src="~/Images//Utilities//No-Image-Placeholder.svg.png" />
+                    }
                 </div>
+                (@item.total_items Items)
+            </div>
+            <div class="d-flex mx-4">
+                <div class="d-grid">
+                    <div>
 
-            }
-    </div>
+                        <h6>
+                            @item.item_names.FirstOrDefault() @if (item.item_names.Count() > 1)
+                            {
+                                <span>, ...</span>
+                            }
+                        </h6>
+
+                    </div>
+                    <span>
+                        @if (item.total_price != null)
+                        {
+                            <span>Rs.</span> @item.total_price.Value.ToString("N2")
+
+                        }
+                    </span>
+                    <span style="font-size: 13px; color: grey; align-self:baseline">
+                        Ordered: @item.order_date.ToString("D")
+                    </span>
+                </div>
+            </div>
+            <p class="ms-auto align-self-center">
+                Order @((OnlineBikeStore.Models.OrderStatus)item.order_status)
+            </p>
+        </div>
+
+    }
 </div>
-
-
-
-<script>
-
-
-
-</script>

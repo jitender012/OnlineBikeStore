@@ -2,6 +2,7 @@
 {
     public class FilterDataModel
     {
-        public string[] brands { get; set; }        
+        public string[] brands { get; set; }
+        public string[] type { get; set;}
     }
 }

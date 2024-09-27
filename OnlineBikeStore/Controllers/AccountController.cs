@@ -10,7 +10,7 @@ namespace OnlineBikeStore.Controllers
 {
     public class AccountController : Controller
     {
-        BikeStoreEntities context = null;
+        BikeStoreEntities context;
         public AccountController()
         {
             context = new BikeStoreEntities();
@@ -41,7 +41,7 @@ namespace OnlineBikeStore.Controllers
                     first_name = data.first_name,
                     last_name = data.last_name,
                     email = data.email,
-                    password = data.password
+                    password = Password.EncryptPassword(data.password)
                 };
                 context.users.Add(customer);
                 context.SaveChanges();
@@ -60,10 +60,10 @@ namespace OnlineBikeStore.Controllers
                 return RedirectToAction("Login", "Account");
             }
             return View(data);
-        }        
+        }
 
         [HttpPost]
-        public ActionResult UpdateProfile(ProfileViewModel customer)
+        public ActionResult UpdateProfile(UserViewModel customer)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,7 @@ namespace OnlineBikeStore.Controllers
                 else
                 {
                     user.first_name = customer.first_name;
-                    user.last_name = customer.last_name;                    
+                    user.last_name = customer.last_name;
                     user.phone = customer.phone;
                     user.city = customer.city;
                     user.state = customer.state;
@@ -86,8 +86,8 @@ namespace OnlineBikeStore.Controllers
                     context.Entry(user).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    return RedirectToAction("UserProfile", new { linkId = 0});
-                }                
+                    return RedirectToAction("UserAccount", new { linkId = 0 });
+                }
             }
 
             return View(customer);
@@ -107,18 +107,19 @@ namespace OnlineBikeStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = context.users.FirstOrDefault(u => u.email == data.email && u.password == data.password);
+                string hashedPassword = Password.EncryptPassword(data.password);
+                var user = context.users.FirstOrDefault(u => u.email == data.email && u.password == hashedPassword);
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(data.email, true);
                     TempData["SuccessMessage"] = "Login successfully!";
 
-                    if (user.user_role.Select(x=>x.role).SingleOrDefault()=="admin")
+                    if (user.user_role.Select(x => x.role).SingleOrDefault() == "admin")
                     {
                         return RedirectToAction("Dashboard", "Dashboard");
                     }
                     else
-                    return RedirectToAction("Home", "Home");
+                        return RedirectToAction("Home", "Home");
                 }
                 else
                 {
@@ -133,6 +134,38 @@ namespace OnlineBikeStore.Controllers
             }
         }
 
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ResetPassword(LoginViewModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                //Get user with email id 
+                var user = context.users
+                                        .Where(u => u.email == data.email)
+                                        .SingleOrDefault();
+                if (user==null)
+                {
+                    ModelState.AddModelError("email", "Email ID is not registered.");
+                    return View(data);
+                }
+                string hashedPassword = Password.EncryptPassword(data.password);
+                if (hashedPassword==user.password)
+                {
+                    ModelState.AddModelError("password", "Old password can't be used as new password.");
+                    return View(data);
+                }
+                user.password = hashedPassword;
+                context.SaveChanges();
+
+                TempData["RedirectToLoginMsg"] = "Password reset successfully. Login to continue.";
+                return RedirectToAction("Login", "Account");               
+            }
+            return View(data);
+        }
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -141,30 +174,26 @@ namespace OnlineBikeStore.Controllers
 
         [Route("Account/Profile/")]
         [Authorize]
-        public ActionResult UserProfile(int linkId)
+        public ActionResult UserAccount(int linkId)
         {
             ViewBag.LinkId = linkId;
-            if (User.Identity.IsAuthenticated)
-            {
-                var email = User.Identity.Name;
-                var name = context.users
-                    .Where(e => e.email == email)
-                    .Select(s => s.first_name)
-                    .FirstOrDefault();
 
-                return View("UserProfile", "~/Views/Shared/_CustomerLayout.cshtml", name);
-            }
-            else
-                return RedirectToAction("Login");
+            var email = User.Identity.Name;
+            var name = context.users
+                .Where(e => e.email == email)
+                .Select(s => s.first_name)
+                .FirstOrDefault();
+
+            return View("UserAccount", "~/Views/Shared/_CustomerLayout.cshtml", name);
+
         }
-        
+
         [Authorize]
         public PartialViewResult UserInformation()
         {
-            var uname = User.Identity.Name;
-            var user = context.users.Where(u => u.email == uname).SingleOrDefault();
+            var userId = context.GetUserId(User.Identity.Name);
 
-            ProfileViewModel profileView = Mapper.Map<ProfileViewModel>(context.users.Where(u => u.user_id == user.user_id).SingleOrDefault());
+            UserViewModel profileView = Mapper.Map<UserViewModel>(context.users.Where(u => u.user_id == userId).SingleOrDefault());
             return PartialView("_UserInformation", profileView);
         }
 
@@ -172,8 +201,8 @@ namespace OnlineBikeStore.Controllers
         public JsonResult GetUserId()
         {
             var userId = context.GetUserId(User.Identity.Name);
-            return Json(userId,  JsonRequestBehavior.AllowGet);
+            return Json(userId, JsonRequestBehavior.AllowGet);
         }
     }
-   
+
 }

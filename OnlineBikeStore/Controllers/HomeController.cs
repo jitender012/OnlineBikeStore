@@ -50,7 +50,6 @@ namespace OnlineBikeStore.Controllers
             return View(products);
         }
 
-
         [Authorize(Roles = "admin, customer")]
         public ActionResult About()
         {
@@ -181,7 +180,11 @@ namespace OnlineBikeStore.Controllers
                 searchWord.ToLower();
 
                 var products = context.products
-                    .Where(p => p.product_name.Contains(searchWord) || p.description.Contains(searchWord) || p.brand.brand_name.Contains(searchWord) || p.category.category_name.Contains(searchWord))
+                    .Where(p => p.product_name.Contains(searchWord) || 
+                                p.description.Contains(searchWord) ||
+                                p.brand.brand_name.Contains(searchWord) ||
+                                p.category.category_name.Contains(searchWord) || 
+                                p.product_type.Contains(searchWord))
                     .ToList();
                 if (products != null)
                 {
@@ -190,7 +193,6 @@ namespace OnlineBikeStore.Controllers
                 }
             }
             var result = Mapper.Map<List<ProductViewModel>>(context.products.ToList());
-
 
             return View(result);
         }
@@ -215,53 +217,57 @@ namespace OnlineBikeStore.Controllers
         public PartialViewResult SearchPartial(FilterDataModel filters, string searchString, string catId)
         {
             List<int> productIds;
-            List<product> filteredItems = new List<product>();
+            List<product> filteredItems;
 
-            if (searchString != "")
+            // Select products based on search string
+            if (!string.IsNullOrEmpty(searchString))
             {
-                searchString.ToLower();
+                searchString = searchString.ToLower();
 
                 productIds = context.products
-                    .Where(p => p.product_name.Contains(searchString) ||
-                                p.description.Contains(searchString) ||
-                                p.brand.brand_name.Contains(searchString) ||
-                                p.category.category_name.Contains(searchString))
+                    .Where(p => p.product_name.ToLower().Contains(searchString) ||
+                                p.description.ToLower().Contains(searchString) ||
+                                p.brand.brand_name.ToLower().Contains(searchString) ||
+                                p.category.category_name.ToLower().Contains(searchString) ||
+                                p.product_type.ToLower().Contains(searchString))
                     .Select(o => o.product_id)
                     .ToList();
             }
             else
             {
+                // Select products by category if search string is empty
                 productIds = context.products
                     .Where(p => p.category_id.ToString() == catId)
                     .Select(x => x.product_id)
                     .ToList();
             }
 
-            if (filters.brands != null)
-            {
-                foreach (var brand in filters.brands)
-                {
-                    var Items = context.products
-                        .Where(p => productIds.Contains(p.product_id) && p.brand.brand_name == brand)
-                        .ToList();
-                    filteredItems.AddRange(Items);
-                }
-            }
+            // Fetch products based on productIds
+            filteredItems = context.products
+                .Where(p => productIds.Contains(p.product_id))
+                .ToList();
 
-            else
+            // Apply filters for brands and types in memory (after fetching the data)
+            if (filters.brands != null && filters.brands.Any())
             {
-                filteredItems = context.products
-                    .Where(p => productIds.Contains(p.product_id))
+                filteredItems = filteredItems
+                    .Where(p => filters.brands.Contains(p.brand.brand_name))
                     .ToList();
             }
 
-            if (filteredItems != null)
+            if (filters.type != null && filters.type.Any())
             {
-                var productsVM = Mapper.Map<List<ProductViewModel>>(filteredItems);
-                return PartialView("_SearchPartial", productsVM);
+                filteredItems = filteredItems
+                    .Where(p => filters.type.Contains(p.product_type))
+                    .ToList();
             }
-            return PartialView();
+
+            // Map filtered items to view model
+            var productsVM = Mapper.Map<List<ProductViewModel>>(filteredItems);
+            return PartialView("_SearchPartial", productsVM);
         }
+
+
         //Search Products By Category
         public ActionResult FilterByCategory(int? categoryId)
         {

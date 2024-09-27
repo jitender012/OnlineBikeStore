@@ -1,0 +1,91 @@
+﻿@model OnlineBikeStore.Models.UserViewModel
+@{ 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div>
+    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+        Home
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+        Customer
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+    </a>
+    <h4>
+        <span class="text-muted">Customer Details: </span>@Model.user_id
+    </h4>
+</div>
+
+<div class="card py-4 px-5">
+
+
+        <div class=" row">
+            <div class="col-12 col-md-6 col-lg-6 mt-3">              
+                <input type="hidden" name="category_id" value="@Model.user_id" />
+                <div class="form-group mb-2">
+                    <label class="control-label">First Name</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.first_name, new  {@class = "form-control", disabled="true" } )                     
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">Last Name</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.last_name, new { @class = "form-control", disabled="true" })                        
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">Phone</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.phone, new { @class = "form-control", disabled="true"  })                        
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">Email</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.email, new { @class = "form-control", disabled = "true" })                       
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-12 col-md-6 col-lg-6 mt-3">
+                <div class="form-group mb-2">
+                    <label class="control-label">Street</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.street, new { @class = "form-control", disabled="true" } )                        
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">City</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.city, new { @class = "form-control", disabled="true" } )                        
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">State</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.state,new { @class = "form-control", disabled="true" } )                        
+                    </div>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="control-label">Zip Code</label>
+                    <div class="">
+                        @Html.TextBoxFor(model => model.zip_code,  new { @class = "form-control", disabled="true" })                        
+                    </div>
+                </div>
+            </div>          
+        </div>
+   
+
+    <div class="card-footer">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>

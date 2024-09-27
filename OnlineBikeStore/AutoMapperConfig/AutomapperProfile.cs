@@ -34,8 +34,8 @@ namespace OnlineBikeStore.AutoMapperConfig
             CreateMap<userCart,CartViewModel>();
             CreateMap<CartViewModel, userCart>();
 
-            CreateMap<ProfileViewModel, user>();
-            CreateMap<user, ProfileViewModel>();
+            CreateMap<UserViewModel, user>();
+            CreateMap<user, UserViewModel>();
         }
     }
 }

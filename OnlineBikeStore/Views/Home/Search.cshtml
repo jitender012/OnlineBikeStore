@@ -51,13 +51,28 @@
                                     </ul>
                                 </div>
                                 <hr />
+                                <!-- product type-->
+                                <div class="px-3 py-2" id="type-filters-btn">
+                                    <span>Type &nbsp;  <i id="angle4" class="fas fa-angle-down"></i></span>
+                                </div>
+                                <div class="d-none px-4" id="type-filters">
+                                    <div>
+                                        <input type="checkbox" value="Bike" id="Bikes" class="">
+                                        <label for="Bikes">Bikes</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" value="Accessories" id="Accessories" class="">
+                                        <label for="Accessories" class="span">Accessories</label>
+                                    </div>
+                                </div>
+                                <hr />
                                 <!-- price -->
                                 <div class="px-3 py-2" id="price-filters-btn">
                                     <span>Price &nbsp;<i id="angle1" class="fas fa-angle-down"></i> </span>
                                 </div>
                                 <div class="d-none" id="price-filters">
                                     <ul style="text-decoration:none; list-style:none">
-                                        <li class="my-1"><a href="#">$1,000 - $5,000</a></li>
+                                        <li class="my-1"><a href="#">50,000 - 60,000</a></li>
                                         <li><a href="#">$5,000 - $10,000</a></li>
                                         <li class="my-1"><a href="#">$10,000 - $20,000</a></li>
                                         <li><a href="#">$20,000 - $30,000</a></li>
@@ -101,40 +116,12 @@
                                     </ul>
                                 </div>
                                 <hr />
-                                <!-- product type-->
-                                <div class="px-3 py-2" id="type-filters-btn">
-                                    <span>Type &nbsp;  <i id="angle4" class="fas fa-angle-down"></i></span>
-                                </div>
-                                <div class="d-none px-4" id="type-filters">
-                                    <div>
-                                        <input type="checkbox" value="1" id="ch12" class="">
-                                        <label for="ch12">Bikes</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" value="2" class="">
-                                        <span class="span">Accessories</span>
-                                    </div>
-                                </div>
-                                <hr />
 
 
-                                <!-- arrivals -->
-                                <div class="left-side border-bottom m-3">
-                                    <h3>New Arrivals</h3>
-                                    <div>
 
-                                        <input type="checkbox" class="">
-                                        <span class="span">Last 30 days</span>
 
-                                    </div>
-
-                                    <div>
-                                        <input type="checkbox" class="">
-                                        <span class="span">Last 90 days</span>
-                                    </div>
-
-                                </div>
                             </div>
+                            <button class="btn btn-sm btn-primary d-md-none" data-bs-toggle="offcanvas">Done</button>
                         </div>
                     </div>
                 </nav>
@@ -175,21 +162,28 @@
     })
 
     function loadPartialView() {
-        $("#brandCB input[type=checkbox]").change(function () {
-            var arr = [];
-
-            $("input[type=checkbox]").each(function (index) {
+        $("#brandCB input[type=checkbox], #type-filters input[type=checkbox]").change(function () {
+            var brandsArray = [];
+            var typeArray = [];
+            $("#brandCB input[type=checkbox]").each(function (index) {
 
                 if ($(this).is(":checked")) {
-                    arr.push($(this).val());
+                    brandsArray.push($(this).val());
                 }
             })
 
+            // Get selected types
+            $("#type-filters input[type=checkbox]").each(function () {
+                if ($(this).is(":checked")) {
+                    typeArray.push($(this).val());
+                }
+            });
             var data = {
                 searchString: '@ViewBag.searchString',
                 catId:'@ViewBag.catId',
                 filters: {
-                    brands: arr
+                    brands: brandsArray,
+                    type: typeArray
                 }
             };
 

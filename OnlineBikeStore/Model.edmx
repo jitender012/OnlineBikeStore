@@ -17,17 +17,6 @@
           <Property Name="feedback_text" Type="varchar" MaxLength="200" />
           <Property Name="ratingValue" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="query">
-          <Key>
-            <PropertyRef Name="qus_id" />
-          </Key>
-          <Property Name="qus_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="qus_text" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="c_id" Type="int" Nullable="false" />
-          <Property Name="p_id" Type="int" Nullable="false" />
-          <Property Name="date" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="ans_text" Type="nvarchar" MaxLength="255" />
-        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -67,7 +56,7 @@
           <Property Name="city" Type="varchar" MaxLength="50" />
           <Property Name="state" Type="varchar" MaxLength="25" />
           <Property Name="zip_code" Type="varchar" MaxLength="10" />
-          <Property Name="password" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="wishlist">
           <Key>
@@ -273,30 +262,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_query_products">
-          <End Role="products" Type="Self.products" Multiplicity="1" />
-          <End Role="query" Type="Self.query" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="products">
-              <PropertyRef Name="product_id" />
-            </Principal>
-            <Dependent Role="query">
-              <PropertyRef Name="p_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_query_users">
-          <End Role="users" Type="Self.users" Multiplicity="1" />
-          <End Role="query" Type="Self.query" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="user_id" />
-            </Principal>
-            <Dependent Role="query">
-              <PropertyRef Name="qus_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_stores_stores">
           <End Role="stores" Type="Self.stores" Multiplicity="1" />
           <End Role="stores1" Type="Self.stores" Multiplicity="0..1" />
@@ -374,7 +339,6 @@
         </Function>
         <EntityContainer Name="OnlineBikeStoreModelStoreContainer">
           <EntitySet Name="feedback" EntityType="Self.feedback" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="query" EntityType="Self.query" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_role" EntityType="Self.user_role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userCart" EntityType="Self.userCart" Schema="dbo" store:Type="Tables" />
@@ -423,14 +387,6 @@
             <End Role="stores" EntitySet="stores" />
             <End Role="order_items" EntitySet="order_items" />
           </AssociationSet>
-          <AssociationSet Name="FK_query_products" Association="Self.FK_query_products">
-            <End Role="products" EntitySet="products" />
-            <End Role="query" EntitySet="query" />
-          </AssociationSet>
-          <AssociationSet Name="FK_query_users" Association="Self.FK_query_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="query" EntitySet="query" />
-          </AssociationSet>
           <AssociationSet Name="FK_stores_stores" Association="Self.FK_stores_stores">
             <End Role="stores" EntitySet="stores" />
             <End Role="stores1" EntitySet="stores" />
@@ -474,19 +430,6 @@
           <NavigationProperty Name="product" Relationship="Self.FK_feedback_products" FromRole="feedback" ToRole="products" />
           <NavigationProperty Name="user" Relationship="Self.FK_feedback_users" FromRole="feedback" ToRole="users" />
         </EntityType>
-        <EntityType Name="query">
-          <Key>
-            <PropertyRef Name="qus_id" />
-          </Key>
-          <Property Name="qus_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="qus_text" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="c_id" Type="Int32" Nullable="false" />
-          <Property Name="p_id" Type="Int32" Nullable="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ans_text" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="product" Relationship="Self.FK_query_products" FromRole="query" ToRole="products" />
-          <NavigationProperty Name="user" Relationship="Self.FK_query_users" FromRole="query" ToRole="users" />
-        </EntityType>
         <EntityType Name="user_role">
           <Key>
             <PropertyRef Name="role_id" />
@@ -519,9 +462,8 @@
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="state" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="zip_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="feedbacks" Relationship="Self.FK_feedback_users" FromRole="users" ToRole="feedback" />
-          <NavigationProperty Name="query" Relationship="Self.FK_query_users" FromRole="users" ToRole="query" />
           <NavigationProperty Name="user_role" Relationship="Self.FK_UserRole_customers" FromRole="users" ToRole="user_role" />
           <NavigationProperty Name="userCarts" Relationship="Self.FK_Table_1_customers_uid" FromRole="users" ToRole="userCart" />
           <NavigationProperty Name="orders" Relationship="Self.FK__orders__customer__47DBAE45" FromRole="users" ToRole="orders" />
@@ -569,7 +511,6 @@
           <Property Name="url" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="product_type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="feedbacks" Relationship="Self.FK_feedback_products" FromRole="products" ToRole="feedback" />
-          <NavigationProperty Name="queries" Relationship="Self.FK_query_products" FromRole="products" ToRole="query" />
           <NavigationProperty Name="userCarts" Relationship="Self.FK_Table_1_products_pid" FromRole="products" ToRole="userCart" />
           <NavigationProperty Name="wishlists" Relationship="Self.FK_wishlist_products" FromRole="products" ToRole="wishlist" />
           <NavigationProperty Name="brand" Relationship="Self.FK__products__brand___3C69FB99" FromRole="products" ToRole="brands" />
@@ -656,30 +597,6 @@
             </Principal>
             <Dependent Role="feedback">
               <PropertyRef Name="customer_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_query_products">
-          <End Role="products" Type="Self.product" Multiplicity="1" />
-          <End Role="query" Type="Self.query" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="products">
-              <PropertyRef Name="product_id" />
-            </Principal>
-            <Dependent Role="query">
-              <PropertyRef Name="p_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_query_users">
-          <End Role="users" Type="Self.user" Multiplicity="1" />
-          <End Role="query" Type="Self.query" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="user_id" />
-            </Principal>
-            <Dependent Role="query">
-              <PropertyRef Name="qus_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -844,7 +761,6 @@
       
         <EntityContainer Name="BikeStoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="feedbacks" EntityType="Self.feedback" />
-          <EntitySet Name="queries" EntityType="Self.query" />
           <EntitySet Name="user_role" EntityType="Self.user_role" />
           <EntitySet Name="userCarts" EntityType="Self.userCart" />
           <EntitySet Name="users" EntityType="Self.user" />
@@ -863,14 +779,6 @@
           <AssociationSet Name="FK_feedback_users" Association="Self.FK_feedback_users">
             <End Role="users" EntitySet="users" />
             <End Role="feedback" EntitySet="feedbacks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_query_products" Association="Self.FK_query_products">
-            <End Role="products" EntitySet="products" />
-            <End Role="query" EntitySet="queries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_query_users" Association="Self.FK_query_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="query" EntitySet="queries" />
           </AssociationSet>
           <AssociationSet Name="FK_UserRole_customers" Association="Self.FK_UserRole_customers">
             <End Role="users" EntitySet="users" />
@@ -989,18 +897,6 @@
                 <ScalarProperty Name="image_url" ColumnName="image_url" />
                 <ScalarProperty Name="feedback_text" ColumnName="feedback_text" />
                 <ScalarProperty Name="ratingValue" ColumnName="ratingValue" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="queries">
-            <EntityTypeMapping TypeName="OnlineBikeStoreModel.query">
-              <MappingFragment StoreEntitySet="query">
-                <ScalarProperty Name="qus_id" ColumnName="qus_id" />
-                <ScalarProperty Name="qus_text" ColumnName="qus_text" />
-                <ScalarProperty Name="c_id" ColumnName="c_id" />
-                <ScalarProperty Name="p_id" ColumnName="p_id" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="ans_text" ColumnName="ans_text" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

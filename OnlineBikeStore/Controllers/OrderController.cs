@@ -39,7 +39,7 @@ namespace OnlineBikeStore.Controllers
             return View("GetOrdersAdmin", ordersListVM);
         }
 
-        public PartialViewResult GetOrdersPartial(string query, string orderStatus)
+        public PartialViewResult GetOrdersPartial(string orderStatus)
         {
             int userId = context.GetUserId(User.Identity.Name);
 
@@ -47,17 +47,7 @@ namespace OnlineBikeStore.Controllers
             var ordersListVM = GetOrdersViewModel();
 
             //Search orders using order id/price/name/date
-            if (query != null)
-            {
-                ordersListVM = ordersListVM
-                    .Where(o =>
-                    o.item_names != null && o.item_names.Any(name => name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    o.order_date.ToString("D").Contains(query) ||
-                    o.total_price.ToString().Contains(query) ||
-                    o.order_id.ToString().Contains(query)
-                    )
-                    .ToList();
-            }
+          
             var o_status = -1;
 
             if (orderStatus != "")

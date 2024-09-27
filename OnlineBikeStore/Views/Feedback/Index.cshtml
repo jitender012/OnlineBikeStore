@@ -1,49 +1,69 @@
 ﻿@model List<OnlineBikeStore.Models.FeedbackViewModel>
-@{
-    if (User.IsInRole("admin"))
-    {
-        Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    }
-    else
-    {
-        Layout = null;
-    }
+@{ Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <div>
-    <div class="d-flex justify-content-between mb-1">
-        <span>
-            My Reviews
-        </span>
+    <a href="@Url.Action("Dashboard","Dashboard")" style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+        Home
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
 
-    </div>
-    <div class="">
+    </a>
+    <h4>
+        <span class="text-muted">Feedbacks  </span>
+    </h4>
+</div>
+
+
+<div class="table-div">
+    <table class="display table table-bordered" id="feedbackTable">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>Product Name</th>
+                <th>Rating Value</th>
+                <th>Image</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+
+
         @foreach (var item in Model)
         {
-
-            <div class="content-row d-flex">
-                @if (item.product_img != null)
-                {
-                    <img src="@Url.Content(item.product_img)" width="60" />
-                }
-                <div class="p-3">
-                    @item.product_name
-                    <br />
-                    @item.ratingValue
-                    <br />
-                    @item.feedback_text
-                    <br />
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.customer_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ratingValue)
+                </td>
+                <td>
                     @if (item.image_url != null)
                     {
                         <img src="@Url.Content(item.image_url)" width="70" />
                     }
-                    <br />
-                    @item.date.ToString("Dx")
-                </div>
-                <p style="text-align:end">Remove</p>
-            </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td style="text-align:center">
+                    <div class="btn-group">                        
+                        <a href="@Url.Action("RemoveFeedback", "Feedback", new { feedbackId = item.feedback_id })" class=" btn btn-outline-danger"><i class="bi bi-trash"></i>&nbsp; Remove</a>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<script>
+    $(document).ready(
+        function () {
+            $('#feedbackTable').DataTable();
 
         }
-    </div>
-</div>
 
+    )
+</script>

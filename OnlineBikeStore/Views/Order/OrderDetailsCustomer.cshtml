@@ -50,26 +50,7 @@
                         <tr>
                             <td>Status</td>
                             <td>
-                                @switch (Model.order_status)
-                                {
-                                    case 0:
-                                        <h6>Order Placed</h6>
-
-                                        break;
-                                    case 1:
-                                        <h6>Order Shipped</h6>
-
-                                        break;
-                                    case 2:
-                                        <h6>Order Delivered</h6>
-                                        break;
-                                    case 3:
-                                        <h6>Order Cancelled</h6>
-                                        break;
-                                    default:
-                                        @:Unknown Status
-                                        break;
-                                }
+                                Order @((OnlineBikeStore.Models.OrderStatus)Model.order_status)
                             </td>
                         </tr>
                     </table>

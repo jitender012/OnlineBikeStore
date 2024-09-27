@@ -28,7 +28,6 @@ namespace OnlineBikeStore
         }
     
         public virtual DbSet<feedback> feedbacks { get; set; }
-        public virtual DbSet<query> queries { get; set; }
         public virtual DbSet<user_role> user_role { get; set; }
         public virtual DbSet<userCart> userCarts { get; set; }
         public virtual DbSet<user> users { get; set; }

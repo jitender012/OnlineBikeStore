@@ -5,24 +5,15 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .active-fliter{
-        background-color:#cbe1ce;
-    }
-    .your-element::-webkit-scrollbar {
-        display: none; 
-    }
-</style>
 <link href="~/Content/Admin/orders.css" rel="stylesheet" />
 
 
 <div class="container p-0">
 
     <div>
-        <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+        <a href="@Url.Action("Dashboard","Dashboard")" style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
             Home
             <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
-
         </a>
         <h4>
             Orders
@@ -30,65 +21,48 @@
     </div>
 
 
-    <div>
-        <div class="searchDiv">
+    <div>    
+        <div class="d-flex flex-wrap gap-3 mb-4 mt-3">
+            <div class="flex-fill shadow-sm h-100 active-fliter filterDiv">
+                <div class="p-3 p-lg-4">
+                    <h4 class="mb-1">All Orders</h4>
+                    <span id="allOrders"></span>
+                </div>
+            </div>
 
-            <input type="text" id="searchQuery" placeholder="Enter order id..." />
+            <div class="flex-fill shadow-sm h-100 filterDiv">
+                <div class="p-3 p-lg-4">
+                    <h4 class="mb-1">Pending</h4>
+                    <span id="Placed"></span>
+                </div>
+            </div>
 
+            <div class="flex-fill shadow-sm h-100 filterDiv">
+                <div class="p-3 p-lg-4">
+                    <h4 class="mb-1">Shipped</h4>
+                    <span id="Shipped"></span>
+                </div>
+            </div>
+
+            <div class="flex-fill shadow-sm h-100 filterDiv">
+                <div class="p-3 p-lg-4">
+                    <h4 class="mb-1">Delivered</h4>
+                    <span id="Delivered"></span>
+                </div>
+            </div>
+
+            <div class="flex-fill shadow-sm h-100 filterDiv">
+                <div class="p-3 p-lg-4">
+                    <h4 class="mb-1">Cancelled</h4>
+                    <span id="Cancelled"></span>
+                </div>
+            </div>
         </div>
-        <div class="row g-4 mb-4 mt-3">
-            <div class="col-6 col-lg-3 ">
-                <div class=" shadow-sm h-100  active-fliter filterDiv">
-                    <div class="p-3 p-lg-4">
-                        <h4 class="mb-1">All Inventory</h4>
-                        <span id="allOrders"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3 ">
-                <div class=" shadow-sm h-100  filterDiv">
-                    <div class="p-3 p-lg-4">
-                        <h4 class="mb-1">Low Stock</h4>
-                        <span id="Placed"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 ">
-                <div class=" shadow-sm h-100  filterDiv">
-                    <div class="p-3 p-lg-4">
-                        <h4 class="mb-1">Out Of Stock</h4>
-                        <span id="Shipped"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 ">
-                <div class=" shadow-sm h-100  filterDiv">
-                    <div class="p-3 p-lg-4">
-                        <h4 class="mb-1">Delivered</h4>
-                        <span id="Delivered"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 ">
-                <div class=" shadow-sm h-100  filterDiv">
-                    <div class="p-3 p-lg-4">
-                        <h4 class="mb-1">Cancelled</h4>
-                        <span id="Cancelled"></span>
-                    </div>
-                </div>
-            </div>
-        </div>      
     </div>
-
-
 
     <div id="partialViewContainer" class="table-div">
         @Html.Partial("_GetOrdersAdmin")
     </div>
-
-
-
 </div>
 
 <script>
@@ -101,12 +75,7 @@
 
         var query;
         var status;
-
-        $("#searchQuery").on('input',function () {
-            query = $("#searchQuery").val();
-            loadPartialView();
-        })
-
+      
         $('.filterDiv').on('click', function () {
             status = $(this).find('span').last().attr('id');
             loadPartialView();
@@ -118,8 +87,7 @@
             $.ajax({
                 url: '@Url.Action("GetOrdersPartial", "Order")',
                 type: 'GET',
-                data: {
-                    query: query,
+                data: {                    
                     orderStatus: status
                 },
                 success: function (response) {

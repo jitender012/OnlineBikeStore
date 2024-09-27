@@ -10,6 +10,12 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/bootstrap-icons-1.11.0/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/Content/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+    <style>
+        body{
+            font-family:Calibri;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -27,9 +33,9 @@
 
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
-                            <div class="offcanvas-body bg-ad-primary" id="navbarNavDarkDropdown">
+                            <div class="offcanvas-body bg-ad-primary d-flex flex-column flex-md-row" id="navbarNavDarkDropdown">
                                 <a href="@Url.Action( "Dashboard","Dashboard")" id="loginLink" class="btn login-btn">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex ">
                                         <span class="login-icon">
                                             <i class="fa fa-home  text-light"></i>
                                         </span>&nbsp;&nbsp;
@@ -37,23 +43,14 @@
                                     </div>
                                 </a>
                                 <a href="@Url.Action( "GetOrders","Order")" id="loginLink" class="btn dropbtn">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex">
                                         <span class="login-icon">
                                             <i class="fas fa-clipboard-check text-light"></i>
                                         </span>&nbsp;&nbsp;
                                         <span class="login-text text-light"> Orders</span>
                                     </div>
                                 </a>
-                                @*<div class="dropdown">
-
-                                        <div class="dropdown-content">
-                                            <a href="@Url.Action("OrderIndex","Order")">All Orders</a>
-                                            <a href="#">Pending</a>
-                                            <a href="#">Shipped</a>
-                                            <a href="#">Cancelled</a>
-                                            <a href="#">Returned</a>
-                                        </div>
-                                    </div>*@
+                               
 
                                 <div class="dropdown">
                                     <a href="@Url.Action( "Index","Product")" id="loginLink" class="btn dropbtn">
@@ -100,8 +97,8 @@
                                     <div class="dropdown-content">
                                         <a href="@Url.Action("Index","Category")">Category</a>
                                         <a href="@Url.Action("Index","Brand")">Brand</a>
-                                        <a href="#">Customers</a>
-                                        <a href="@Url.Action("Index","Brand")">Feedback</a>
+                                        <a href="@Url.Action("Index","Customer")">Customers</a>
+                                        <a href="@Url.Action("Index","Feedback")">Feedback</a>
                                     </div>
                                 </div>
 
@@ -110,33 +107,16 @@
 
                         </div>
                     </div>
-                    <div class="col-7 col-lg-4">
-                        @using (Html.BeginForm("Home", "Home", FormMethod.Get, new { @class = "d-flex", role = "search" }))
-                        {
-                            @Html.TextBox("search", null, new { placeholder = "Search", @class = "form-control  me-2" })
-                            <button class="btn btn-success" style="background-color: #ff6565; border:none; " type="submit"><i class="fa fa-search"></i></button>
-                        }
-                    </div>
+                 
                     <div class="col-3 col-lg-2">
                         <div class="justify-content-end d-flex flex-row ">
-                            <div class="dropdown">
-                                <a href="@Url.Action( "Login","Account")" id="loginLink" class="btn login-btn dropbtn">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="login-icon">
-                                            <i class="far fa-user-circle  text-light"></i>
-                                        </span>&nbsp;&nbsp;
-                                        <span class="login-text text-light"> Profile</span>
-                                    </div>
-                                </a>
-
-                                <div class="dropdown-content">
-                                    <a href="#">Account</a>
-                                    <a href="#">Notifications</a>
-                                    <a href="#">Setting</a>
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            
+                               
+                                <div >                                  
+                                    <a href="" class="dropbtn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Log Out
                                     </a>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

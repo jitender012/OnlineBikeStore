@@ -64,24 +64,6 @@
     /*background-color: #3e8e41;*/
 }
 
-.logout-btn {
-    width: 100%;
-    border: none;
-    color: black;
-    padding: 8px 12px;
-    text-decoration: none;
-    display: block;
-    background-color: #ffffff;
-    text-align: start;
-    border-radius: 10px;
-}
-
-    .logout-btn:hover {
-        color: white;
-        border-radius: 10px;
-        background-color: var(--ad-primary-hover-lighter);
-    }
-
 
 .dropdown-content {
     animation: growDown 300ms ease-in-out forwards;
@@ -148,9 +130,27 @@
     border-radius: 10px;
 }
 
+/*Item List page style*/
 .addNewBtn {
-    padding: 7px 10px;
-    background-color: dodgerblue;
-    border-radius: 17px;
+    padding: 7px 10px;    
+    border-radius: 14px;
+    background-color:forestgreen;
     color: white;
+}
+    .addNewBtn:hover {
+        text-decoration: none;
+        color: white;
+        box-shadow: 0px 0px 7px -3px black;
+    }
+
+.table-div{
+    overflow-x:auto;
+}
+
+.table-div::-webkit-scrollbar{
+    display:none;
+}
+.btn {
+    padding: 3px 10px;
+    border-radius: 10px;
 }

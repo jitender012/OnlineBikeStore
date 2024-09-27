@@ -1,0 +1,109 @@
+﻿@model OnlineBikeStore.Models.UserViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div>
+    <a style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
+        Home
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+        Customer
+        <i class="fas fa-angle-right" style="color: #c1cdc2;"></i>
+    </a>
+    <h4>
+        <span class="text-muted">Edit Customer : </span>@Model.user_id
+    </h4>
+</div>
+
+<div class="card py-4 px-5">
+
+    @using (Html.BeginForm("Edit", "Customer", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form row">
+        <div class="col-12 col-md-6 col-lg-6 mt-3">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" name="category_id" value="@Model.user_id" />
+            <div class="form-group mb-2">
+                <label class="control-label">First Name</label>
+                <div class="">
+                    @Html.EditorFor(model => model.first_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.first_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">Last Name</label>
+                <div class="">
+                    @Html.EditorFor(model => model.last_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.last_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">Phone</label>
+                <div class="">
+                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">Email</label>
+                <div class="">
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+           
+
+        </div>
+        <div class="col-12 col-md-6 col-lg-6 mt-3">
+            <div class="form-group mb-2">
+                <label class="control-label">Street</label>
+                <div class="">
+                    @Html.EditorFor(model => model.street, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.street, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">City</label>
+                <div class="">
+                    @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">State</label>
+                <div class="">
+                    @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label class="control-label">Zip Code</label>
+                <div class="">
+                    @Html.EditorFor(model => model.zip_code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.zip_code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="col-md-offset-2 my-4">
+                <input type="submit" value="Update" class="btn btn-success w-100 bg-ad-primary" />
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="card-footer">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>

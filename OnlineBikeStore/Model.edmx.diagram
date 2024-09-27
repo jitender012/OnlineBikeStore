@@ -5,24 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2e316830f091484b906779837fa8b688" Name="Diagram1" ZoomLevel="63">
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.feedback" Width="1.5" PointX="8.125" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.query" Width="1.5" PointX="3.375" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.user_role" Width="1.5" PointX="3.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.userCart" Width="1.5" PointX="3.5" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.user" Width="1.5" PointX="1.25" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.wishlist" Width="1.5" PointX="5.625" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.brand" Width="1.5" PointX="8.125" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.category" Width="1.5" PointX="7.625" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.product" Width="1.5" PointX="5.875" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.stock" Width="1.5" PointX="10" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.order_items" Width="1.5" PointX="3.5" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.order" Width="1.5" PointX="1.125" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.feedback" Width="1.5" PointX="7.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.user_role" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.userCart" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.user" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.wishlist" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.brand" Width="1.5" PointX="7.625" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.category" Width="1.5" PointX="7.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.product" Width="1.5" PointX="5.125" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.stock" Width="1.5" PointX="5.625" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.order_items" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.order" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="OnlineBikeStoreModel.staff" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.store" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.store" Width="1.5" PointX="3.125" PointY="9" IsExpanded="true" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK_feedback_products" ManuallyRouted="false" />
-        <AssociationConnector Association="OnlineBikeStoreModel.FK_feedback_users" ManuallyRouted="false" />
-        <AssociationConnector Association="OnlineBikeStoreModel.FK_query_products" ManuallyRouted="false" />
-        <AssociationConnector Association="OnlineBikeStoreModel.FK_query_users" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBikeStoreModel.FK_feedback_users" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="OnlineBikeStoreModel.FK_UserRole_customers" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK_Table_1_customers_uid" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK_Table_1_products_pid" ManuallyRouted="false" />
@@ -32,7 +30,8 @@
         <AssociationConnector Association="OnlineBikeStoreModel.FK__products__brand___3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__products__catego__3B75D760" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__order_ite__produ__4E88ABD4" ManuallyRouted="false" />
-        <AssociationConnector Association="OnlineBikeStoreModel.FK__stocks__product___52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBikeStoreModel.FK__stocks__product___52593CB8" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="OnlineBikeStoreModel.FK__stocks__store_id__5165187F" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__order_ite__order__4D94879B" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__staffs__manager___13F1F5EB" ManuallyRouted="false" />
@@ -40,7 +39,7 @@
         <AssociationConnector Association="OnlineBikeStoreModel.FK__staffs__manager___24285DB4" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__staffs__manager___44FF419A" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK__staffs__store_id__440B1D61" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="OnlineBikeStoreModel.sysdiagram" Width="1.5" PointX="14.875" PointY="2.25" />
+        <EntityTypeShape EntityType="OnlineBikeStoreModel.sysdiagram" Width="1.5" PointX="11.375" PointY="1" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK_order_items_stores" />
         <AssociationConnector Association="OnlineBikeStoreModel.FK_stores_stores" />
       </Diagram>

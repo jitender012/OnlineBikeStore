@@ -18,7 +18,6 @@ namespace OnlineBikeStore
         public product()
         {
             this.feedbacks = new HashSet<feedback>();
-            this.queries = new HashSet<query>();
             this.userCarts = new HashSet<userCart>();
             this.wishlists = new HashSet<wishlist>();
             this.order_items = new HashSet<order_items>();
@@ -37,8 +36,6 @@ namespace OnlineBikeStore
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<feedback> feedbacks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<query> queries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userCart> userCarts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
