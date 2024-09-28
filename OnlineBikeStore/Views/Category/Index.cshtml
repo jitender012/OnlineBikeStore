@@ -68,7 +68,7 @@
                 
                 <div class="btn-group">                   
                     <a href="@Url.Action("Edit", "Category", new {id= item.category_id})" class=" btn btn-outline-info"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
-                    <a href="#" class=" btn btn-outline-danger" name="category_id" data-id="@item.category_id"><i class="bi bi-trash"></i>&nbsp; Delete</a>
+                    <a href="#" class="delete-category btn btn-outline-danger" name="category_id" data-id="@item.category_id"><i class="bi bi-trash"></i>&nbsp; Delete</a>
                 </div>
             </td>
         </tr>

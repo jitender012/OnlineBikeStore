@@ -15,7 +15,7 @@
     <div class="product-row">
         @foreach (var item in Model)
         {
-            <a href="@Url.Action("Product","Home", new {pId = item.product_id})" class="product-card">
+            <a href="@Url.Action("Product","Product", new {pId = item.product_id})" class="product-card">
                 <div>
                     <div class="card1-imgdiv">
                         @if (item.url != null)
@@ -39,9 +39,7 @@
 
                 </div>
             </a>
-
         }
-
     </div>
     <div class="text-center">
         Explore
@@ -124,15 +122,6 @@
 
     </div>
 </div>
-
-
-@*<script>
-        $(document).ready(function () {
-            showNotification();
-            //var notification = $("#notification");
-            //notification.style.display = 'block';
-        })
-    </script>*@
 
 @section scripts {
     <script>

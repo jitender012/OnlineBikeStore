@@ -24,6 +24,7 @@ namespace OnlineBikeStore.Models
         public byte order_status { get; set; }
         public DateTime order_date { get; set; }
         public DateTime required_date { get; set; }       
+        public DateTime? shipped_date { get; set; }       
         public UserViewModel userDetails { get; set; }
         public List<OrderItem> orderItems { get; set; }
     }

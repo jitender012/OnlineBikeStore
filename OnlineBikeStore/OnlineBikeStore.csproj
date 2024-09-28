@@ -2794,13 +2794,12 @@
     <Content Include="Views\Store\Create.cshtml" />
     <Content Include="Views\Dashboard\Dashboard.cshtml" />
     <Content Include="Views\Dashboard\StoreDashboard.cshtml" />
-    <Content Include="Views\Home\Search.cshtml" />
-    <Content Include="Views\Home\Product.cshtml" />
+    <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Product\Product.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Account\UserAccount.cshtml" />
-    <Content Include="Views\Account\_UserInformation.cshtml" />
+    <Content Include="Views\Customer\_UserInformation.cshtml" />
     <Content Include="Views\Feedback\_UserReviews.cshtml" />
-    <Content Include="Views\WishList\_UserWishlist.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Cart\CartIndex.cshtml" />
@@ -2814,7 +2813,7 @@
     <Content Include="Views\Test\jQuery.cshtml" />
     <Content Include="Views\Test\Method.cshtml" />
     <Content Include="Views\Order\_GetOrdersAdmin.cshtml" />
-    <Content Include="Views\Home\_SearchPartial.cshtml" />
+    <Content Include="Views\Product\_SearchPartial.cshtml" />
     <Content Include="Views\Order\UpdateOrderStatus.cshtml" />
     <Content Include="Views\Order\GetOrdersCustomer.cshtml" />
     <Content Include="Views\Order\_GetOrdersCustomer.cshtml" />

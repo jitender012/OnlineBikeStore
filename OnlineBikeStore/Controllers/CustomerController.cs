@@ -93,5 +93,43 @@ namespace OnlineBikeStore.Controllers
 
             return View(customer);
         }
+        [HttpPost]
+        public ActionResult UpdateProfile(UserViewModel customer)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = context.GetUserId(User.Identity.Name);
+                var user = context.users.Find(userId);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    user.first_name = customer.first_name;
+                    user.last_name = customer.last_name;
+                    user.phone = customer.phone;
+                    user.city = customer.city;
+                    user.state = customer.state;
+                    user.street = customer.street;
+                    user.zip_code = customer.zip_code;
+
+                    context.Entry(user).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    return RedirectToAction("UserAccount","Account", new { linkId = 0 });
+                }
+            }
+
+            return View(customer);
+        }
+        [Authorize]
+        public PartialViewResult UserInformation()
+        {
+            var userId = context.GetUserId(User.Identity.Name);
+
+            UserViewModel profileView = Mapper.Map<UserViewModel>(context.users.Where(u => u.user_id == userId).SingleOrDefault());
+            return PartialView("_UserInformation", profileView);
+        }
     }
 }

@@ -21,7 +21,6 @@ namespace OnlineBikeStore.Controllers
             return View();
         }
 
-
         //Create new customer
         [HttpPost]
         public ActionResult Create(AccountViewModel data)
@@ -61,38 +60,7 @@ namespace OnlineBikeStore.Controllers
             }
             return View(data);
         }
-
-        [HttpPost]
-        public ActionResult UpdateProfile(UserViewModel customer)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = context.GetUserId(User.Identity.Name);
-                var user = context.users.Find(userId);
-                if (user == null)
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    user.first_name = customer.first_name;
-                    user.last_name = customer.last_name;
-                    user.phone = customer.phone;
-                    user.city = customer.city;
-                    user.state = customer.state;
-                    user.street = customer.street;
-                    user.zip_code = customer.zip_code;
-
-                    context.Entry(user).State = EntityState.Modified;
-                    context.SaveChanges();
-
-                    return RedirectToAction("UserAccount", new { linkId = 0 });
-                }
-            }
-
-            return View(customer);
-        }
-
+      
         public ActionResult Login()
         {
             if (TempData["RedirectToLoginMsg"] != null)
@@ -134,10 +102,13 @@ namespace OnlineBikeStore.Controllers
             }
         }
 
+        //Get reset password page
         public ActionResult ResetPassword()
         {
             return View();
         }
+
+        //Post method for resetting password
         [HttpPost]
         public ActionResult ResetPassword(LoginViewModel data)
         {
@@ -153,6 +124,8 @@ namespace OnlineBikeStore.Controllers
                     return View(data);
                 }
                 string hashedPassword = Password.EncryptPassword(data.password);
+
+                //Check the new password is not old password
                 if (hashedPassword==user.password)
                 {
                     ModelState.AddModelError("password", "Old password can't be used as new password.");
@@ -166,6 +139,8 @@ namespace OnlineBikeStore.Controllers
             }
             return View(data);
         }
+
+        //Logout method
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -188,14 +163,6 @@ namespace OnlineBikeStore.Controllers
 
         }
 
-        [Authorize]
-        public PartialViewResult UserInformation()
-        {
-            var userId = context.GetUserId(User.Identity.Name);
-
-            UserViewModel profileView = Mapper.Map<UserViewModel>(context.users.Where(u => u.user_id == userId).SingleOrDefault());
-            return PartialView("_UserInformation", profileView);
-        }
 
         [Authorize]
         public JsonResult GetUserId()

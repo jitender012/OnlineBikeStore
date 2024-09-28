@@ -10,7 +10,7 @@
     }
 </style>
 <link href="~/Content/Customer/search_products.css" rel="stylesheet" />
-<div class="ads-grid">
+<div class="mt-1">
     <div class="container-fluid">
 
         <div class="row" style="z-index:-3;">
@@ -188,7 +188,7 @@
             };
 
         $.ajax({
-                url: '@Url.Action("SearchPartial", "Home")',
+                url: '@Url.Action("SearchPartial", "Product")',
                 type: 'POST',
                 data: data,
                 success: function (response) {

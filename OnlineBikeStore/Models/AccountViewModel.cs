@@ -8,15 +8,12 @@ namespace OnlineBikeStore.Models
         public int user_id { get; set; }
 
         [Required]
-        [Display(Name = "First Name")]
         public string first_name { get; set; }
 
-        [Required]
-        [Display(Name = "Last Name")]
+        [Required]       
         public string last_name { get; set; }
 
-        [Required]
-        [Display(Name = "Email ID")]
+        [Required]       
         public string email { get; set; }
 
         [Required]
@@ -30,6 +27,5 @@ namespace OnlineBikeStore.Models
         public string email { get; set; }
         [Required]
         public string password { get; set; }
-    }   
-    
+    }       
 }

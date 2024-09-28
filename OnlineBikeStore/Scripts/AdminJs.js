@@ -172,7 +172,6 @@ function getStockNotInAnyStore() {
 function UpdateQuantity(productId, storeId) {
    
     var quantity = $("#newQuantity").val();
-    /*var storeId = $("#storeId").val();*/    
 
     $.ajax({       
         url: '/Stock/AddOrUpdateStock',

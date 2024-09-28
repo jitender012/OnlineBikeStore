@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
 {
-
+    [Authorize]
     public class CartController : Controller
     {
         BikeStoreEntities context;
@@ -17,9 +17,7 @@ namespace OnlineBikeStore.Controllers
         // GET: Cart
         [Authorize]
         public ActionResult CartIndex()
-        {
-           
-
+        {           
                 //get user id of logged in user
                 var userId = context.users
                         .Where(x => x.email == User.Identity.Name)

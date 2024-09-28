@@ -8,7 +8,6 @@ using System.Web.Mvc;
 
 namespace OnlineBikeStore.Controllers
 {
-
     public class FeedbackController : Controller
     {
         BikeStoreEntities context;
@@ -53,7 +52,9 @@ namespace OnlineBikeStore.Controllers
                 return View("Error");
             }
         }
-        [HttpGet]
+        
+        // GET: Get all Feedbacks of a particular product
+        [HttpGet]        
         public ActionResult ProductReviews(int pId)
         {
             var feedbacks = (from f in context.feedbacks

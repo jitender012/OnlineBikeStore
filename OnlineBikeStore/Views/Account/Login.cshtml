@@ -14,7 +14,6 @@
     <div class="alert alert-success">
         @ViewBag.SuccessMsg
     </div>
-   
 }
 <section>
     <div class="container py-2">
@@ -43,16 +42,13 @@
 
                                     <div data-mdb-input-init class="form-outline mb-4">
                                         <label class="control-label col-md">Password</label>
-                                        @Html.PasswordFor(model => model.password, new { @class = "form-control"  })
+                                        @Html.PasswordFor(model => model.password, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="pt-1 mb-4">
                                         <button class="btn login-form-btn" type="submit">Login</button>
                                     </div>
-
-
-
                                 }
                                 <a class="small text-muted" href="@Url.Action("ResetPassword", "Account")">Forgot password?</a>
                                 <div>

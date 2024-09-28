@@ -70,7 +70,7 @@
                 <div class="btn-group">
                     <a href="@Url.Action("Details", "Store", new {id= item.store_id})" class=" btn btn-outline-secondary"><i class="bi bi-info-circle"></i>&nbsp; Details</a>
                     <a href="@Url.Action("Edit", "Store", new {id= item.store_id})" class=" btn btn-outline-info"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
-                    <a href="#" class=" btn btn-outline-danger" name="store_id" data-id="@item.store_id"><i class="bi bi-trash"></i>&nbsp; Delete</a>
+                    <a  class="delete-store btn btn-outline-danger" name="store_id" data-id="@item.store_id"><i class="bi bi-trash"></i>&nbsp; Delete</a>
                 </div>
             </td>
         </tr>

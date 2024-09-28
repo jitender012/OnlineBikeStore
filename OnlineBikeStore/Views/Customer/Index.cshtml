@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
     
-
 <div>
     <a href="@Url.Action("Dashboard","Dashboard")" style=" color: #6ebb4a; font-size: 14px; font-weight: 600;">
         Home
@@ -17,10 +16,7 @@
     </h4>
 </div>
 
-
 <div class="table-div">
-
-
     <table class="display table table-bordered" id="userTable">
         <thead>
             <tr>
@@ -32,7 +28,6 @@
                 <th></th>
             </tr>
         </thead>
-
 
         @foreach (var item in Model)
         {
@@ -60,15 +55,11 @@
                 </td>
             </tr>
         }
-
     </table>
 </div>
 <script>
     $(document).ready(
         function () {
             $('#userTable').DataTable();
-
-        }
-
     )
 </script>

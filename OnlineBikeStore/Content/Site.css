@@ -6,15 +6,16 @@
 }
 
 /*Common elements style*/
-a{
-    text-decoration:none;
+a {
+    text-decoration: none;
 }
 
-.text-style1{
-    font-size:13px;
-    color:#808080;
-    margin:0;
+.text-style1 {
+    font-size: 13px;
+    color: #808080;
+    margin: 0;
 }
+
 .content-box {
     display: flex;
     padding: 15px;
@@ -66,21 +67,19 @@ a{
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.1s;
 }
+
     .c-pointer:hover {
-        transform: scale(0.98);        
+        transform: scale(0.98);
         box-shadow: 0px 1px 3px -2px;
     }
-
 
 .dl-horizontal dt {
     white-space: normal;
 }
 
-
-
-hr{
-    padding:0;
-    margin:0;
+hr {
+    padding: 0;
+    margin: 0;
 }
 /*default home page style*/
 
@@ -89,7 +88,7 @@ hr{
     padding: 10px;
     border: none;
     border-radius: 10px;
-   /* box-shadow: 0px 0px 5px -3px;*/
+    /* box-shadow: 0px 0px 5px -3px;*/
     background-color: white;
 }
 
@@ -102,7 +101,7 @@ hr{
 
 .product-row {
     display: flex;
-    overflow: auto;    
+    overflow: auto;
 }
 
     .product-row::-webkit-scrollbar {
@@ -116,8 +115,6 @@ hr{
     border-radius: 5px;
     text-decoration: none;
 }
-
-
 
 .card1-imgdiv {
     display: grid;
@@ -145,9 +142,10 @@ hr{
 }
 
 @media(max-width:568px) {
-    .product-row{
-      padding:0px;
-  }
+    .product-row {
+        padding: 0px;
+    }
+
     .heading {
         margin: 7px;
         font-size: 20px;
@@ -175,9 +173,11 @@ hr{
         width: 70px;
         color: black;
     }
+
     .card1-text-1 {
-        font-size:12px;
+        font-size: 12px;
     }
+
     .card1-text-2 {
         font-size: 10px;
     }

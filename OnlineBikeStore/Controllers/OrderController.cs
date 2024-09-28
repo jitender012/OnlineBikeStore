@@ -19,6 +19,7 @@ namespace OnlineBikeStore.Controllers
         }
 
         // GET: List of all Orders
+        [Authorize]
         public ActionResult GetOrders()
         {
             //Get logged in user id
@@ -156,6 +157,7 @@ namespace OnlineBikeStore.Controllers
                     order_status = ovm.order_status,
                     order_date = ovm.order_date,
                     required_date = ovm.required_date,
+                    shipped_date = ovm.shipped_date,
                     userDetails = new UserViewModel
                     {
                         user_id = ovm.user.user_id,
@@ -402,6 +404,10 @@ namespace OnlineBikeStore.Controllers
             return View("Error");
         }
 
+        public ActionResult OrderSuccess()
+        {
+            return View();
+        }
         public JsonResult UpdateOrderStatus(int oID, string oStatus)
         {
             byte orderStatus = byte.Parse(oStatus);
@@ -432,10 +438,7 @@ namespace OnlineBikeStore.Controllers
         }
 
         //Redirect user to order success page if order confirmed
-        public ActionResult OrderSuccess()
-        {
-            return View();
-        }
+       
 
         public ActionResult _DownloadOrderSummary(int orderId)
         {

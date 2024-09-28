@@ -45,7 +45,6 @@
                     <div class="col-6 col-md-2 col-lg-2 d-flex align-items-start justify-content-start order-md-1  ">
                         <a href="@Url.Action("Home", "Home",null)">
                             <img class="logo-img" src="~/Images/Utilities/logo.png" />
-
                         </a>
                     </div>
 
@@ -56,7 +55,6 @@
                             @*when user is logged in*@
                             @if (User.Identity.IsAuthenticated)
                             {
-
                                 <div class="dropdown">
                                     <a href="@Url.Action("UserAccount","Account", new {linkId = 0})" id="loginLink" class="btn login-btn box-shadow-outset">
                                         <div class="d-flex justify-content-between">
@@ -109,19 +107,16 @@
                                 </div>
                             }
                         </div>
-
                     </div>
-
                     <!-- search -->
                     <div class="col-12 col-sm-12 col-md-7 col-lg-8 order-md-2 pt-0  mb-md-0  align-content-center mt-2 mt-md-0">
                         <div class="d-flex align-content-center justify-content-center">
-                            @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "search-form w-100", role = "search" }))
+                            @using (Html.BeginForm("Search", "Product", FormMethod.Get, new { @class = "search-form w-100", role = "search" }))
                             {
                                 <input class="search-input box-shadow-inset" name="searchWord" type="search" placeholder=" Search for Products" style="font-family:Arial, FontAwesome" aria-label="Search" required>
                                 <button class="btn search-button box-shadow-outset" type="submit">
                                     <i class="fa fa-search text-light"></i>
                                 </button>
-
                             }
                         </div>
                     </div>
@@ -139,7 +134,7 @@
                 @foreach (var item in ViewBag.Categories as List<OnlineBikeStore.Models.CategoryViewModel>)
                 {
                     <div class="ecatdiv">
-                        <a href="@Url.Action("Filter","Home", new {catId = item.category_id})" class="t12">
+                        <a href="@Url.Action("Filter","Product", new {catId = item.category_id})" class="t12">
 
                             @item.category_name
 
@@ -151,17 +146,19 @@
 
         <div class="container-fluid  p-0 ">
             @RenderBody()
-
         </div>
         <footer>
 
             <div class="container">
                 <p class="text-muted">© 2024 OnlineBikeStore. All rights reserved.</p>
-                <p class="text-muted"> <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms & Conditions</a> | <a href="/support">Support</a></p>
+                <p class="text-muted">
+                    <a href="@Url.Action("About","Home")" target="_blank">About Us</a> |
+                    <a href="@Url.Action("Contact","Home")" target="_blank">Contact Us</a> |
+                </p>
                 <p class="text-muted">
                     Follow us:
-                    <a href="https://facebook.com" target="_blank">Facebook</a> |
-                    <a href="https://twitter.com" target="_blank">Twitter</a> |
+                    <a href="https://facebook.com" target="_blank">About Us</a> |
+                    <a href="https://twitter.com" target="_blank">Contact Us</a> |
                     <a href="https://linkedin.com" target="_blank">LinkedIn</a>
                 </p>
             </div>
@@ -188,12 +185,9 @@
         </div>
     </div>
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/customer.js"></script>
     @RenderSection("scripts", required: false)
-
-
 </body>
 </html>

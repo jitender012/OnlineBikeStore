@@ -47,3 +47,30 @@
    
 </div>
 
+<script>
+    //add or remove item from wishlist
+    function AddRemoveWishlist(productId) {
+        $.ajax({
+            type: "POST",
+            url: '/Wishlist/AddRemoveWishlist',
+            data: { pId: productId },
+            success: function (response) {
+                if (response.success) {
+                    var heartIcon = $("#wishlist_" + productId);
+                    if (response.inWishlist) {
+                        heartIcon.removeClass("far fa-heart").addClass("fa fa-heart red-heart");
+                    } else {
+                        heartIcon.removeClass("fa fa-heart red-heart").addClass("far fa-heart");
+                        $("#wishlistItemDiv_" + productId).remove();
+                    }
+                } else {
+                    alert("Failed to update wishlist.");
+                }
+            },
+            error: function () {
+                alert("An error occurred while updating the wishlist.");
+            }
+        });
+    }
+
+</script>

@@ -122,7 +122,6 @@ namespace OnlineBikeStore.Controllers
         }
 
 
-
         [HttpPost]
         public JsonResult Delete(int id)
         {

@@ -50,7 +50,14 @@
                         <tr>
                             <td>Status</td>
                             <td>
-                                Order @((OnlineBikeStore.Models.OrderStatus)Model.order_status)
+                                Order @((OnlineBikeStore.Models.OrderStatus)Model.order_status)  @if (Model.order_status == 1)
+                                {
+                                    <span>on @Model.shipped_date</span>
+                                }
+                                else if (Model.order_status == 2 || Model.order_status == 3)
+                                {
+                                    <span>on @Model.required_date</span>
+                                }
                             </td>
                         </tr>
                     </table>
@@ -58,7 +65,7 @@
 
                 </div>
 
-                <a href="@Url.Action("_DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</a>               
+                <a href="@Url.Action("_DownloadOrderSummary", new {orderId = Model.order_id})" class="btn btn-sm w-100" style="border:1px solid #c1cdc2; border-radius:5px; margin-top:-5px; background-color:white">Download Invoice</a>
             </div>
             <div class="col-12 col-xl-3 d-flex flex-column justify-content-around align-items-center my-1">
 
@@ -118,13 +125,13 @@
                     <spna class="text-muted">Seller:</spna>@item.store_name
                 </div>
             </div>
-           
+
             <div style="margin-left:auto;">
                 @if (Model.order_status == 2)
                 {
                     <h4 style="color:cornflowerblue">
                         <a class="btn btn-outline-dark" href="@Url.Action("AddUpdateFeedback","feedback", new {pId = item.productDetails.product_id})">
-                           Review Product
+                            Review Product
                         </a>
                     </h4>
                 }

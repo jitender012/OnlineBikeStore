@@ -40,7 +40,7 @@
                     <div class=" shadow-sm h-100 border">
                         <div class="p-3 p-lg-4">
                             <h4 class="mb-1">All Inventory</h4>
-                            <div>$12,628</div>
+                            <div>@Model.stock.Count()</div>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class=" shadow-sm h-100 border">
                         <div class="p-3 p-lg-4">
                             <h4 class="mb-1">Low Stock</h4>
-                            <div>$12,628</div>
+                            <div>@Model.stock.Count(x=>x.quantity<=5)</div>
                         </div>
                     </div>
                 </div>
@@ -57,15 +57,14 @@
                     <div class=" shadow-sm h-100 border">
                         <div class="p-3 p-lg-4">
                             <h4 class="mb-1">Out Of Stock</h4>
-                            <div>$12,628</div>
+                            <div>@Model.stock.Count(x => x.quantity == 0)</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-lg-3 ">
                     <div class=" shadow-sm h-100 border">
                         <div class="p-3 p-lg-4">
-                            <h4 class="mb-1">Customers</h4>
-                            <div>$12,628</div>
+                            <h4 class="mb-1">Orders</h4>                           
                         </div>
                     </div>
                 </div>
@@ -77,10 +76,6 @@
 
     </div>
 </div>
-
-
-
-
 
 
 <div class="modal fade" id="addItemsModal" tabindex="-1" aria-labelledby="addItemsModalTitle" aria-hidden="true" style="display: none;">
@@ -112,8 +107,5 @@
     $(document).ready(
         function () {
             $('#store-table').DataTable();
-        }
-
     )
-
 </script>
